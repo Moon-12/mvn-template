@@ -12,6 +12,11 @@ public class Menu {
     private List<Map<Character,Menu>> subMenu;
     private String inputLabel;
 
+    public Menu(String title,int padding) {
+        this.title = title;
+        this.padding=padding;
+    }
+
     @Override
     public String toString(){
         StringBuffer finalFormatedMenu = new StringBuffer();
