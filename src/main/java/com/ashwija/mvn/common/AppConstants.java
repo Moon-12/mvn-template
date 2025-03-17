@@ -1,6 +1,7 @@
 package com.ashwija.mvn.common;
 
 import com.ashwija.mvn.entity.Menu;
+import com.ashwija.mvn.entity.NavigationMenu;
 
 import java.util.*;
 
@@ -19,9 +20,8 @@ public class AppConstants {
         mainMenuItems.put('4', new Menu("Course Assignment (One Teacher, Many Students) & Marks"));
         mainMenuItems.put('5', new Menu("Exit"));
 
-        mainMenuLabel = "Please enter your choice (1-" + mainMenuItems.size() + "): ";
-
-        mainMenu = new Menu("Welcome to the School Management System!",0,mainMenuItems,mainMenuLabel);
+        List<String> mainMenuLabels = "Please enter your choice (1-" + mainMenuItems.size() + "): ";
+        mainMenu = new NavigationMenu("Welcome to the School Management System!",0,mainMenuItems,);
     }
     private static Map<Character,Menu>getStudentMenu(){
         Map<Character, Menu> studentMenuItems = new HashMap<>();

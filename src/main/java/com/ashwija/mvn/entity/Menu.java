@@ -2,20 +2,22 @@ package com.ashwija.mvn.entity;
 
 import com.ashwija.mvn.graphics.GraphicEngine;
 
+import java.util.List;
 import java.util.Map;
 
-public class Menu {
+public abstract class Menu {
     private int padding;
     private String title;
     private String subTitle;
     private Map<Character,Menu> subMenu;
-    private String inputLabel;
+    private List<String> inputLabelList;
+    private List<Object> inputList;
 
-    public Menu(String title,int padding,Map<Character,Menu> subMenu,String inputLabel) {
+    public Menu(String title,int padding,Map<Character,Menu> subMenu,List<String> inputLabel) {
         this.title = title;
         this.padding=padding;
         this.subMenu=subMenu;
-        this.inputLabel=inputLabel;
+        this.inputLabelList=inputLabel;
     }
 
     public  Menu(String title){
@@ -24,6 +26,10 @@ public class Menu {
 
     public Map<Character, Menu> getSubMenu() {
         return subMenu;
+    }
+
+    public Menu getSubMenuAt(Character character) {
+        return subMenu.get(character);
     }
 
     @Override
@@ -50,7 +56,9 @@ public class Menu {
         return subMenuText.toString();
     }
 
-    public String getInputLabel() {
-        return inputLabel;
+    public String getInputLabelAt(int index) {
+        return inputLabelList.get(index);
     }
+
+    public abstract void performAction(List<Object> inputList);
 }
