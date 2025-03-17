@@ -10,20 +10,30 @@ public class MainDriver {
     public void execute() {
         Scanner scanner = new Scanner(System.in);
         // Will get replaced with metadata fetch logic in future
-        CentralContext.setCurrentMenu(AppConstants.getMainMenu());
-        while (true){
+        Menu currentMenu = AppConstants.getMainMenu();
+        CentralContext.setCurrentMenu(currentMenu);
+        while (true) {
+            currentMenu = CentralContext.getCurrentMenu();
             System.out.println(currentMenu);
 
             // perform in loop
             int labelIndex = 0;
-            System.out.print(currentMenu.getInputLabelAt(labelIndex));
-            List<String> inputList = new ArrayList<>();
-            while(scanner.hasNext()){
-                inputList.add(scanner.next());
-                System.out.print(currentMenu.getInputLabelAt(++labelIndex));
+            int labelIndexLimit = currentMenu.inputLabelListSize();
+
+            List<Object> inputList = new ArrayList<>();
+
+            while (labelIndex < labelIndexLimit) {
+                System.out.print(currentMenu.getInputLabelAt(labelIndex++));
+                String input = scanner.next();
+                if (input.equalsIgnoreCase("EXIT")) {
+                    System.exit(0);
+                }
+                inputList.add(input);
+
             }
 
             currentMenu.performAction(inputList);
+
 
             // call underlying operations
 
@@ -33,19 +43,5 @@ public class MainDriver {
         }
 
     }
-//        Map<Character,Menu>subMenu=mainMenu.getSubMenu();
-//
-//        if(subMenu.containsKey(firstInput)){
-//            Menu subMenuItem=subMenu.get(firstInput);
-//            System.out.println(subMenuItem);
-//            System.out.println(subMenuItem.getInputLabel());
-//            char secondInput = scanner.next().charAt(0);
-//        }
-//        else{
-//            System.out.println(mainMenu.getInputLabel());
-//            firstInput = scanner.next().charAt(0);
-//        }
-//    }
-
 
 }

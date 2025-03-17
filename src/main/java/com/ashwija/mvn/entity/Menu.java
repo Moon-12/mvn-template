@@ -9,23 +9,27 @@ public abstract class Menu {
     private int padding;
     private String title;
     private String subTitle;
-    private Map<Character,Menu> subMenu;
+    private Map<Character, Menu> subMenu;
     private List<String> inputLabelList;
     private List<Object> inputList;
 
-    public Menu(String title,int padding,Map<Character,Menu> subMenu,List<String> inputLabel) {
+    public Menu(String title, int padding, Map<Character, Menu> subMenu, List<String> inputLabel) {
         this.title = title;
-        this.padding=padding;
-        this.subMenu=subMenu;
-        this.inputLabelList=inputLabel;
+        this.padding = padding;
+        this.subMenu = subMenu;
+        this.inputLabelList = inputLabel;
     }
 
-    public  Menu(String title){
-        this.title=title;
+    public Menu(String title) {
+        this.title = title;
     }
 
     public Map<Character, Menu> getSubMenu() {
         return subMenu;
+    }
+
+    public int inputLabelListSize() {
+        return inputLabelList.size();
     }
 
     public Menu getSubMenuAt(Character character) {
@@ -33,11 +37,11 @@ public abstract class Menu {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuffer finalFormatedMenu = new StringBuffer();
         finalFormatedMenu.append(GraphicEngine.printHeaderBlock(this.padding, this.title));
         // TODO reset of the append logic here
-        if(subMenu!=null) {
+        if (subMenu != null) {
             finalFormatedMenu.append(printSubMenu());
         }
         return finalFormatedMenu.toString();
@@ -46,18 +50,22 @@ public abstract class Menu {
     private String printSubMenu() {
         StringBuilder subMenuText = new StringBuilder();
         if (subMenu != null) {
-                for (Map.Entry<Character, Menu> entry : subMenu.entrySet()) {
-                    subMenuText.append(entry.getKey())
-                            .append(". ")
-                            .append(entry.getValue().title)
-                            .append("\n");
-                }
+            for (Map.Entry<Character, Menu> entry : subMenu.entrySet()) {
+                subMenuText.append(entry.getKey())
+                        .append(". ")
+                        .append(entry.getValue().title)
+                        .append("\n");
+            }
         }
         return subMenuText.toString();
     }
 
     public String getInputLabelAt(int index) {
         return inputLabelList.get(index);
+    }
+
+    public void setInputLabelList(List<String> inputLabelList) {
+        this.inputLabelList = inputLabelList;
     }
 
     public abstract void performAction(List<Object> inputList);
