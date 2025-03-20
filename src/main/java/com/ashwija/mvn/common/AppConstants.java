@@ -1,8 +1,6 @@
 package com.ashwija.mvn.common;
 
-import com.ashwija.mvn.entity.Menu;
-import com.ashwija.mvn.entity.NavigationMenu;
-import com.ashwija.mvn.entity.OperationMenu;
+import com.ashwija.mvn.entity.*;
 
 import java.util.*;
 
@@ -20,8 +18,7 @@ public class AppConstants {
                 '1', new NavigationMenu("Student Operations", 1, studentMenu, studentMenuLabels),
                 '2', new NavigationMenu("Teacher Operations"),
                 '3', new NavigationMenu("Course Operations"),
-                '4', new NavigationMenu("Course Assignment (One Teacher, Many Students) & Marks"),
-                '5', new NavigationMenu("Exit"));
+                '4', new NavigationMenu("Course Assignment (One Teacher, Many Students) & Marks"));
 
         mainMenuLabels.add("Please enter your choice (1-" + mainMenuItems.size() + "): ");
         mainMenu = new NavigationMenu("Welcome to the School Management System!", 0, mainMenuItems, mainMenuLabels);
@@ -29,13 +26,14 @@ public class AppConstants {
 
     private static Map<Character, Menu> getStudentMenu() {
         Map<Character, Menu> studentMenuItems = new HashMap<>();
-        Menu addStudentOprationMenu = new OperationMenu("Add a new student");
+        AppEntity studentEntity = new StudentEntity();
+        Menu addStudentOprationMenu = new OperationMenu("Add a new student", studentEntity, OperationType.ADD);
         addStudentOprationMenu.setInputLabelList(addStudentLabels);
         studentMenuItems.put('a', addStudentOprationMenu);
-        studentMenuItems.put('b', new OperationMenu("View student details"));
-        studentMenuItems.put('c', new OperationMenu("Update student information"));
-        studentMenuItems.put('d', new OperationMenu("Delete a student"));
-        studentMenuItems.put('e', new OperationMenu("Back to Main Menu"));
+        studentMenuItems.put('b', new OperationMenu("View student details", studentEntity, OperationType.VIEW));
+        //studentMenuItems.put('c', new OperationMenu("Update student information", studentEntity));
+        studentMenuItems.put('c', new OperationMenu("Delete a student", studentEntity, OperationType.DELETE));
+
         studentMenuLabels.add("Please enter your choice (a-" + (char) ('a' + studentMenuItems.size() - 1) + "): ");
         return studentMenuItems;
     }

@@ -17,9 +17,10 @@ public class NavigationMenu extends Menu {
     @Override
     public void performAction(List<Object> inputList) {
         //set current menu to selected sub menu
-        Object menuChoice = inputList.get(0);
+        char menuChoice = inputList.get(0).toString().charAt(0);
+
         Menu currentMenu = CentralContext.getCurrentMenu();
-        Menu subMenu = currentMenu.getSubMenuAt(menuChoice.toString().charAt(0));
+        Menu subMenu = currentMenu.getSubMenuAt(menuChoice);
         if (subMenu != null) {
             CentralContext.setCurrentMenu(subMenu);
         }

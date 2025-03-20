@@ -11,6 +11,10 @@ public class CentralContext {
         CentralContext.currentMenu = currentMenu;
     }
 
+    public static void setPrevMenuMenu(Menu prevMenu) {
+        CentralContext.prevMenu = prevMenu;
+    }
+
     public static Menu getCurrentMenu() {
         return currentMenu;
     }

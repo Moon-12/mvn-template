@@ -1,20 +1,35 @@
 package com.ashwija.mvn.entity;
 
 import com.ashwija.mvn.central.CentralContext;
+import com.ashwija.mvn.common.OperationType;
 
 import java.util.List;
 
 public class OperationMenu extends Menu {
-    public OperationMenu(String title) {
+    final AppEntity appEntity;
+    OperationType operationType;
+
+    public OperationMenu(String title, AppEntity myEntity, OperationType operationType) {
         super(title);
+        this.appEntity = myEntity;
+        this.operationType = operationType;
     }
 
     @Override
     public void performAction(List<Object> inputList) {
-
-        // instantiate and insert entity
-
-        //Integer rollNumber = Integer.parseInt((String)inputList);
+        AppEntity appEntityObj = appEntity.performObjectFactoryFromList(inputList);
+        switch (operationType) {
+            case ADD:
+                appEntityObj.save(appEntityObj);
+                break;
+            case DELETE:
+                appEntityObj.delete(appEntityObj);
+                break;
+            case VIEW:
+                appEntityObj.view(appEntityObj);
+                break;
+        }
+        appEntity.save(appEntityObj);
         CentralContext.setCurrentMenu(CentralContext.getPrevMenu());
     }
 }

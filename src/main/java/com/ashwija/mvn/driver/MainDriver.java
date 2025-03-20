@@ -28,12 +28,15 @@ public class MainDriver {
                 if (input.equalsIgnoreCase("EXIT")) {
                     System.exit(0);
                 }
+                if (input.equalsIgnoreCase("MAIN")) {
+                    CentralContext.setCurrentMenu(AppConstants.getMainMenu());
+                    CentralContext.setPrevMenuMenu(null);
+                }
                 inputList.add(input);
 
             }
 
             currentMenu.performAction(inputList);
-
 
             // call underlying operations
 
