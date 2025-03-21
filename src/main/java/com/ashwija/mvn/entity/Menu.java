@@ -29,7 +29,8 @@ public abstract class Menu {
     }
 
     public int inputLabelListSize() {
-        return inputLabelList.size();
+        return inputLabelList != null ? inputLabelList.size() : 0;
+
     }
 
     public Menu getSubMenuAt(Character character) {

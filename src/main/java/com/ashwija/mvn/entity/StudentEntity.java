@@ -1,5 +1,6 @@
 package com.ashwija.mvn.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudentEntity extends AppEntity {
@@ -45,13 +46,24 @@ public class StudentEntity extends AppEntity {
 
     @Override
     public AppEntity fetch(AppEntity myEntity) {
+
+        fetchAll();
         return null;
+    }
+
+    public List<StudentEntity> fetchAll() {
+        List<StudentEntity> studentEntities = new ArrayList<>();
+        String sql = "select * from student";
+        super.fetchAll(sql);
+        return studentEntities;
     }
 
     @Override
     public AppEntity performObjectFactoryFromList(List<Object> inputs) {
-        rollNo = (String) inputs.get(0);
-        name = (String) inputs.get(1);
+        if (!inputs.isEmpty()) {
+            rollNo = (String) inputs.get(0);
+            name = (String) inputs.get(1);
+        }
         return new StudentEntity(rollNo, name);
     }
 }
