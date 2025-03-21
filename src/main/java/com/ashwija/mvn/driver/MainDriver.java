@@ -1,5 +1,6 @@
 package com.ashwija.mvn.driver;
 
+import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.AppConstants;
 import com.ashwija.mvn.entity.Menu;
@@ -8,6 +9,7 @@ import java.util.*;
 
 public class MainDriver {
     public void execute() {
+        DatabaseConnection db = new DatabaseConnection();
         Scanner scanner = new Scanner(System.in);
         // Will get replaced with metadata fetch logic in future
         Menu currentMenu = AppConstants.getMainMenu();
