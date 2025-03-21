@@ -26,10 +26,9 @@ public class OperationMenu extends Menu {
                 appEntityObj.delete(appEntityObj);
                 break;
             case VIEW:
-                appEntityObj.view(appEntityObj);
+                appEntityObj.fetch(appEntityObj);
                 break;
         }
-        appEntity.save(appEntityObj);
         CentralContext.setCurrentMenu(CentralContext.getPrevMenu());
     }
 }
