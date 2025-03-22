@@ -3,7 +3,7 @@ package com.ashwija.mvn.driver;
 import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.AppConstants;
-import com.ashwija.mvn.entity.Menu;
+import com.ashwija.mvn.dao.Menu;
 
 import java.util.*;
 
@@ -14,6 +14,8 @@ public class MainDriver {
         // Will get replaced with metadata fetch logic in future
         Menu currentMenu = AppConstants.getMainMenu();
         CentralContext.setCurrentMenu(currentMenu);
+        List<Object> inputList;
+
         while (true) {
             currentMenu = CentralContext.getCurrentMenu();
             System.out.println(currentMenu);
@@ -22,7 +24,7 @@ public class MainDriver {
             int labelIndex = 0;
             int labelIndexLimit = currentMenu.inputLabelListSize();
 
-            List<Object> inputList = new ArrayList<>();
+            inputList = new ArrayList<>();
 
             while (labelIndex < labelIndexLimit) {
                 System.out.print(currentMenu.getInputLabelAt(labelIndex++));
@@ -34,6 +36,8 @@ public class MainDriver {
                     CentralContext.setCurrentMenu(AppConstants.getMainMenu());
                     CentralContext.setPrevMenuMenu(null);
                 }
+
+
                 inputList.add(input);
 
             }

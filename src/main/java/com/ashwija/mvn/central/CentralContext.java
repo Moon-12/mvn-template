@@ -1,6 +1,6 @@
 package com.ashwija.mvn.central;
 
-import com.ashwija.mvn.entity.Menu;
+import com.ashwija.mvn.dao.Menu;
 
 public class CentralContext {
     private static Menu currentMenu;

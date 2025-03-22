@@ -1,4 +1,4 @@
-package com.ashwija.mvn.entity;
+package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
 
@@ -9,22 +9,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AppEntity {
-    public void save(AppEntity myEntity) {
+public abstract class AppDao<T> {
 
-    }
+    abstract String getInsertSql();
 
-    public void save(String sql, List<Object> attributes, String entityName) {
+
+    public void save(List<Object> attributes) {
         try {
             Connection con = DatabaseConnection.con;
-            PreparedStatement pstmt = con.prepareStatement(sql);
+            PreparedStatement pstmt = con.prepareStatement(this.getInsertSql());
             for (int i = 0; i < attributes.size(); i++) {
                 pstmt.setString(i + 1, attributes.get(i).toString());
             }
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                System.out.println(entityName + " inserted successfully !");
+                System.out.println(" Inserted successfully !");
             } else {
                 System.out.println("Failed to insert student.");
             }
@@ -34,25 +34,24 @@ public abstract class AppEntity {
         }
     }
 
-    public void delete(AppEntity myEntity) {
+//    public T fetch(String entityId) {
+//        return null;
+//    }
 
-    }
+//    public void delete(String entityId) {
+//
+//    }
 
-
-    public AppEntity fetch(AppEntity myEntity) {
-        return null;
-    }
-
-    public List<AppEntity> fetchAll(String sql) {
-        List<AppEntity> list = new ArrayList<>();
+    public List<T> fetchAll(String id) {
+        List<T> list = new ArrayList<>();
         ResultSet resultSet;
         try {
             Connection con = DatabaseConnection.con;
-            PreparedStatement pstmt = con.prepareStatement(sql);
+            PreparedStatement pstmt = con.prepareStatement(this.getFetchAllSql());
 
             resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
-                list.add();
+//                list.add();
             }
 
         } catch (SQLException e) {
@@ -62,5 +61,6 @@ public abstract class AppEntity {
         return list;
     }
 
-    abstract public AppEntity performObjectFactoryFromList(List<Object> inputs);
+    abstract String getFetchAllSql();
+
 }

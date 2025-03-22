@@ -1,6 +1,6 @@
 package com.ashwija.mvn.common;
 
-import com.ashwija.mvn.entity.*;
+import com.ashwija.mvn.dao.*;
 
 import java.util.*;
 
@@ -26,7 +26,7 @@ public class AppConstants {
 
     private static Map<Character, Menu> getStudentMenu() {
         Map<Character, Menu> studentMenuItems = new HashMap<>();
-        AppEntity studentEntity = new StudentEntity();
+        AppDao studentEntity = new StudentDao();
         Menu addStudentOprationMenu = new OperationMenu("Add a new student", studentEntity, OperationType.ADD);
         addStudentOprationMenu.setInputLabelList(addStudentLabels);
         studentMenuItems.put('a', addStudentOprationMenu);

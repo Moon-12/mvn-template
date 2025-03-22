@@ -1,4 +1,4 @@
-package com.ashwija.mvn.entity;
+package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.OperationType;
@@ -6,10 +6,10 @@ import com.ashwija.mvn.common.OperationType;
 import java.util.List;
 
 public class OperationMenu extends Menu {
-    final AppEntity appEntity;
+    final AppDao appEntity;
     OperationType operationType;
 
-    public OperationMenu(String title, AppEntity myEntity, OperationType operationType) {
+    public OperationMenu(String title, AppDao myEntity, OperationType operationType) {
         super(title);
         this.appEntity = myEntity;
         this.operationType = operationType;
@@ -17,16 +17,15 @@ public class OperationMenu extends Menu {
 
     @Override
     public void performAction(List<Object> inputList) {
-        AppEntity appEntityObj = appEntity.performObjectFactoryFromList(inputList);
         switch (operationType) {
             case ADD:
-                appEntityObj.save(appEntityObj);
+                appEntity.save(inputList);
                 break;
             case DELETE:
-                appEntityObj.delete(appEntityObj);
+                // appEntity.delete(inputList.getFirst());
                 break;
             case VIEW:
-                appEntityObj.fetch(appEntityObj);
+                appEntity.fetchAll((String) inputList.get(0));
                 break;
         }
         CentralContext.setCurrentMenu(CentralContext.getPrevMenu());

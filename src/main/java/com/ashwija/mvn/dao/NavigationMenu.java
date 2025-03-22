@@ -1,4 +1,4 @@
-package com.ashwija.mvn.entity;
+package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.central.CentralContext;
 
