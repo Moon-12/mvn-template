@@ -11,6 +11,9 @@ public class AppConstants {
     private static List<String> addStudentLabels = new ArrayList<>(Arrays.asList(
             "Enter Roll No:",
             "Enter Name:"));
+    private static List<String> viewStudentLabels = new ArrayList<>(Arrays.asList(
+            "Enter ID:"
+    ));
 
     static {
         Map<Character, Menu> studentMenu = getStudentMenu();
@@ -26,14 +29,18 @@ public class AppConstants {
 
     private static Map<Character, Menu> getStudentMenu() {
         Map<Character, Menu> studentMenuItems = new HashMap<>();
-        AppDao studentEntity = new StudentDao();
-        Menu addStudentOprationMenu = new OperationMenu("Add a new student", studentEntity, OperationType.ADD);
+        AppDao studentDao = new StudentDao();
+
+        Menu addStudentOprationMenu = new OperationMenu("Add a new student", studentDao, OperationType.ADD);
         addStudentOprationMenu.setInputLabelList(addStudentLabels);
         studentMenuItems.put('a', addStudentOprationMenu);
- 
-        studentMenuItems.put('b', new OperationMenu("View student details", studentEntity, OperationType.VIEW));
-        //studentMenuItems.put('c', new OperationMenu("Update student information", studentEntity));
-        studentMenuItems.put('c', new OperationMenu("Delete a student", studentEntity, OperationType.DELETE));
+
+        Menu studentViewOperationMenu = new OperationMenu("View student details", studentDao, OperationType.VIEW);
+        studentViewOperationMenu.setInputLabelList(viewStudentLabels);
+        studentMenuItems.put('b', studentViewOperationMenu);
+
+        //studentMenuItems.put('c', new OperationMenu("Update student information", studentDao));
+        studentMenuItems.put('c', new OperationMenu("Delete a student", studentDao, OperationType.DELETE));
 
         studentMenuLabels.add("Please enter your choice (a-" + (char) ('a' + studentMenuItems.size() - 1) + "): ");
         return studentMenuItems;

@@ -29,10 +29,9 @@ public class StudentDao extends AppDao<Student> {
 //        return null;
 //    }
 
-    public List<StudentDao> fetchAll() {
-        List<StudentDao> studentEntities = new ArrayList<>();
-        String sql = "select * from student";
-        super.fetchAll(sql);
+    public List<Student> fetchAll(String id) {
+        List<Student> studentEntities = new ArrayList<>();
+        studentEntities = super.fetchAll(id);
         return studentEntities;
     }
 
