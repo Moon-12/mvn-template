@@ -7,42 +7,54 @@ import java.util.*;
 
 public class AppConstants {
     private static Menu mainMenu;
-    private static List<String> mainMenuLabels = new ArrayList<>();
-    private static List<String> studentMenuLabels = new ArrayList<>();
-    private static List<String> addStudentLabels = new ArrayList<>(Arrays.asList(
-            "Enter Roll No:",
-            "Enter Name:"));
-    private static List<String> viewStudentLabels = new ArrayList<>(Arrays.asList(
-    ));
 
     static {
-        Map<Character, Menu> studentMenu = getStudentMenu();
-        Map<Character, Menu> mainMenuItems = Map.of(
-                '1', new NavigationMenu("Student Operations", 1, studentMenu, studentMenuLabels),
-                '2', new NavigationMenu("Teacher Operations"),
-                '3', new NavigationMenu("Course Operations"),
-                '4', new NavigationMenu("Course Assignment (One Teacher, Many Students) & Marks"));
+        Map<String, Object> yamlData = Utility.yamlToMap("metadata.yaml");
+        mainMenu = buildMainMenu((Map<String, Object>) yamlData.get("mainMenu"));
+        Map<Character, Menu> studentMenuItems = buildStudentMenu((Map<String, Object>) yamlData.get("studentMenu"));
 
-        mainMenuLabels.add("Please enter your choice (1-" + mainMenuItems.size() + "): ");
-        mainMenu = new NavigationMenu("Welcome to the School Management System!", 0, mainMenuItems, mainMenuLabels);
+        //set student menu items in main menu at position 1
+        NavigationMenu studentSubMenu = (NavigationMenu) mainMenu.getSubMenuAt('1');
+        studentSubMenu.setSubMenu(studentMenuItems);
     }
 
-    private static Map<Character, Menu> getStudentMenu() {
+    private static NavigationMenu buildMainMenu(Map<String, Object> mainMenuData) {
+        Map<Character, Menu> mainMenuItems = new HashMap<>();
+        List<String> mainMenuLabels = new ArrayList<>();
+        List<Map<String, String>> items = (List<Map<String, String>>) mainMenuData.get("items");
+
+        for (Map<String, String> item : items) {
+            char key = item.get("key").charAt(0);
+            String label = item.get("label");
+            mainMenuItems.put(key, key == '1'
+                    ? new NavigationMenu(label, 1, new HashMap<>(), new ArrayList<>())
+                    : new NavigationMenu(label));
+        }
+
+        mainMenuLabels.add(((String) mainMenuData.get("prompt")).replace("{size}", String.valueOf(mainMenuItems.size())));
+        return new NavigationMenu((String) mainMenuData.get("title"), 0, mainMenuItems, mainMenuLabels);
+    }
+
+    private static Map<Character, Menu> buildStudentMenu(Map<String, Object> studentMenuData) {
         Map<Character, Menu> studentMenuItems = new HashMap<>();
         AppDao studentDao = new StudentDao();
+        List<Map<String, Object>> items = (List<Map<String, Object>>) studentMenuData.get("items");
+        List<String> studentMenuLabels = new ArrayList<>();
 
-        Menu addStudentOprationMenu = new OperationMenu<StudentEntity>("Add a new student", OperationType.ADD, studentDao);
-        addStudentOprationMenu.setInputLabelList(addStudentLabels);
-        studentMenuItems.put('a', addStudentOprationMenu);
+        for (Map<String, Object> item : items) {
+            char key = ((String) item.get("key")).charAt(0);
+            String label = (String) item.get("label");
+            OperationMenu<StudentEntity> menu = new OperationMenu<>(label,
+                    OperationType.valueOf((String) item.get("operation")), studentDao);
+            menu.setInputLabelList((List<String>) item.get("inputs"));
+            studentMenuItems.put(key, menu);
+        }
 
-        Menu studentViewOperationMenu = new OperationMenu<StudentEntity>("View student details", OperationType.VIEW, studentDao);
-        studentViewOperationMenu.setInputLabelList(viewStudentLabels);
-        studentMenuItems.put('b', studentViewOperationMenu);
+        String prompt = ((String) studentMenuData.get("prompt")).replace("{size}", String.valueOf(studentMenuItems.size()));
+        studentMenuLabels.add(prompt);
+        NavigationMenu studentSubMenu = (NavigationMenu) mainMenu.getSubMenuAt('1');
+        studentSubMenu.setInputLabelList(studentMenuLabels);
 
-        //studentMenuItems.put('c', new OperationMenu("Update student information", studentDao));
-        studentMenuItems.put('c', new OperationMenu<StudentEntity>("Delete a student", OperationType.DELETE, studentDao));
-
-        studentMenuLabels.add("Please enter your choice (a-" + (char) ('a' + studentMenuItems.size() - 1) + "): ");
         return studentMenuItems;
     }
 

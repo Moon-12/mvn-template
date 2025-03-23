@@ -37,6 +37,11 @@ public abstract class Menu {
         return subMenu.get(character);
     }
 
+
+    public void setSubMenu(Map<Character, Menu> menu) {
+        this.subMenu = menu;
+    }
+
     @Override
     public String toString() {
         StringBuffer finalFormatedMenu = new StringBuffer();

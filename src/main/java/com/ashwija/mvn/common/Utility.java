@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Utility {
     public static InputStream resourceToInputStream(String fileName) {
-        InputStream input = MavenTemplateMain.class.getClassLoader().getResourceAsStream(fileName);
+        InputStream input = Utility.class.getClassLoader().getResourceAsStream(fileName);
         // Check if the file is found
         if (input == null) {
             System.out.println("error converting to stream");
