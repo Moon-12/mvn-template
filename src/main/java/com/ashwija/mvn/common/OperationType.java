@@ -1,5 +1,5 @@
 package com.ashwija.mvn.common;
 
 public enum OperationType {
-    ADD, UPDATE, VIEW, DELETE, BACK
+    ADD, UPDATE, VIEWALL, VIEW, DELETE, BACK
 }

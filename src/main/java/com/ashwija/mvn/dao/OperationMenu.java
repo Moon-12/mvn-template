@@ -32,7 +32,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
             case DELETE:
                 // appEntity.delete(inputList.getFirst());
                 break;
-            case VIEW:
+            case VIEWALL:
                 List<T> entityList = appDao.fetchAll();
                 //print selected entity header row
                 if (entityList.size() > 0) {
