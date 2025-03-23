@@ -42,7 +42,7 @@ public abstract class AppDao<T> {
 //
 //    }
 
-    public List<T> fetchAll(String id) {
+    public List<T> fetchAll() {
         List<T> list = new ArrayList<>();
         ResultSet resultSet;
         try {
@@ -51,7 +51,7 @@ public abstract class AppDao<T> {
 
             resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
-//                list.add();
+                list.add(this.getEntityFromResultSet(resultSet));
             }
 
         } catch (SQLException e) {
@@ -63,4 +63,5 @@ public abstract class AppDao<T> {
 
     abstract String getFetchAllSql();
 
+    abstract T getEntityFromResultSet(ResultSet resultSet);
 }

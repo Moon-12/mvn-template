@@ -2,6 +2,7 @@ package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.model.Student;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,11 @@ public class StudentDao extends AppDao<Student> {
         return "SELECT * FROM student where active=1";
     }
 
+    @Override
+    Student getEntityFromResultSet(ResultSet resultSet) {
+        return new Student(resultSet.getString("roll_no"), resultSet.getString("name"));
+    }
+
 //    @Override
 //    public void delete(AppDao myEntity) {
 //
@@ -29,9 +35,9 @@ public class StudentDao extends AppDao<Student> {
 //        return null;
 //    }
 
-    public List<Student> fetchAll(String id) {
+    public List<Student> fetchAll() {
         List<Student> studentEntities = new ArrayList<>();
-        studentEntities = super.fetchAll(id);
+        studentEntities = super.fetchAll();
         return studentEntities;
     }
 

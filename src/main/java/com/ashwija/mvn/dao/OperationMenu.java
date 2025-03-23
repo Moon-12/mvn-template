@@ -2,16 +2,17 @@ package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.OperationType;
+import com.ashwija.mvn.model.Student;
 
 import java.util.List;
 
-public class OperationMenu extends Menu {
-    final AppDao appEntity;
+public class OperationMenu<> extends Menu {
     OperationType operationType;
+
 
     public OperationMenu(String title, AppDao myEntity, OperationType operationType) {
         super(title);
-        this.appEntity = myEntity;
+        this.appDao = myEntity;
         this.operationType = operationType;
     }
 
@@ -19,13 +20,15 @@ public class OperationMenu extends Menu {
     public void performAction(List<Object> inputList) {
         switch (operationType) {
             case ADD:
-                appEntity.save(inputList);
+                appDao.save(inputList);
                 break;
             case DELETE:
                 // appEntity.delete(inputList.getFirst());
                 break;
             case VIEW:
-                appEntity.fetchAll((String) inputList.get(0));
+                if(AppDao is class of ("Student"))
+                    List<Student> entityList =  appDao.fetchAll();
+                    System.out.println();
                 break;
         }
         CentralContext.setPrevMenu();
