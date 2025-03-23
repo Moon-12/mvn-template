@@ -28,6 +28,6 @@ public class OperationMenu extends Menu {
                 appEntity.fetchAll((String) inputList.get(0));
                 break;
         }
-        CentralContext.setCurrentMenu(CentralContext.getPrevMenu());
+        CentralContext.setPrevMenu();
     }
 }

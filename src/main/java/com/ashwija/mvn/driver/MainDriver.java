@@ -1,23 +1,19 @@
 package com.ashwija.mvn.driver;
 
-import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
-import com.ashwija.mvn.common.AppConstants;
 import com.ashwija.mvn.dao.Menu;
 
 import java.util.*;
 
 public class MainDriver {
     public void execute() {
-        DatabaseConnection db = new DatabaseConnection();
         Scanner scanner = new Scanner(System.in);
-        // Will get replaced with metadata fetch logic in future
-        Menu currentMenu = AppConstants.getMainMenu();
-        CentralContext.setCurrentMenu(currentMenu);
+
         List<Object> inputList;
 
         while (true) {
-            currentMenu = CentralContext.getCurrentMenu();
+            // Will get replaced with metadata fetch logic in future
+            Menu currentMenu = CentralContext.getCurrentMenu();
             System.out.println(currentMenu);
 
             // perform in loop
@@ -29,14 +25,14 @@ public class MainDriver {
             while (labelIndex < labelIndexLimit) {
                 System.out.print(currentMenu.getInputLabelAt(labelIndex++));
                 String input = scanner.next();
+                //any point we type exit
                 if (input.equalsIgnoreCase("EXIT")) {
                     System.exit(0);
                 }
+                //any point we type main reset to main menu
                 if (input.equalsIgnoreCase("MAIN")) {
-                    CentralContext.setCurrentMenu(AppConstants.getMainMenu());
-                    CentralContext.setPrevMenuMenu(null);
+                    CentralContext.resetToMainMenu();
                 }
-
 
                 inputList.add(input);
 

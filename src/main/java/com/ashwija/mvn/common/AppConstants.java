@@ -30,6 +30,7 @@ public class AppConstants {
         Menu addStudentOprationMenu = new OperationMenu("Add a new student", studentEntity, OperationType.ADD);
         addStudentOprationMenu.setInputLabelList(addStudentLabels);
         studentMenuItems.put('a', addStudentOprationMenu);
+ 
         studentMenuItems.put('b', new OperationMenu("View student details", studentEntity, OperationType.VIEW));
         //studentMenuItems.put('c', new OperationMenu("Update student information", studentEntity));
         studentMenuItems.put('c', new OperationMenu("Delete a student", studentEntity, OperationType.DELETE));
