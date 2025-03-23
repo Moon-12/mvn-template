@@ -22,7 +22,7 @@ public class DatabaseConnection {
         String password = dbConfig.get("password");
         try {
             con = DriverManager.getConnection(url, username, password);
-            System.out.println("connection success");
+//            System.out.println("connection success");
         } catch (SQLException e) {
             System.out.println("could not connect");
             e.printStackTrace();

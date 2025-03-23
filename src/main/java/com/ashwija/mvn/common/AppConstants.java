@@ -1,6 +1,7 @@
 package com.ashwija.mvn.common;
 
 import com.ashwija.mvn.dao.*;
+import com.ashwija.mvn.model.StudentEntity;
 
 import java.util.*;
 
@@ -12,7 +13,6 @@ public class AppConstants {
             "Enter Roll No:",
             "Enter Name:"));
     private static List<String> viewStudentLabels = new ArrayList<>(Arrays.asList(
-            "Enter ID:"
     ));
 
     static {
@@ -31,16 +31,16 @@ public class AppConstants {
         Map<Character, Menu> studentMenuItems = new HashMap<>();
         AppDao studentDao = new StudentDao();
 
-        Menu addStudentOprationMenu = new OperationMenu("Add a new student", studentDao, OperationType.ADD);
+        Menu addStudentOprationMenu = new OperationMenu<StudentEntity>("Add a new student", OperationType.ADD, studentDao);
         addStudentOprationMenu.setInputLabelList(addStudentLabels);
         studentMenuItems.put('a', addStudentOprationMenu);
 
-        Menu studentViewOperationMenu = new OperationMenu("View student details", studentDao, OperationType.VIEW);
+        Menu studentViewOperationMenu = new OperationMenu<StudentEntity>("View student details", OperationType.VIEW, studentDao);
         studentViewOperationMenu.setInputLabelList(viewStudentLabels);
         studentMenuItems.put('b', studentViewOperationMenu);
 
         //studentMenuItems.put('c', new OperationMenu("Update student information", studentDao));
-        studentMenuItems.put('c', new OperationMenu("Delete a student", studentDao, OperationType.DELETE));
+        studentMenuItems.put('c', new OperationMenu<StudentEntity>("Delete a student", OperationType.DELETE, studentDao));
 
         studentMenuLabels.add("Please enter your choice (a-" + (char) ('a' + studentMenuItems.size() - 1) + "): ");
         return studentMenuItems;

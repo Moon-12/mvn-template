@@ -1,12 +1,13 @@
 package com.ashwija.mvn.dao;
 
-import com.ashwija.mvn.model.Student;
+import com.ashwija.mvn.model.StudentEntity;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDao extends AppDao<Student> {
+public class StudentDao extends AppDao<StudentEntity> {
 
     @Override
     String getInsertSql() {
@@ -19,8 +20,12 @@ public class StudentDao extends AppDao<Student> {
     }
 
     @Override
-    Student getEntityFromResultSet(ResultSet resultSet) {
-        return new Student(resultSet.getString("roll_no"), resultSet.getString("name"));
+    StudentEntity getEntityFromResultSet(ResultSet resultSet) {
+        try {
+            return new StudentEntity(resultSet.getInt("id"), resultSet.getString("roll_no"), resultSet.getString("name"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 //    @Override
@@ -35,8 +40,8 @@ public class StudentDao extends AppDao<Student> {
 //        return null;
 //    }
 
-    public List<Student> fetchAll() {
-        List<Student> studentEntities = new ArrayList<>();
+    public List<StudentEntity> fetchAll() {
+        List<StudentEntity> studentEntities = new ArrayList<>();
         studentEntities = super.fetchAll();
         return studentEntities;
     }
