@@ -6,7 +6,7 @@ import com.ashwija.mvn.model.StudentEntity;
 import java.util.*;
 
 public class AppConstants {
-    private static Menu mainMenu;
+    private static final Menu mainMenu;
 
     static {
         Map<String, Object> yamlData = Utility.yamlToMap("metadata.yaml");

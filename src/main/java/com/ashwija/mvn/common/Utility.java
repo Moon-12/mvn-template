@@ -1,6 +1,5 @@
 package com.ashwija.mvn.common;
 
-import com.ashwija.mvn.MavenTemplateMain;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
