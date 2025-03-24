@@ -34,9 +34,9 @@ public abstract class AppDao<T> {
         }
     }
 
-//    public T fetch(String entityId) {
-//        return null;
-//    }
+    public T fetch(String entityId) {
+        return null;
+    }
 
 //    public void delete(String entityId) {
 //

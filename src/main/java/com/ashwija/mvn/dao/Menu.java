@@ -11,7 +11,6 @@ public abstract class Menu {
     private String subTitle;
     private Map<Character, Menu> subMenu;
     private List<String> inputLabelList;
-    private List<Object> inputList;
 
     public Menu(String title, int padding, Map<Character, Menu> subMenu, List<String> inputLabel) {
         this.title = title;
