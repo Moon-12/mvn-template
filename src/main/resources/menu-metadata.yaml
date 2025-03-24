@@ -29,7 +29,25 @@ mainMenu:
       '2':
         title: "Teacher Operations"
         padding: 0
-        inputLabels: [ ]
+        subMenu:
+          'a':
+            dao: "teacherDao"
+            title: "Add a new teacher"
+            operationType: "ADD"
+            inputLabels:
+              - "Enter Name:"
+          'b':
+            dao: "teacherDao"
+            title: "View teacher details"
+            operationType: "VIEW_ALL"
+            inputLabels: [ ]
+          'c':
+            dao: "teacherDao"
+            title: "Delete a teacher"
+            operationType: "DELETE"
+            inputLabels: [ ]
+        inputLabels:
+          - "Please enter your choice (a-c):"
       '3':
         title: "Course Operations"
         padding: 0
