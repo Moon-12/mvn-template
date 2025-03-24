@@ -1,0 +1,44 @@
+mainMenu:
+  'm':
+    title: "Welcome to the School Management System!"
+    padding: 0
+    subMenu:
+      '1':
+        title: "Student Operations"
+        padding: 1
+        subMenu:
+          'a':
+            dao: "studentDao"
+            title: "Add a new student"
+            operationType: "ADD"
+            inputLabels:
+              - "Enter Roll No:"
+              - "Enter Name:"
+          'b':
+            dao: "studentDao"
+            title: "View student details"
+            operationType: "VIEW_ALL"
+            inputLabels: [ ]
+          'c':
+            dao: "studentDao"
+            title: "Delete a student"
+            operationType: "DELETE"
+            inputLabels: [ ]
+        inputLabels:
+          - "Please enter your choice (a-c):"
+      '2':
+        title: "Teacher Operations"
+        padding: 0
+        inputLabels: [ ]
+      '3':
+        title: "Course Operations"
+        padding: 0
+        inputLabels: [ ]
+      '4':
+        title: "Course Assignment (One Teacher, Many Students) & Marks"
+        padding: 0
+        inputLabels: [ ]
+    inputLabels:
+      - "Please enter your choice (1-4):"
+spec:
+# resource-specific configuration

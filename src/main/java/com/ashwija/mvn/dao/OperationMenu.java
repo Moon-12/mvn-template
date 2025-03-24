@@ -32,15 +32,15 @@ public class OperationMenu<T extends AppEntity> extends Menu {
             case DELETE:
                 // appEntity.delete(inputList.getFirst());
                 break;
-            case VIEWALL:
+            case VIEW_ALL:
                 List<T> entityList = appDao.fetchAll();
                 //print selected entity header row
-                if (entityList.size() > 0) {
+                if (!entityList.isEmpty()) {
                     System.out.println(entityList.get(0).getHeader());
                 } else {
                     System.out.println("(0) rows found.");
                 }
-                entityList.stream().forEach(System.out::println);
+                entityList.forEach(System.out::println);
                 break;
         }
         CentralContext.setPrevMenu();
