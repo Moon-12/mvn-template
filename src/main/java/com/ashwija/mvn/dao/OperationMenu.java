@@ -42,6 +42,14 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 }
                 entityList.forEach(System.out::println);
                 break;
+            case VIEW:
+                T entity = (T) appDao.fetch(inputList.get(0).toString());
+                if (entity != null) {
+                    System.out.println(entity.getHeader());
+                    System.out.println(entity);
+                } else {
+                    System.out.println("Not found");
+                }
         }
         CentralContext.setPrevMenu();
     }

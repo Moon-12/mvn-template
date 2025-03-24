@@ -4,8 +4,6 @@ import com.ashwija.mvn.model.StudentEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StudentDao extends AppDao<StudentEntity> {
 
@@ -20,6 +18,11 @@ public class StudentDao extends AppDao<StudentEntity> {
     }
 
     @Override
+    String getFetchSql() {
+        return "select id,roll_no, name from student where id=? and active=1";
+    }
+
+    @Override
     String getFetchAllSql() {
         return "SELECT * FROM student where active=1";
     }
@@ -31,24 +34,6 @@ public class StudentDao extends AppDao<StudentEntity> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-//    @Override
-//    public void delete(AppDao myEntity) {
-//
-//    }
-//
-//    @Override
-//    public AppDao fetch(String id) {
-//
-//        fetchAll();
-//        return null;
-//    }
-
-    public List<StudentEntity> fetchAll() {
-        List<StudentEntity> studentEntities = new ArrayList<>();
-        studentEntities = super.fetchAll();
-        return studentEntities;
     }
 
 }

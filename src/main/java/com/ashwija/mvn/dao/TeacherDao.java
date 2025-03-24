@@ -25,6 +25,11 @@ public class TeacherDao extends AppDao<TeacherEntity> {
     }
 
     @Override
+    String getFetchSql() {
+        return "select id, name from teacher where id=? and active=1";
+    }
+
+    @Override
     TeacherEntity getEntityFromResultSet(ResultSet resultSet) {
         try {
             return new TeacherEntity(resultSet.getInt("id"), resultSet.getString("name"));

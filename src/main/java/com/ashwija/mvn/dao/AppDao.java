@@ -36,8 +36,25 @@ public abstract class AppDao<T> {
 
     abstract String getDeleteSql();
 
+    abstract String getFetchSql();
+
     public T fetch(String entityId) {
-        return null;
+        T entity = null;
+        try {
+            Connection con = DatabaseConnection.con;
+            PreparedStatement pstmt = con.prepareStatement(this.getFetchSql());
+            pstmt.setString(1, entityId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {  // Use rs.next() to move cursor and check for results
+                    entity = getEntityFromResultSet(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching entity with ID " + entityId + ": " + e.getMessage());
+            e.printStackTrace();
+
+        }
+        return entity;
     }
 
     public void delete(String entityId) {

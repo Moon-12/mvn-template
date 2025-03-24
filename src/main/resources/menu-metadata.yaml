@@ -21,12 +21,18 @@ mainMenu:
             inputLabels: [ ]
           'c':
             dao: "studentDao"
+            title: "View a specific student"
+            operationType: "VIEW"
+            inputLabels:
+              - "Enter ID:"
+          'd':
+            dao: "studentDao"
             title: "Delete a student"
             operationType: "DELETE"
             inputLabels:
               - "Enter ID:"
         inputLabels:
-          - "Please enter your choice (a-c):"
+          - "Please enter your choice (a-d):"
       '2':
         title: "Teacher Operations"
         padding: 0
@@ -44,12 +50,18 @@ mainMenu:
             inputLabels: [ ]
           'c':
             dao: "teacherDao"
+            title: "View a specific teacher"
+            operationType: "VIEW"
+            inputLabels:
+              - "Enter ID:"
+          'd':
+            dao: "teacherDao"
             title: "Delete a teacher"
             operationType: "DELETE"
             inputLabels:
               - "Enter ID:"
         inputLabels:
-          - "Please enter your choice (a-c):"
+          - "Please enter your choice (a-d):"
       '3':
         title: "Course Operations"
         padding: 0
