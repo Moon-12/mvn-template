@@ -15,6 +15,11 @@ public class StudentDao extends AppDao<StudentEntity> {
     }
 
     @Override
+    String getDeleteSql() {
+        return "UPDATE student SET active=0 where id=? and active=1";
+    }
+
+    @Override
     String getFetchAllSql() {
         return "SELECT * FROM student where active=1";
     }

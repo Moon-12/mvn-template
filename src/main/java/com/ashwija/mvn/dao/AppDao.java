@@ -26,21 +26,37 @@ public abstract class AppDao<T> {
             if (rowsAffected > 0) {
                 System.out.println(" Inserted successfully !");
             } else {
-                System.out.println("Failed to insert student.");
+                System.out.println("Failed to insert.");
             }
         } catch (SQLException e) {
-            System.err.println("Error inserting student: " + e.getMessage());
+            System.err.println("Error inserting data: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+    abstract String getDeleteSql();
 
     public T fetch(String entityId) {
         return null;
     }
 
-//    public void delete(String entityId) {
-//
-//    }
+    public void delete(String entityId) {
+        try {
+            Connection con = DatabaseConnection.con;
+            PreparedStatement pstmt = con.prepareStatement(this.getDeleteSql());
+            pstmt.setString(1, entityId);
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println(" Deleted successfully !");
+            } else {
+                System.out.println("Failed to delete");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error deleting: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     public List<T> fetchAll() {
         List<T> list = new ArrayList<>();

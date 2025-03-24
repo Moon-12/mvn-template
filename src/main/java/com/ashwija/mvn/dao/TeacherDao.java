@@ -15,6 +15,11 @@ public class TeacherDao extends AppDao<TeacherEntity> {
     }
 
     @Override
+    String getDeleteSql() {
+        return "UPDATE teacher SET active=0 where id=? and active=1";
+    }
+
+    @Override
     String getFetchAllSql() {
         return "select * from teacher where active=1";
     }

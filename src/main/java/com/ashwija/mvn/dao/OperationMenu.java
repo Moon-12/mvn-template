@@ -30,7 +30,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 appDao.save(inputList);
                 break;
             case DELETE:
-                // appEntity.delete(inputList.getFirst());
+                appDao.delete(inputList.get(0).toString());
                 break;
             case VIEW_ALL:
                 List<T> entityList = appDao.fetchAll();

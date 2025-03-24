@@ -23,7 +23,8 @@ mainMenu:
             dao: "studentDao"
             title: "Delete a student"
             operationType: "DELETE"
-            inputLabels: [ ]
+            inputLabels:
+              - "Enter ID:"
         inputLabels:
           - "Please enter your choice (a-c):"
       '2':
@@ -45,7 +46,8 @@ mainMenu:
             dao: "teacherDao"
             title: "Delete a teacher"
             operationType: "DELETE"
-            inputLabels: [ ]
+            inputLabels:
+              - "Enter ID:"
         inputLabels:
           - "Please enter your choice (a-c):"
       '3':
