@@ -1,5 +1,6 @@
 package com.ashwija.mvn.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseEntity extends AppEntity {
@@ -7,6 +8,20 @@ public class CourseEntity extends AppEntity {
     private String name;
     private int teach_id;
     private List<StudentCourse> studentCourse;
+    private static List<String> headers = new ArrayList<>();
+
+    static {
+        List.of("ID", "Name").forEach(headers::add);
+    }
+
+    public CourseEntity(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public static void setHeaders(List<String> headers) {
+        CourseEntity.headers = headers;
+    }
 
     public int getId() {
         return id;
@@ -33,7 +48,12 @@ public class CourseEntity extends AppEntity {
     }
 
     @Override
+    public String toString() {
+        return String.format("%-12d| %-12s", this.id, this.name);
+    }
+
+    @Override
     public String getHeader() {
-        return "";
+        return formatHeader(headers);
     }
 }

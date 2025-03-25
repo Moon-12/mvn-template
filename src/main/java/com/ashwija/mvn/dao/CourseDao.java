@@ -3,6 +3,7 @@ package com.ashwija.mvn.dao;
 import com.ashwija.mvn.model.CourseEntity;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class CourseDao extends AppDao<CourseEntity> {
     @Override
@@ -27,7 +28,11 @@ public class CourseDao extends AppDao<CourseEntity> {
 
     @Override
     CourseEntity getEntityFromResultSet(ResultSet resultSet) {
-        return null;
+        try {
+            return new CourseEntity(resultSet.getInt("id"), resultSet.getString("name"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void assignTeacher() {
