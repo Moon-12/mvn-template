@@ -85,13 +85,21 @@ mainMenu:
               - "Enter Course ID:"
           'd':
             dao: "CourseDao"
-            title: "Assign a Teacher"
+            title: "Assign a teacher"
             operationType: "ASSIGN_TEACHER"
             inputLabels:
               - "Enter Teacher ID"
               - "Enter Course ID:"
+          'e':
+            dao: "StudentCourseDao"
+            title: "Assign a student"
+            operationType: "ASSIGN_STUDENT"
+            inputLabels:
+              - "Enter Student ID:"
+              - "Enter Course ID"
+              - "Enter mark"
         inputLabels:
-          - "Please enter your choice (a-c):"
+          - "Please enter your choice (a-e):"
       '4':
         title: "Course Assignment (One Teacher, Many Students) & Marks"
         padding: 0

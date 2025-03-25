@@ -45,6 +45,8 @@ public class MenuDao {
                 return new TeacherDao();
             case "CourseDao":
                 return new CourseDao();
+            case "StudentCourseDao":
+                return new StudentCourseDao();
             default:
                 return null;
         }

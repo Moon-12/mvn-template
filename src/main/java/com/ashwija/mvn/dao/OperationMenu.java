@@ -55,6 +55,8 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 CourseDao courseDao = (CourseDao) appDao;
                 courseDao.assignTeacher(inputList);
                 break;
+            case ASSIGN_STUDENT:
+                appDao.save(inputList);
         }
         CentralContext.setPrevMenu();
     }
