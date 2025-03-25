@@ -51,6 +51,10 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                     System.out.println("Not found");
                 }
                 break;
+            case ASSIGN_TEACHER:
+                CourseDao courseDao = (CourseDao) appDao;
+                courseDao.assignTeacher(inputList);
+                break;
         }
         CentralContext.setPrevMenu();
     }

@@ -83,6 +83,13 @@ mainMenu:
             operationType: "DELETE"
             inputLabels:
               - "Enter Course ID:"
+          'd':
+            dao: "CourseDao"
+            title: "Assign a Teacher"
+            operationType: "ASSIGN_TEACHER"
+            inputLabels:
+              - "Enter Teacher ID"
+              - "Enter Course ID:"
         inputLabels:
           - "Please enter your choice (a-c):"
       '4':
