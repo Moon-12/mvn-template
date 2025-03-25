@@ -50,6 +50,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 } else {
                     System.out.println("Not found");
                 }
+                break;
         }
         CentralContext.setPrevMenu();
     }

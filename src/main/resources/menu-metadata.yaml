@@ -65,7 +65,26 @@ mainMenu:
       '3':
         title: "Course Operations"
         padding: 0
-        inputLabels: [ ]
+        subMenu:
+          'a':
+            dao: "CourseDao"
+            title: "Add a new course"
+            operationType: "ADD"
+            inputLabels:
+              - "Enter Course Name:"
+          'b':
+            dao: "CourseDao"
+            title: "View course details"
+            operationType: "VIEW_ALL"
+            inputLabels: [ ]
+          'c':
+            dao: "CourseDao"
+            title: "Delete a course"
+            operationType: "DELETE"
+            inputLabels:
+              - "Enter Course ID:"
+        inputLabels:
+          - "Please enter your choice (a-c):"
       '4':
         title: "Course Assignment (One Teacher, Many Students) & Marks"
         padding: 0
