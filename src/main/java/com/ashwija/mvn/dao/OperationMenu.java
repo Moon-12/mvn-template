@@ -49,7 +49,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 if (entity instanceof CourseEntity) {
                     CourseEntity courseEntity = (CourseEntity) entity;
                     System.out.println(courseEntity.detailedToString());
-                    return;
+                    break;
                 }
                 if (entity != null) {
                     System.out.println(entity.getHeader());
