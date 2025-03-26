@@ -98,8 +98,14 @@ mainMenu:
               - "Enter Student ID:"
               - "Enter Course ID"
               - "Enter mark"
+          'f':
+            dao: "CourseDao"
+            title: "View a specific course"
+            operationType: "VIEW"
+            inputLabels:
+              - "Enter Course ID"
         inputLabels:
-          - "Please enter your choice (a-e):"
+          - "Please enter your choice (a-f):"
       '4':
         title: "Course Assignment (One Teacher, Many Students) & Marks"
         padding: 0

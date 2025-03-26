@@ -36,14 +36,18 @@ public abstract class AppDao<T> {
 
     abstract String getDeleteSql();
 
+    public Boolean checkEntityActive(int entityId) {
+        return this.fetch(entityId) != null ? true : false;
+    }
+
     abstract String getFetchSql();
 
-    public T fetch(String entityId) {
+    public T fetch(int entityId) {
         T entity = null;
         try {
             Connection con = DatabaseConnection.con;
             PreparedStatement pstmt = con.prepareStatement(this.getFetchSql());
-            pstmt.setString(1, entityId);
+            pstmt.setInt(1, entityId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {  // Use rs.next() to move cursor and check for results
                     entity = getEntityFromResultSet(rs);
@@ -57,11 +61,11 @@ public abstract class AppDao<T> {
         return entity;
     }
 
-    public void delete(String entityId) {
+    public void delete(int entityId) {
         try {
             Connection con = DatabaseConnection.con;
             PreparedStatement pstmt = con.prepareStatement(this.getDeleteSql());
-            pstmt.setString(1, entityId);
+            pstmt.setInt(1, entityId);
             int rowsAffected = pstmt.executeUpdate();
 
             if (rowsAffected > 0) {

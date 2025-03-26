@@ -1,10 +1,21 @@
 package com.ashwija.mvn.model;
 
+import java.util.List;
+
 public class StudentCourse {
     private int id;
     private int std_id;
     private int course_id;
     private float marks;
+    private StudentEntity student;
+
+    public StudentEntity getStudent() {
+        return student;
+    }
+
+    public void setStudent(StudentEntity student) {
+        this.student = student;
+    }
 
     public StudentCourse(int stdId, int courseId, float marks) {
         this.std_id = stdId;

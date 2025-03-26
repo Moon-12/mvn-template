@@ -3,6 +3,7 @@ package com.ashwija.mvn.dao;
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.model.AppEntity;
+import com.ashwija.mvn.model.CourseEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 appDao.save(inputList);
                 break;
             case DELETE:
-                appDao.delete(inputList.get(0).toString());
+                appDao.delete(Integer.parseInt(inputList.get(0).toString()));
                 break;
             case VIEW_ALL:
                 List<T> entityList = appDao.fetchAll();
@@ -43,7 +44,13 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 entityList.forEach(System.out::println);
                 break;
             case VIEW:
-                T entity = (T) appDao.fetch(inputList.get(0).toString());
+                T entity = (T) appDao.fetch(Integer.parseInt((String) inputList.get(0)));
+                //specific case to print detailed course data
+                if (entity instanceof CourseEntity) {
+                    CourseEntity courseEntity = (CourseEntity) entity;
+                    System.out.println(courseEntity.detailedToString());
+                    return;
+                }
                 if (entity != null) {
                     System.out.println(entity.getHeader());
                     System.out.println(entity);
@@ -57,6 +64,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 break;
             case ASSIGN_STUDENT:
                 appDao.save(inputList);
+                break;
         }
         CentralContext.setPrevMenu();
     }
