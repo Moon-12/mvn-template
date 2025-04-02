@@ -1,6 +1,7 @@
-### This is what a simple flow would look like 
+### This is what a simple flow would look like
 
 ## First few screens
+
 ```
 ********************************************************************************
 *                                                                              *
@@ -13,7 +14,7 @@ Main Menu:
 2. Teacher Operations
 3. Course Operations
 4. Course Assignment (One Teacher, Many Students) & Marks
-5. Exit
+type exit to Quit Application
 
 Please enter your choice (1-5): 
 
@@ -75,6 +76,7 @@ Thank you for using the School Management System. Goodbye!
 ```
 
 ## All Student screen
+
 ```
 ********************************************************************************
 *                                                                              *
@@ -111,6 +113,7 @@ Enter Name: John Doe
 Student successfully added!
 Press Enter to continue...
 ```
+
 ## Teacher Screens
 
 ```
@@ -272,6 +275,7 @@ Press Enter to continue...
 ```
 
 ## Course List
+
 ```
 ********************************************************************************
 *                                                                              *
@@ -337,3 +341,6 @@ Total Students Enrolled: 1
 Total Courses: 3
 Press Enter to continue...
 ```
+
+Another class AppEntity as a parent class for all entities containing all common columns of each tables
+like id, WHO columns

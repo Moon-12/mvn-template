@@ -1,0 +1,29 @@
+mainMenu:
+  title: "Welcome to the School Management System!"
+  items:
+    - key: '1'
+      label: "Student Operations"
+    - key: '2'
+      label: "Teacher Operations"
+    - key: '3'
+      label: "Course Operations"
+    - key: '4'
+      label: "Course Assignment (One Teacher, Many Students) & Marks"
+  prompt: "Please enter your choice (1-{size}):"
+
+studentMenu:
+  prompt: "Please enter your choice (a-{size}):"
+  items:
+    - key: 'a'
+      label: "Add a new student"
+      operation: "ADD"
+      inputs:
+        - "Enter Roll No:"
+        - "Enter Name:"
+    - key: 'b'
+      label: "View student details"
+      operation: "VIEWALL"
+      inputs: [ ]
+    - key: 'c'
+      label: "Delete a student"
+      operation: "DELETE"
