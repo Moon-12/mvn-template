@@ -15,13 +15,11 @@ public class DatabaseConnection {
     }
 
     private static void connectDb() {
-        Map<String, Object> config = Utility.yamlToMap("secrets.yaml");
-        Map<String, String> dbConfig = (Map<String, String>) config.get("db");
-        String url = dbConfig.get("url");
-        String username = dbConfig.get("username");
-        String password = dbConfig.get("password");
+        String envUrl = System.getenv("MYSQL_URL");
+        String envUsername = System.getenv("MYSQL_USERNAME");
+        String envPassword = System.getenv("MYSQL_PASSWORD");
         try {
-            con = DriverManager.getConnection(url, username, password);
+            con = DriverManager.getConnection(envUrl, envUsername, envPassword);
 //            System.out.println("connection success");
         } catch (SQLException e) {
             System.out.println("could not connect");
