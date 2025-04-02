@@ -1,116 +1,69 @@
 mainMenu:
   'm':
-    title: "Welcome to the School Management System!"
+    title: "Welcome to the <App_Name>!"
     padding: 0
     subMenu:
       '1':
-        title: "Student Operations"
+        title: "<SubMenu 1> Operations"
         padding: 1
         subMenu:
           'a':
-            dao: "studentDao"
-            title: "Add a new student"
+            dao: "SampleEntityDao"
+            title: "<ADD title>"
             operationType: "ADD"
             inputLabels:
-              - "Enter Roll No:"
-              - "Enter Name:"
+              - "<input label 1--> enter name>: "
+              - "<input label 1--> enter age>: "
           'b':
-            dao: "studentDao"
-            title: "View student details"
+            dao: "SampleEntityDao"
+            title: "<VIEW_ALL title>"
             operationType: "VIEW_ALL"
             inputLabels: [ ]
           'c':
-            dao: "studentDao"
-            title: "View a specific student"
-            operationType: "VIEW"
-            inputLabels:
-              - "Enter ID:"
-          'd':
-            dao: "studentDao"
-            title: "Delete a student"
+            dao: "SampleEntityDao"
+            title: "<DELETE title>"
             operationType: "DELETE"
             inputLabels:
-              - "Enter ID:"
+              - "<input label 1 --> enter id>:"
+          'd':
+            dao: "SampleEntityDao"
+            title: "<VIEW title>"
+            operationType: "VIEW"
+            inputLabels:
+              - "<input label 1 --> enter id>:"
         inputLabels:
-          - "Please enter your choice (a-d):"
+          - "Please enter your choice (a-d): "
       '2':
-        title: "Teacher Operations"
+        title: "<SubMenu 2> Operations"
         padding: 0
         subMenu:
           'a':
-            dao: "teacherDao"
-            title: "Add a new teacher"
+            dao: "SampleEntityDao"
+            title: "<ADD title>"
             operationType: "ADD"
             inputLabels:
-              - "Enter Name:"
+              - "<input label 1--> enter id>: "
+              - "<input label 1--> enter name>: "
           'b':
-            dao: "teacherDao"
-            title: "View teacher details"
+            dao: "SampleEntityDao"
+            title: "<VIEW_ALL title>"
             operationType: "VIEW_ALL"
             inputLabels: [ ]
           'c':
-            dao: "teacherDao"
-            title: "View a specific teacher"
-            operationType: "VIEW"
-            inputLabels:
-              - "Enter ID:"
-          'd':
-            dao: "teacherDao"
-            title: "Delete a teacher"
+            dao: "SampleEntityDao"
+            title: "<DELETE title>"
             operationType: "DELETE"
             inputLabels:
-              - "Enter ID:"
+              - "<input label 1 --> enter id>:"
+          'd':
+            dao: "SampleEntityDao"
+            title: "<VIEW title>"
+            operationType: "VIEW"
+            inputLabels:
+              - "<input label 1 --> enter id>:"
         inputLabels:
           - "Please enter your choice (a-d):"
-      '3':
-        title: "Course Operations"
-        padding: 0
-        subMenu:
-          'a':
-            dao: "CourseDao"
-            title: "Add a new course"
-            operationType: "ADD"
-            inputLabels:
-              - "Enter Course Name:"
-          'b':
-            dao: "CourseDao"
-            title: "View course details"
-            operationType: "VIEW_ALL"
-            inputLabels: [ ]
-          'c':
-            dao: "CourseDao"
-            title: "Delete a course"
-            operationType: "DELETE"
-            inputLabels:
-              - "Enter Course ID:"
-          'd':
-            dao: "CourseDao"
-            title: "Assign a teacher"
-            operationType: "ASSIGN_TEACHER"
-            inputLabels:
-              - "Enter Teacher ID"
-              - "Enter Course ID:"
-          'e':
-            dao: "StudentCourseDao"
-            title: "Assign a student"
-            operationType: "ASSIGN_STUDENT"
-            inputLabels:
-              - "Enter Student ID:"
-              - "Enter Course ID"
-              - "Enter mark"
-          'f':
-            dao: "CourseDao"
-            title: "View a specific course"
-            operationType: "VIEW"
-            inputLabels:
-              - "Enter Course ID"
-        inputLabels:
-          - "Please enter your choice (a-f):"
-      '4':
-        title: "Course Assignment (One Teacher, Many Students) & Marks"
-        padding: 0
-        inputLabels: [ ]
     inputLabels:
-      - "Please enter your choice (1-4):"
+      - "Please enter your choice (1-2): "
 spec:
 # resource-specific configuration
