@@ -1,11 +1,10 @@
 package com.ashwija.mvn;
 
-import com.ashwija.mvn.common.Utility;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Map;
+
 
 public class DatabaseConnection {
     public static Connection con;
