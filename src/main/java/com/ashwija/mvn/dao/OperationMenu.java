@@ -3,7 +3,7 @@ package com.ashwija.mvn.dao;
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.model.AppEntity;
-import com.ashwija.mvn.model.CourseEntity;
+
 
 import java.util.List;
 import java.util.Map;
@@ -45,25 +45,12 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 break;
             case VIEW:
                 T entity = (T) appDao.fetch(Integer.parseInt((String) inputList.get(0)));
-                //specific case to print detailed course data
-                if (entity instanceof CourseEntity) {
-                    CourseEntity courseEntity = (CourseEntity) entity;
-                    System.out.println(courseEntity.detailedToString());
-                    break;
-                }
                 if (entity != null) {
                     System.out.println(entity.getHeader());
                     System.out.println(entity);
                 } else {
                     System.out.println("Not found");
                 }
-                break;
-            case ASSIGN_TEACHER:
-                CourseDao courseDao = (CourseDao) appDao;
-                courseDao.assignTeacher(inputList);
-                break;
-            case ASSIGN_STUDENT:
-                appDao.save(inputList);
                 break;
         }
         CentralContext.setPrevMenu();
