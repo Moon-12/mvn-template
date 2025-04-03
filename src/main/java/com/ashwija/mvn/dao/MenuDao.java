@@ -41,6 +41,8 @@ public class MenuDao {
         switch (dao) {
             case "SampleEntityDao":
                 return new SampleEntityDao();
+            case "UserProfileDao":
+                return new UserProfileDao();
             default:
                 return null;
         }

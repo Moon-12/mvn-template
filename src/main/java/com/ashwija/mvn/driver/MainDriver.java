@@ -3,11 +3,12 @@ package com.ashwija.mvn.driver;
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.dao.Menu;
 
+import java.io.InputStream;
 import java.util.*;
 
 public class MainDriver {
-    public void execute() {
-        Scanner scanner = new Scanner(System.in);
+    public void execute(InputStream inputStream) {
+        Scanner scanner = new Scanner(inputStream);
 
         List<Object> inputList;
 
@@ -22,12 +23,14 @@ public class MainDriver {
 
             inputList = new ArrayList<>();
 
+            boolean comeOut = false;
             while (labelIndex < labelIndexLimit) {
                 System.out.print(currentMenu.getInputLabelAt(labelIndex++));
                 String input = scanner.next();
                 //any point we type exit
                 if (input.equalsIgnoreCase("EXIT")) {
-                    System.exit(0);
+                    comeOut = true;
+                    break;
                 }
                 //any point we type main reset to main menu
                 if (input.equalsIgnoreCase("MAIN")) {
@@ -38,6 +41,9 @@ public class MainDriver {
 
             }
 
+            if (comeOut) {
+                break;
+            }
             currentMenu.performAction(inputList);
 
             // call underlying operations

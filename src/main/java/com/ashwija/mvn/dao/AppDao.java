@@ -8,30 +8,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AppDao<T> {
-
     abstract String getInsertSql();
 
+    abstract String getSaveSuccessMessage();
 
-    public void save(List<Object> attributes) {
-        try {
-            Connection con = DatabaseConnection.con;
-            PreparedStatement pstmt = con.prepareStatement(this.getInsertSql());
-            for (int i = 0; i < attributes.size(); i++) {
-                pstmt.setString(i + 1, attributes.get(i).toString());
-            }
-            int rowsAffected = pstmt.executeUpdate();
+    String getSaveFailureMessage() {
+        return "Failed to insert";
+    }
 
-            if (rowsAffected > 0) {
-                System.out.println(" Inserted successfully !");
-            } else {
-                System.out.println("Failed to insert.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error inserting data: " + e.getMessage());
-            e.printStackTrace();
+    public boolean validateInput(List<Object> inputList) {
+        return true;
+    }
+
+    abstract String getValidationFailureMessage();
+
+    //return no. of affected rows post insert
+    public int save(List<Object> attributes) throws SQLException {
+        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getInsertSql());
+        for (int i = 0; i < attributes.size(); i++) {
+            pstmt.setString(i + 1, attributes.get(i).toString());
         }
+        int rowsAffected = pstmt.executeUpdate();
+        return rowsAffected;
     }
 
     abstract String getDeleteSql();
@@ -42,15 +43,20 @@ public abstract class AppDao<T> {
 
     abstract String getFetchSql();
 
-    public T fetch(int entityId) {
-        T entity = null;
+    public Optional<T> fetch(Object entityId) {
+        Optional<T> entity = null;
         try {
-            Connection con = DatabaseConnection.con;
-            PreparedStatement pstmt = con.prepareStatement(this.getFetchSql());
-            pstmt.setInt(1, entityId);
+            PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getFetchSql());
+
+            if (entityId instanceof String) {
+                pstmt.setString(1, (String) entityId);
+            } else {
+                pstmt.setInt(1, (Integer) entityId);
+            }
+
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {  // Use rs.next() to move cursor and check for results
-                    entity = getEntityFromResultSet(rs);
+                    entity = (Optional<T>) getEntityFromResultSet(rs);
                 }
             }
         } catch (SQLException e) {
@@ -61,30 +67,23 @@ public abstract class AppDao<T> {
         return entity;
     }
 
-    public void delete(int entityId) {
-        try {
-            Connection con = DatabaseConnection.con;
-            PreparedStatement pstmt = con.prepareStatement(this.getDeleteSql());
-            pstmt.setInt(1, entityId);
-            int rowsAffected = pstmt.executeUpdate();
+    //return no. of affected rows post delete
+    public int delete(int entityId) throws SQLException {
+        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getDeleteSql());
+        pstmt.setInt(1, entityId);
+        int rowsAffected = pstmt.executeUpdate();
+        return rowsAffected;
+    }
 
-            if (rowsAffected > 0) {
-                System.out.println(" Deleted successfully !");
-            } else {
-                System.out.println("Failed to delete");
-            }
-        } catch (SQLException e) {
-            System.err.println("Error deleting: " + e.getMessage());
-            e.printStackTrace();
-        }
+    String getDeleteFailureMessage() {
+        return "Failed to delete";
     }
 
     public List<T> fetchAll() {
         List<T> list = new ArrayList<>();
         ResultSet resultSet;
         try {
-            Connection con = DatabaseConnection.con;
-            PreparedStatement pstmt = con.prepareStatement(this.getFetchAllSql());
+            PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getFetchAllSql());
 
             resultSet = pstmt.executeQuery();
             while (resultSet.next()) {
@@ -101,4 +100,8 @@ public abstract class AppDao<T> {
     abstract String getFetchAllSql();
 
     abstract T getEntityFromResultSet(ResultSet resultSet);
+
+    public String getDeleteSuccessMessage() {
+        return "Delete successfully!";
+    }
 }

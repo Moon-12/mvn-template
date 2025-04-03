@@ -3,10 +3,13 @@ package com.ashwija.mvn.dao;
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.model.AppEntity;
+import com.ashwija.mvn.model.UserProfile;
 
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class OperationMenu<T extends AppEntity> extends Menu {
     private OperationType operationType;
@@ -28,10 +31,30 @@ public class OperationMenu<T extends AppEntity> extends Menu {
     public void performAction(List<Object> inputList) {
         switch (operationType) {
             case ADD:
-                appDao.save(inputList);
+                if (this.appDao.validateInput(inputList)) {
+                    try {
+                        int rowsAffected = this.appDao.save(inputList);
+                        System.out.println((rowsAffected > 0) ?
+                                this.appDao.getSaveSuccessMessage()
+                                : this.appDao.getSaveFailureMessage()
+                        );
+                    } catch (SQLException e) {
+                        System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
+                    }
+                } else {
+                    System.out.println(this.appDao.getValidationFailureMessage());
+                }
                 break;
             case DELETE:
-                appDao.delete(Integer.parseInt(inputList.get(0).toString()));
+                try {
+                    int rowsAffected = appDao.delete(Integer.parseInt(inputList.get(0).toString()));
+                    System.out.println((rowsAffected > 0) ?
+                            this.appDao.getDeleteSuccessMessage()
+                            : this.appDao.getDeleteFailureMessage()
+                    );
+                } catch (SQLException e) {
+                    System.out.println(this.appDao.getDeleteFailureMessage() + " due to " + e.getMessage());
+                }
                 break;
             case VIEW_ALL:
                 List<T> entityList = appDao.fetchAll();
@@ -44,14 +67,18 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 entityList.forEach(System.out::println);
                 break;
             case VIEW:
-                T entity = (T) appDao.fetch(Integer.parseInt((String) inputList.get(0)));
-                if (entity != null) {
-                    System.out.println(entity.getHeader());
-                    System.out.println(entity);
+                Optional<T> entity = appDao.fetch(Integer.parseInt((String) inputList.get(0)));
+                if (entity.isPresent()) {
+                    T entityObj = entity.get();
+                    System.out.println(entityObj.getHeader());
+                    System.out.println(entityObj);
                 } else {
                     System.out.println("Not found");
                 }
                 break;
+            case LOGIN:
+                UserProfileDao userProfileDao = (UserProfileDao) appDao;
+                userProfileDao.login(inputList);
         }
         CentralContext.setPrevMenu();
     }

@@ -14,6 +14,16 @@ public class SampleEntityDao extends AppDao<SampleEntity> {
     }
 
     @Override
+    String getSaveSuccessMessage() {
+        return "";
+    }
+
+    @Override
+    String getValidationFailureMessage() {
+        return "";
+    }
+
+    @Override
     String getDeleteSql() {
         return "UPDATE scrubbed_template_test SET active=0 where id=? and active=1";
     }
