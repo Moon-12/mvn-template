@@ -1,9 +1,10 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.central.CentralContext;
+import com.ashwija.mvn.common.AppConstants;
+import com.ashwija.mvn.common.LoginStatus;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.model.AppEntity;
-import com.ashwija.mvn.model.UserProfile;
 
 
 import java.sql.SQLException;
@@ -29,6 +30,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
 
     @Override
     public void performAction(List<Object> inputList) {
+        boolean isNextMenuSet = false;
         switch (operationType) {
             case ADD:
                 if (this.appDao.validateInput(inputList)) {
@@ -78,8 +80,20 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 break;
             case LOGIN:
                 UserProfileDao userProfileDao = (UserProfileDao) appDao;
-                userProfileDao.login(inputList);
+                try {
+                    int checksumTotal = userProfileDao.login(inputList);
+                    System.out.println(LoginStatus.fromCode(checksumTotal).getMessage());
+                    if (checksumTotal == LoginStatus.SUCCESS.getCode()) {
+                        CentralContext.setNextMenu(AppConstants.getSecureMenu());
+                        isNextMenuSet = true;
+                    }
+                } catch (SQLException e) {
+                    System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
+                }
         }
-        CentralContext.setPrevMenu();
+        // Set prevMenu only if nextMenu wasn’t set
+        if (!isNextMenuSet) {
+            CentralContext.setPrevMenu();
+        }
     }
 }

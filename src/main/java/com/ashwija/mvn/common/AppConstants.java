@@ -6,6 +6,7 @@ import java.util.*;
 
 public class AppConstants {
     private static Menu mainMenu;
+    private static Menu secureMenu;
 
     static {
         // Parse YAML into a Map
@@ -13,9 +14,18 @@ public class AppConstants {
         Map<Character, Object> mainMenuData = (Map<Character, Object>) yamlData.get("mainMenu");
 
         mainMenu = MenuDao.buildMenuFromYaml((Map<String, Object>) mainMenuData.get("m"));
+
+        //load secure menu
+        Map<String, Object> secureYamlData = Utility.yamlToMap("secure-menu-metadata.yaml");
+        Map<String, Object> secureMenuData = (Map<String, Object>) secureYamlData.get("secureMenu");
+        secureMenu = MenuDao.buildMenuFromYaml(secureMenuData);
     }
 
     public static Menu getMainMenu() {
         return mainMenu;
+    }
+
+    public static Menu getSecureMenu() {
+        return secureMenu;
     }
 }

@@ -27,6 +27,10 @@ public class CentralContext {
         }
     }
 
+    public static void setNextMenu(Menu menu) {
+        menuStack.push(menu);
+    }
+
     public static Menu getCurrentMenu() {
         if (menuStack.isEmpty()) {
             return null;

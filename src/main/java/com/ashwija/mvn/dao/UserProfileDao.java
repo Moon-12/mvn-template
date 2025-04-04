@@ -1,10 +1,8 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
-import com.ashwija.mvn.common.LoginStatus;
 import com.ashwija.mvn.model.UserProfile;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,26 +34,14 @@ public class UserProfileDao extends AppDao<UserProfile> {
 
     }
 
-    public void login(List<Object> attributes) {
-        try {
-            Connection con = DatabaseConnection.con;
-            PreparedStatement pstmt = con.prepareStatement(this.getLoginSql());
-            pstmt.setString(1, attributes.get(0).toString());
-            pstmt.setString(2, attributes.get(0).toString());
-            pstmt.setString(3, attributes.get(1).toString());
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                int checksumTotal = rs.getInt("check_sum_total");
-                System.out.println(checksumTotal);
-                System.out.println(LoginStatus.fromCode(checksumTotal).getMessage());
-
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error inserting data: " + e.getMessage());
-            e.printStackTrace();
-        }
+    public int login(List<Object> attributes) throws SQLException {
+        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getLoginSql());
+        pstmt.setString(1, attributes.get(0).toString());
+        pstmt.setString(2, attributes.get(0).toString());
+        pstmt.setString(3, attributes.get(1).toString());
+        ResultSet rs = pstmt.executeQuery();
+        rs.next();
+        return rs.getInt("check_sum_total");
     }
 
     @Override
