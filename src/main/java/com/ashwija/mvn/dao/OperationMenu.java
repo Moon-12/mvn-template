@@ -46,7 +46,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                     }
                 }
                 //if sending message or creating new post add sender_id and current timestamp to input list
-                if (appDao instanceof MessageDao || appDao instanceof PostDao) {
+                if (appDao instanceof MessageDao || appDao instanceof PostDao || appDao instanceof FriendDao) {
                     inputList.add(AppConstants.getLoggedInUserID());
                     inputList.add(DateAndTime.getCurrentTimestamp());
                 }
