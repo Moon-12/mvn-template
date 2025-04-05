@@ -26,12 +26,13 @@ public abstract class AppDao<T> {
     public int save(List<Object> attributes) throws SQLException {
         PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getInsertSql());
         for (int i = 0; i < attributes.size(); i++) {
-            if (attributes.get(i) instanceof Timestamp) {
-                pstmt.setTimestamp(i + 1, ((Timestamp) attributes.get(i)));
-            } else if (attributes.get(i) instanceof Integer) {
-                pstmt.setInt(i + 1, (Integer) attributes.get(i));
+            Object attr = attributes.get(i);
+            if (attr instanceof Timestamp timestamp) {
+                pstmt.setTimestamp(i + 1, timestamp);
+            } else if (attr instanceof Integer integer) {
+                pstmt.setInt(i + 1, integer);
             } else {
-                pstmt.setString(i + 1, attributes.get(i).toString());
+                pstmt.setString(i + 1, attr.toString());
             }
         }
         int rowsAffected = pstmt.executeUpdate();

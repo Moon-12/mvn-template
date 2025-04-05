@@ -1,10 +1,10 @@
 package com.ashwija.mvn.dao;
 
-import com.ashwija.mvn.model.Message;
+import com.ashwija.mvn.model.MessageEntity;
 
 import java.sql.ResultSet;
 
-public class MessageDao extends AppDao<Message> {
+public class MessageDao extends AppDao<MessageEntity> {
     @Override
     String getInsertSql() {
         return "insert into MESSAGE(receiver_id,content,sender_id,created_at) values(?,?,?,?)";
@@ -36,7 +36,7 @@ public class MessageDao extends AppDao<Message> {
     }
 
     @Override
-    Message getEntityFromResultSet(ResultSet resultSet) {
+    MessageEntity getEntityFromResultSet(ResultSet resultSet) {
         return null;
     }
 }

@@ -1,14 +1,14 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
-import com.ashwija.mvn.model.UserProfile;
+import com.ashwija.mvn.model.UserProfileEntity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserProfileDao extends AppDao<UserProfile> {
+public class UserProfileDao extends AppDao<UserProfileEntity> {
     private String validationFailed;
 
     @Override
@@ -50,7 +50,7 @@ public class UserProfileDao extends AppDao<UserProfile> {
     }
 
     @Override
-    UserProfile getEntityFromResultSet(ResultSet resultSet) {
+    UserProfileEntity getEntityFromResultSet(ResultSet resultSet) {
         return null;
     }
 

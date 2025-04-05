@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class OperationMenu<T extends AppEntity> extends Menu {
     private OperationType operationType;
@@ -32,10 +34,19 @@ public class OperationMenu<T extends AppEntity> extends Menu {
     @Override
     public void performAction(List<Object> inputList) {
         boolean isNextMenuSet = false;
+
         switch (operationType) {
             case ADD:
-                //if sending message add sender_id and current timestamp to input list
-                if (appDao instanceof MessageDao) {
+                if (appDao instanceof PostDao) {
+                    String hashtagRegex = "#\\w+";
+                    Pattern pattern = Pattern.compile(hashtagRegex);
+                    Matcher matcher = pattern.matcher(inputList.get(0).toString());
+                    if (matcher.find()) {
+                        inputList.add(matcher.group());
+                    }
+                }
+                //if sending message or creating new post add sender_id and current timestamp to input list
+                if (appDao instanceof MessageDao || appDao instanceof PostDao) {
                     inputList.add(AppConstants.getLoggedInUserID());
                     inputList.add(DateAndTime.getCurrentTimestamp());
                 }

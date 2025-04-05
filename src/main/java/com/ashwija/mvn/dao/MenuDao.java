@@ -39,12 +39,12 @@ public class MenuDao {
 
     public static AppDao getDaoObj(String dao) {
         switch (dao) {
-            case "SampleEntityDao":
-                return new SampleEntityDao();
             case "UserProfileDao":
                 return new UserProfileDao();
             case "MessageDao":
                 return new MessageDao();
+            case "PostDao":
+                return new PostDao();
             default:
                 return null;
         }

@@ -26,7 +26,7 @@ public class MainDriver {
             boolean comeOut = false;
             while (labelIndex < labelIndexLimit) {
                 System.out.print(currentMenu.getInputLabelAt(labelIndex++));
-                String input = scanner.next();
+                String input = scanner.nextLine();
                 //any point we type exit
                 if (input.equalsIgnoreCase("EXIT")) {
                     comeOut = true;

@@ -1,11 +1,11 @@
 package com.ashwija.mvn.model;
 
-public class Message extends AppEntity {
+public class MessageEntity extends AppEntity {
     private String senderID;
     private String receiverID;
     private String content;
 
-    public Message(String senderID, String receiverID, String content) {
+    public MessageEntity(String senderID, String receiverID, String content) {
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.content = content;

@@ -1,12 +1,12 @@
 package com.ashwija.mvn.model;
 
-public class UserProfile extends AppEntity {
+public class UserProfileEntity extends AppEntity {
     private String id;
     private String password;
     private String gender;
     private String school;
 
-    public UserProfile(String id, String password, String gender, String school) {
+    public UserProfileEntity(String id, String password, String gender, String school) {
         this.id = id;
         this.password = password;
         this.gender = gender;
