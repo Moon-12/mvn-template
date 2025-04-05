@@ -43,6 +43,8 @@ public class MenuDao {
                 return new SampleEntityDao();
             case "UserProfileDao":
                 return new UserProfileDao();
+            case "MessageDao":
+                return new MessageDao();
             default:
                 return null;
         }

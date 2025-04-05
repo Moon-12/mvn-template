@@ -2,10 +2,7 @@ package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +26,13 @@ public abstract class AppDao<T> {
     public int save(List<Object> attributes) throws SQLException {
         PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getInsertSql());
         for (int i = 0; i < attributes.size(); i++) {
-            pstmt.setString(i + 1, attributes.get(i).toString());
+            if (attributes.get(i) instanceof Timestamp) {
+                pstmt.setTimestamp(i + 1, ((Timestamp) attributes.get(i)));
+            } else if (attributes.get(i) instanceof Integer) {
+                pstmt.setInt(i + 1, (Integer) attributes.get(i));
+            } else {
+                pstmt.setString(i + 1, attributes.get(i).toString());
+            }
         }
         int rowsAffected = pstmt.executeUpdate();
         return rowsAffected;

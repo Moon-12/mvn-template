@@ -2,6 +2,7 @@ package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.AppConstants;
+import com.ashwija.mvn.common.DateAndTime;
 import com.ashwija.mvn.common.LoginStatus;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.model.AppEntity;
@@ -33,6 +34,11 @@ public class OperationMenu<T extends AppEntity> extends Menu {
         boolean isNextMenuSet = false;
         switch (operationType) {
             case ADD:
+                //if sending message add sender_id and current timestamp to input list
+                if (appDao instanceof MessageDao) {
+                    inputList.add(AppConstants.getLoggedInUserID());
+                    inputList.add(DateAndTime.getCurrentTimestamp());
+                }
                 if (this.appDao.validateInput(inputList)) {
                     try {
                         int rowsAffected = this.appDao.save(inputList);
@@ -85,6 +91,8 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                     System.out.println(LoginStatus.fromCode(checksumTotal).getMessage());
                     if (checksumTotal == LoginStatus.SUCCESS.getCode()) {
                         CentralContext.setNextMenu(AppConstants.getSecureMenu());
+                        //set logged in userID in central context
+                        AppConstants.setLoggedInUserID(inputList.get(0).toString());
                         isNextMenuSet = true;
                     }
                 } catch (SQLException e) {
