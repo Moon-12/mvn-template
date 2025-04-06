@@ -7,9 +7,24 @@ import java.util.Stack;
 
 public class CentralContext {
     private static Stack<Menu> menuStack = new Stack<>();
+    private static String loggedInUserID;
+
+    public static String getLoggedInUserID() {
+        return CentralContext.loggedInUserID;
+    }
+
+    public static void setLoggedInUserID(String loggedInUserID) {
+        CentralContext.loggedInUserID = loggedInUserID;
+    }
+
+
+    //main tain menu stack
+
+    //go back to root
+    //root can be Login Menu/Secure-Menu depending on the current value of user profile
 
     static {
-        menuStack.push(AppConstants.getMainMenu());
+        CentralContext.menuStack.push(AppConstants.getMainMenu());
     }
 
     public static void setCurrentMenu(Menu currentMenu) {
@@ -17,7 +32,7 @@ public class CentralContext {
     }
 
     public static void resetToMainMenu() {
-        menuStack.clear();
+        this.menuStack.clear();
         menuStack.push(AppConstants.getMainMenu());
     }
 

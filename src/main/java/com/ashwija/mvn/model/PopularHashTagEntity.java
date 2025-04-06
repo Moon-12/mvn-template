@@ -41,6 +41,5 @@ public class PopularHashTagEntity extends AppEntity {
     @Override
     public String getHeader() {
         return formatHeader(headers);
-
     }
 }

@@ -45,6 +45,6 @@ secureMenu:
       title: "Hashtags in trend"
       padding: 2
       dao: "PostDao"
-      operationType: "HASHTAG"
+      operationType: "POPULAR_HASHTAG"
   inputLabels:
     - "Please enter your choice (1-7): "

@@ -7,12 +7,11 @@ import com.ashwija.mvn.common.LoginStatus;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.model.AppEntity;
 import com.ashwija.mvn.model.PopularHashTagEntity;
+import com.ashwija.mvn.model.PostEntity;
 
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -111,19 +110,38 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                     System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
                 }
                 break;
-            case HASHTAG:
+            case POPULAR_HASHTAG:
                 PostDao postDao = (PostDao) appDao;
+                Map<Character, Menu> subMenu = new HashMap<>();
                 try {
+
                     List<PopularHashTagEntity> popularHashTagEntityList = postDao.getPopularHashTags();
                     if (!popularHashTagEntityList.isEmpty()) {
-                        System.out.println(popularHashTagEntityList.get(0).getHeader());
-                        popularHashTagEntityList.stream().forEach(obj -> System.out.println(obj));
+                        // System.out.println(popularHashTagEntityList.get(0).getHeader());
+                        char option = '1';
+                        for (PopularHashTagEntity tag : popularHashTagEntityList) {
+                            subMenu.put(option++, new OperationMenu<PostEntity>(
+                                    tag.getName(),
+                                    OperationType.VIEW_HASHTAG_POST,
+                                    postDao
+                            ));
+                        }
+                        OperationMenu operationMenu = new OperationMenu(null, 1, subMenu, new ArrayList<>(List.of("select a hashtag: ")), OperationType.VIEW_HASHTAG_POST, postDao);
+                        CentralContext.setNextMenu(operationMenu);
+                        isNextMenuSet = true;
+
                     } else {
                         System.out.println("No HashTags found!");
                     }
                 } catch (SQLException e) {
                     System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
                 }
+                break;
+            case VIEW_HASHTAG_POST:
+                System.out.println(inputList);
+                System.out.println(CentralContext.getCurrentMenu().getSubMenuAt(inputList.get(0).toString().charAt(0)).getTitle());
+
+
         }
 
         // Set prevMenu only if nextMenu wasn’t set
