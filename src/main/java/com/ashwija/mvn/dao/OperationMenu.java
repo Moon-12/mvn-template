@@ -6,6 +6,7 @@ import com.ashwija.mvn.common.DateAndTime;
 import com.ashwija.mvn.common.LoginStatus;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.model.AppEntity;
+import com.ashwija.mvn.model.PopularHashTagEntity;
 
 
 import java.sql.SQLException;
@@ -109,7 +110,22 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 } catch (SQLException e) {
                     System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
                 }
+                break;
+            case HASHTAG:
+                PostDao postDao = (PostDao) appDao;
+                try {
+                    List<PopularHashTagEntity> popularHashTagEntityList = postDao.getPopularHashTags();
+                    if (!popularHashTagEntityList.isEmpty()) {
+                        System.out.println(popularHashTagEntityList.get(0).getHeader());
+                        popularHashTagEntityList.stream().forEach(obj -> System.out.println(obj));
+                    } else {
+                        System.out.println("No HashTags found!");
+                    }
+                } catch (SQLException e) {
+                    System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
+                }
         }
+
         // Set prevMenu only if nextMenu wasn’t set
         if (!isNextMenuSet) {
             CentralContext.setPrevMenu();

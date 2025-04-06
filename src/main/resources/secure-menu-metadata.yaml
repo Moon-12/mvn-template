@@ -42,9 +42,9 @@ secureMenu:
       inputLabels:
         - "Enter UserID to send request: "
     '7':
-      title: "See Hashtag in trends"
+      title: "Hashtags in trend"
       padding: 2
-      dao: "HashTagDao"
-      operationType: "VIEW"
+      dao: "PostDao"
+      operationType: "HASHTAG"
   inputLabels:
     - "Please enter your choice (1-7): "

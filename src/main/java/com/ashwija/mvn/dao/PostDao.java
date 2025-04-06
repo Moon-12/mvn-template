@@ -1,12 +1,14 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
+import com.ashwija.mvn.model.PopularHashTagEntity;
 import com.ashwija.mvn.model.PostEntity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostDao extends AppDao<PostEntity> {
@@ -64,5 +66,28 @@ public class PostDao extends AppDao<PostEntity> {
     @Override
     PostEntity getEntityFromResultSet(ResultSet resultSet) {
         return null;
+    }
+
+
+    PopularHashTagEntity getTagEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        return new PopularHashTagEntity(resultSet.getString("hashtag_id"), resultSet.getInt("frequency"));
+    }
+
+    public String getPopularHashTagSql() {
+        return "select hashtag_id,count(1) frequency " +
+                "from post " +
+                "group by hashtag_id " +
+                "order by count(1) desc " +
+                "limit 2";
+    }
+
+    public List<PopularHashTagEntity> getPopularHashTags() throws SQLException {
+        List<PopularHashTagEntity> popularHashTagEntityList = new ArrayList<>();
+        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getPopularHashTagSql());
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {  // Use rs.next() to move cursor and check for results
+            popularHashTagEntityList.add(this.getTagEntityFromResultSet(rs));
+        }
+        return popularHashTagEntityList;
     }
 }
