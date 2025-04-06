@@ -1,11 +1,13 @@
 package com.ashwija.mvn.driver;
 
 import com.ashwija.mvn.DatabaseConnection;
+import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.dao.UserProfileDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 
@@ -15,6 +17,7 @@ class NewUserRegistrationTest {
     Connection h2Connection;
     private UserProfileDao userProfileDao = new UserProfileDao();
     MainDriver mainDriver = new MainDriver();
+    InputStream inputStream;
 
     @BeforeEach
     void setUp() throws SQLException {
@@ -23,27 +26,32 @@ class NewUserRegistrationTest {
         DatabaseConnection.con = h2Connection;
         // Create the table for testing
         try (Statement stmt = h2Connection.createStatement()) {
-            stmt.execute("CREATE TABLE `user_profile` (\n" +
-                    "  `id` varchar(10) NOT NULL,\n" +
-                    "  `password` varchar(20) NOT NULL,\n" +
-                    "  `gender` varchar(10) NOT NULL,\n" +
-                    "  `school` varchar(20) NOT NULL\n" +
-                    ")");
+            stmt.execute("""
+                    CREATE TABLE `user_profile` (
+                      `id` varchar(10) NOT NULL,
+                      `password` varchar(20) NOT NULL,
+                      `gender` varchar(10) NOT NULL,
+                      `school` varchar(20) NOT NULL
+                    )""");
         }
     }
 
     @AfterEach
-    void tearDown() throws SQLException {
+    void tearDown() throws SQLException, IOException {
         // Clean up the database
         try (Statement stmt = DatabaseConnection.con.createStatement()) {
             stmt.execute("DROP TABLE user_profile");
         }
         DatabaseConnection.con.close();
+        if (inputStream != null) {
+            inputStream.close();
+        }
+        CentralContext.resetToMainMenu();
     }
 
     @Test
     void execute() throws SQLException {
-        InputStream inputStream = getClass()
+        inputStream = getClass()
                 .getClassLoader()
                 .getResourceAsStream("NewUserRegistrationTestInput.txt");
 
