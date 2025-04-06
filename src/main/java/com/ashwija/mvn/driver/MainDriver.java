@@ -1,5 +1,6 @@
 package com.ashwija.mvn.driver;
 
+import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.dao.Menu;
 
@@ -7,9 +8,10 @@ import java.io.InputStream;
 import java.util.*;
 
 public class MainDriver {
+    DatabaseConnection databaseConnection;
     public void execute(InputStream inputStream) {
         Scanner scanner = new Scanner(inputStream);
-
+        scanner.useDelimiter("\n");
         List<Object> inputList;
 
         while (true) {
