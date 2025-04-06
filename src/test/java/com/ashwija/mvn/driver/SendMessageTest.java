@@ -19,6 +19,7 @@ public class SendMessageTest {
     private UserProfileDao userProfileDao = new UserProfileDao();
     private MessageDao messageDao = new MessageDao();
     MainDriver mainDriver = new MainDriver();
+    InputStream inputStream;
 
     @BeforeEach
     void setUp() throws SQLException {
@@ -65,7 +66,7 @@ public class SendMessageTest {
 
     @Test
     void execute() throws SQLException {
-        InputStream inputStream = getClass()
+        inputStream = getClass()
                 .getClassLoader()
                 .getResourceAsStream("NewMessageTestInput.txt");
 

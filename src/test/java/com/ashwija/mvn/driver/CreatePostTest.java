@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.List;
@@ -16,6 +17,7 @@ public class CreatePostTest {
     Connection h2Connection;
     private UserProfileDao userProfileDao = new UserProfileDao();
     MainDriver mainDriver = new MainDriver();
+    InputStream inputStream;
 
     @BeforeEach
     public void setUp() throws SQLException {
@@ -45,18 +47,21 @@ public class CreatePostTest {
     }
 
     @AfterEach
-    public void tearDown() throws SQLException {
+    public void tearDown() throws SQLException, IOException {
         // Clean up the database
         try (Statement stmt = DatabaseConnection.con.createStatement()) {
             stmt.execute("DROP TABLE user_profile");
             stmt.execute("DROP TABLE post");
         }
         DatabaseConnection.con.close();
+        if (inputStream != null) {
+            inputStream.close();
+        }
     }
 
     @Test
     void save() throws SQLException {
-        InputStream inputStream = getClass()
+        inputStream = getClass()
                 .getClassLoader()
                 .getResourceAsStream("NewPostTestInput.txt");
 

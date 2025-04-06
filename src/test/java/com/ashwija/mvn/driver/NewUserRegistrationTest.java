@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 
@@ -15,6 +16,7 @@ class NewUserRegistrationTest {
     Connection h2Connection;
     private UserProfileDao userProfileDao = new UserProfileDao();
     MainDriver mainDriver = new MainDriver();
+    InputStream inputStream;
 
     @BeforeEach
     void setUp() throws SQLException {
@@ -33,17 +35,20 @@ class NewUserRegistrationTest {
     }
 
     @AfterEach
-    void tearDown() throws SQLException {
+    void tearDown() throws SQLException, IOException {
         // Clean up the database
         try (Statement stmt = DatabaseConnection.con.createStatement()) {
             stmt.execute("DROP TABLE user_profile");
         }
         DatabaseConnection.con.close();
+        if (inputStream != null) {
+            inputStream.close();
+        }
     }
 
     @Test
     void execute() throws SQLException {
-        InputStream inputStream = getClass()
+        inputStream = getClass()
                 .getClassLoader()
                 .getResourceAsStream("NewUserRegistrationTestInput.txt");
 

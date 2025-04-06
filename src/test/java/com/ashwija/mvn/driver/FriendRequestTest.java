@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.List;
@@ -19,6 +20,7 @@ public class FriendRequestTest {
     private UserProfileDao userProfileDao = new UserProfileDao();
     private FriendDao friendDao = new FriendDao();
     MainDriver mainDriver = new MainDriver();
+    InputStream inputStream;
 
     @BeforeEach
     void setUp() throws SQLException {
@@ -63,11 +65,10 @@ public class FriendRequestTest {
     }
 
     @Test
-    void execute() throws SQLException {
-        InputStream inputStream = getClass()
+    void execute() throws SQLException, IOException {
+        inputStream = getClass()
                 .getClassLoader()
                 .getResourceAsStream("NewFriendRequestTestInput.txt");
-
         mainDriver.execute(inputStream);
         try (PreparedStatement stmt = DatabaseConnection.con.prepareStatement(
                 "select * from friend")) {
