@@ -1,11 +1,13 @@
 package com.ashwija.mvn.driver;
 
 import com.ashwija.mvn.DatabaseConnection;
+import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.dao.UserProfileDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.List;
@@ -14,8 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CreatePostTest {
     Connection h2Connection;
-    private UserProfileDao userProfileDao = new UserProfileDao();
+    private final UserProfileDao userProfileDao = new UserProfileDao();
     MainDriver mainDriver = new MainDriver();
+    InputStream inputStream;
 
     @BeforeEach
     public void setUp() throws SQLException {
@@ -24,42 +27,47 @@ public class CreatePostTest {
         DatabaseConnection.con = h2Connection;
         // Create the table for testing
         try (Statement stmt = h2Connection.createStatement()) {
-            stmt.execute("CREATE TABLE `user_profile` (\n" +
-                    "  `id` varchar(10) NOT NULL,\n" +
-                    "  `password` varchar(20) NOT NULL,\n" +
-                    "  `gender` varchar(10) NOT NULL,\n" +
-                    "  `school` varchar(20) NOT NULL\n" +
-                    ")");
+            stmt.execute("""
+                    CREATE TABLE `user_profile` (
+                      `id` varchar(10) NOT NULL,
+                      `password` varchar(20) NOT NULL,
+                      `gender` varchar(10) NOT NULL,
+                      `school` varchar(20) NOT NULL
+                    )""");
         }
         List<Object> inputList = List.of("ash6?", "test", "F", "uhcl");
         userProfileDao.save(inputList);
         try (Statement stmt = h2Connection.createStatement()) {
-            stmt.execute("CREATE TABLE `post` (\n" +
-                    "    `id` INT AUTO_INCREMENT NOT NULL,\n" +
-                    "    `content` VARCHAR(200),\n" +
-                    "    `hashtag_id` VARCHAR(50),\n" +
-                    "    `user_id` VARCHAR(20),\n" +
-                    "    `created_at` DATETIME\n" +
-                    ")");
+            stmt.execute("""
+                    CREATE TABLE `post` (
+                        `id` INT AUTO_INCREMENT NOT NULL,
+                        `content` VARCHAR(200),
+                        `hashtag_id` VARCHAR(50),
+                        `user_id` VARCHAR(20),
+                        `created_at` DATETIME
+                    )""");
         }
     }
 
     @AfterEach
-    public void tearDown() throws SQLException {
+    public void tearDown() throws SQLException, IOException {
         // Clean up the database
         try (Statement stmt = DatabaseConnection.con.createStatement()) {
             stmt.execute("DROP TABLE user_profile");
             stmt.execute("DROP TABLE post");
         }
         DatabaseConnection.con.close();
+        if (inputStream != null) {
+            inputStream.close();
+        }
+        CentralContext.logOut();
     }
 
     @Test
     void save() throws SQLException {
-        InputStream inputStream = getClass()
+        inputStream = getClass()
                 .getClassLoader()
                 .getResourceAsStream("NewPostTestInput.txt");
-
         mainDriver.execute(inputStream);
         try (PreparedStatement stmt = DatabaseConnection.con.prepareStatement(
                 "select * from post")) {

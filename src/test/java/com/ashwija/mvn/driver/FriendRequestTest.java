@@ -1,8 +1,7 @@
 package com.ashwija.mvn.driver;
 
 import com.ashwija.mvn.DatabaseConnection;
-import com.ashwija.mvn.dao.FriendDao;
-import com.ashwija.mvn.dao.MessageDao;
+import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.dao.UserProfileDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FriendRequestTest {
     Connection h2Connection;
-    private UserProfileDao userProfileDao = new UserProfileDao();
-    private FriendDao friendDao = new FriendDao();
+    private final UserProfileDao userProfileDao = new UserProfileDao();
     MainDriver mainDriver = new MainDriver();
+    InputStream inputStream;
 
     @BeforeEach
     void setUp() throws SQLException {
@@ -27,12 +26,13 @@ public class FriendRequestTest {
         DatabaseConnection.con = h2Connection;
         // Create the table for testing
         try (Statement stmt = h2Connection.createStatement()) {
-            stmt.execute("CREATE TABLE `user_profile` (\n" +
-                    "  `id` varchar(10) NOT NULL,\n" +
-                    "  `password` varchar(20) NOT NULL,\n" +
-                    "  `gender` varchar(10) NOT NULL,\n" +
-                    "  `school` varchar(20) NOT NULL\n" +
-                    ")");
+            stmt.execute("""
+                    CREATE TABLE `user_profile` (
+                      `id` varchar(10) NOT NULL,
+                      `password` varchar(20) NOT NULL,
+                      `gender` varchar(10) NOT NULL,
+                      `school` varchar(20) NOT NULL
+                    )""");
         }
         List<Object> inputList = List.of("ash6?", "test", "F", "uhcl");
         userProfileDao.save(inputList);
@@ -41,12 +41,13 @@ public class FriendRequestTest {
         userProfileDao.save(inputList1);
 
         try (Statement stmt = h2Connection.createStatement()) {
-            stmt.execute("CREATE TABLE friend (\n" +
-                    "    id INT AUTO_INCREMENT NOT NULL,\n" +
-                    "    sender_id VARCHAR(20),\n" +
-                    "    receiver_id VARCHAR(20),\n" +
-                    "    created_at DATETIME\n" +
-                    ")");
+            stmt.execute("""
+                    CREATE TABLE friend (
+                        id INT AUTO_INCREMENT NOT NULL,
+                        sender_id VARCHAR(20),
+                        receiver_id VARCHAR(20),
+                        created_at DATETIME
+                    )""");
         }
     }
 
@@ -60,14 +61,14 @@ public class FriendRequestTest {
             stmt.execute("DROP TABLE friend");
         }
         DatabaseConnection.con.close();
+        CentralContext.logOut();
     }
 
     @Test
     void execute() throws SQLException {
-        InputStream inputStream = getClass()
+        inputStream = getClass()
                 .getClassLoader()
                 .getResourceAsStream("NewFriendRequestTestInput.txt");
-
         mainDriver.execute(inputStream);
         try (PreparedStatement stmt = DatabaseConnection.con.prepareStatement(
                 "select * from friend")) {

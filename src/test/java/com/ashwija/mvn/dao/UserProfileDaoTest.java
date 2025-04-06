@@ -1,6 +1,7 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
+import com.ashwija.mvn.central.CentralContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserProfileDaoTest {
     Connection h2Connection;
-    private UserProfileDao userProfileDao = new UserProfileDao();
+    private final UserProfileDao userProfileDao = new UserProfileDao();
 
     @BeforeEach
     public void setUp() throws SQLException {
@@ -21,12 +22,13 @@ class UserProfileDaoTest {
         DatabaseConnection.con = h2Connection;
         // Create the table for testing
         try (Statement stmt = h2Connection.createStatement()) {
-            stmt.execute("CREATE TABLE `user_profile` (\n" +
-                    "  `id` varchar(10) NOT NULL,\n" +
-                    "  `password` varchar(20) NOT NULL,\n" +
-                    "  `gender` varchar(10) NOT NULL,\n" +
-                    "  `school` varchar(20) NOT NULL\n" +
-                    ")");
+            stmt.execute("""
+                    CREATE TABLE `user_profile` (
+                      `id` varchar(10) NOT NULL,
+                      `password` varchar(20) NOT NULL,
+                      `gender` varchar(10) NOT NULL,
+                      `school` varchar(20) NOT NULL
+                    )""");
         }
     }
 
@@ -37,6 +39,7 @@ class UserProfileDaoTest {
             stmt.execute("DROP TABLE user_profile");
         }
         DatabaseConnection.con.close();
+        CentralContext.logOut();
     }
 
     @Test
