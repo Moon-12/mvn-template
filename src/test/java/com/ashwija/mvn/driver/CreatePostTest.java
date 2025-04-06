@@ -60,7 +60,7 @@ public class CreatePostTest {
         if (inputStream != null) {
             inputStream.close();
         }
-        CentralContext.resetToMainMenu();
+        CentralContext.logOut();
     }
 
     @Test

@@ -43,7 +43,7 @@ class UserLoginTest {
             stmt.execute("DROP TABLE user_profile");
         }
         DatabaseConnection.con.close();
-        CentralContext.resetToMainMenu();
+        CentralContext.logOut();
     }
 
     //login fails
@@ -61,8 +61,7 @@ class UserLoginTest {
     void loginError() throws SQLException {
         //register user first
         List<Object> inputList = List.of("ash6?", "test", "F", "uhcl");
-        int rowsChanged = userProfileDao.save(inputList);
-
+        userProfileDao.save(inputList);
         int checksumTotal = userProfileDao.login(List.of(inputList.get(0), "test1"));
 
         //if user found but password does not match
@@ -75,7 +74,7 @@ class UserLoginTest {
     void loginSuccess() throws SQLException {
         //register user first
         List<Object> inputList = List.of("ash6?", "test", "F", "uhcl");
-        int rowsChanged = userProfileDao.save(inputList);
+        userProfileDao.save(inputList);
 
         int checksumTotal = userProfileDao.login(List.of(inputList.get(0), inputList.get(1)));
         assertEquals(LoginStatus.SUCCESS.getCode(), checksumTotal);

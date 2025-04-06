@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserProfileDaoTest {
     Connection h2Connection;
-    private UserProfileDao userProfileDao = new UserProfileDao();
+    private final UserProfileDao userProfileDao = new UserProfileDao();
 
     @BeforeEach
     public void setUp() throws SQLException {
@@ -39,7 +39,7 @@ class UserProfileDaoTest {
             stmt.execute("DROP TABLE user_profile");
         }
         DatabaseConnection.con.close();
-        CentralContext.resetToMainMenu();
+        CentralContext.logOut();
     }
 
     @Test

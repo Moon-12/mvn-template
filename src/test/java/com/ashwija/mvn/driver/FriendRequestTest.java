@@ -2,13 +2,11 @@ package com.ashwija.mvn.driver;
 
 import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
-import com.ashwija.mvn.dao.FriendDao;
 import com.ashwija.mvn.dao.UserProfileDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.List;
@@ -18,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class FriendRequestTest {
     Connection h2Connection;
     private final UserProfileDao userProfileDao = new UserProfileDao();
-    private FriendDao friendDao = new FriendDao();
     MainDriver mainDriver = new MainDriver();
     InputStream inputStream;
 
@@ -64,11 +61,11 @@ public class FriendRequestTest {
             stmt.execute("DROP TABLE friend");
         }
         DatabaseConnection.con.close();
-        CentralContext.resetToMainMenu();
+        CentralContext.logOut();
     }
 
     @Test
-    void execute() throws SQLException, IOException {
+    void execute() throws SQLException {
         inputStream = getClass()
                 .getClassLoader()
                 .getResourceAsStream("NewFriendRequestTestInput.txt");
