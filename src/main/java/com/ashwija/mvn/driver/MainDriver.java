@@ -14,7 +14,7 @@ public class MainDriver {
 
         while (true) {
             // Will get replaced with metadata fetch logic in future
-            Menu currentMenu = CentralContext.getCurrentMenu();
+            Menu currentMenu = CentralContext.peekCurrentMenuStack();
             System.out.println(currentMenu);
 
             // perform in loop
@@ -34,7 +34,7 @@ public class MainDriver {
                 }
                 //any point we type main reset to main menu
                 if (input.equalsIgnoreCase("MAIN")) {
-                    CentralContext.resetToMainMenu();
+                    CentralContext.logOut();
                 }
 
                 inputList.add(input);

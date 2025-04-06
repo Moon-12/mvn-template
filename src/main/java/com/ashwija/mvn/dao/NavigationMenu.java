@@ -19,10 +19,10 @@ public class NavigationMenu extends Menu {
         //set current menu to selected sub menu
         char menuChoice = inputList.get(0).toString().charAt(0);
 
-        Menu currentMenu = CentralContext.getCurrentMenu();
+        Menu currentMenu = CentralContext.peekCurrentMenuStack();
         Menu subMenu = currentMenu.getSubMenuAt(menuChoice);
         if (subMenu != null) {
-            CentralContext.setCurrentMenu(subMenu);
+            CentralContext.pushToCurrentMenuStack(subMenu);
         }
     }
 }

@@ -47,7 +47,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 }
                 //if sending message or creating new post add sender_id and current timestamp to input list
                 if (appDao instanceof MessageDao || appDao instanceof PostDao || appDao instanceof FriendDao) {
-                    inputList.add(AppConstants.getLoggedInUserID());
+                    inputList.add(CentralContext.getLoggedInUserID());
                     inputList.add(DateAndTime.getCurrentTimestamp());
                 }
                 if (this.appDao.validateInput(inputList)) {
@@ -101,9 +101,9 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                     int checksumTotal = userProfileDao.login(inputList);
                     System.out.println(LoginStatus.fromCode(checksumTotal).getMessage());
                     if (checksumTotal == LoginStatus.SUCCESS.getCode()) {
-                        CentralContext.setNextMenu(AppConstants.getSecureMenu());
+                        CentralContext.pushNextMenu(AppConstants.getSecureMenu());
                         //set logged in userID in central context
-                        AppConstants.setLoggedInUserID(inputList.get(0).toString());
+                        CentralContext.setLoggedInUserID(inputList.get(0).toString());
                         isNextMenuSet = true;
                     }
                 } catch (SQLException e) {
@@ -127,7 +127,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                             ));
                         }
                         OperationMenu operationMenu = new OperationMenu(null, 1, subMenu, new ArrayList<>(List.of("select a hashtag: ")), OperationType.VIEW_HASHTAG_POST, postDao);
-                        CentralContext.setNextMenu(operationMenu);
+                        CentralContext.pushNextMenu(operationMenu);
                         isNextMenuSet = true;
 
                     } else {
@@ -139,7 +139,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 break;
             case VIEW_HASHTAG_POST:
                 System.out.println(inputList);
-                System.out.println(CentralContext.getCurrentMenu().getSubMenuAt(inputList.get(0).toString().charAt(0)).getTitle());
+                System.out.println(CentralContext.peekCurrentMenuStack().getSubMenuAt(inputList.get(0).toString().charAt(0)).getTitle());
 
 
         }

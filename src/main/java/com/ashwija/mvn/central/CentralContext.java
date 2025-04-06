@@ -6,7 +6,7 @@ import com.ashwija.mvn.dao.Menu;
 import java.util.Stack;
 
 public class CentralContext {
-    private static Stack<Menu> menuStack = new Stack<>();
+    private static final Stack<Menu> menuStack = new Stack<>();
     private static String loggedInUserID;
 
     public static String getLoggedInUserID() {
@@ -27,30 +27,31 @@ public class CentralContext {
         CentralContext.menuStack.push(AppConstants.getMainMenu());
     }
 
-    public static void setCurrentMenu(Menu currentMenu) {
+    public static void pushToCurrentMenuStack(Menu currentMenu) {
         menuStack.push(currentMenu);
     }
 
-    public static void resetToMainMenu() {
-        this.menuStack.clear();
-        menuStack.push(AppConstants.getMainMenu());
+    public static void logOut() {
+        CentralContext.setLoggedInUserID(null);
+        CentralContext.menuStack.clear();
+        CentralContext.menuStack.push(AppConstants.getMainMenu());
     }
 
     public static void setPrevMenu() {
-        if (!menuStack.isEmpty()) {
-            menuStack.pop();
+        if (!CentralContext.menuStack.isEmpty()) {
+            CentralContext.menuStack.pop();
         }
     }
 
-    public static void setNextMenu(Menu menu) {
+    public static void pushNextMenu(Menu menu) {
         menuStack.push(menu);
     }
 
-    public static Menu getCurrentMenu() {
-        if (menuStack.isEmpty()) {
+    public static Menu peekCurrentMenuStack() {
+        if (CentralContext.menuStack.isEmpty()) {
             return null;
         }
-        return menuStack.peek();
+        return CentralContext.menuStack.peek();
     }
 
     public static Menu getPrevMenu() {
@@ -59,9 +60,9 @@ public class CentralContext {
         }
         // Create a temporary stack to peek at the second-to-top element
         Stack<Menu> tempStack = new Stack<>();
-        tempStack.push(menuStack.pop()); // Remove current
-        Menu prevMenu = menuStack.peek(); // Previous is now at top
-        menuStack.push(tempStack.pop()); // Restore current
+        tempStack.push(CentralContext.menuStack.pop()); // Remove current
+        Menu prevMenu = CentralContext.menuStack.peek(); // Previous is now at top
+        CentralContext.menuStack.push(tempStack.pop()); // Restore current
         return prevMenu;
     }
 }
