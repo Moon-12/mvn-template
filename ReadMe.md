@@ -1,7 +1,6 @@
 ### This is what a simple flow would look like
 
 ## First few screens
-
 ```
 ********************************************************************************
 *                                                                              *
