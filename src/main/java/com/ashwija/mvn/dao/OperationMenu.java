@@ -1,7 +1,6 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.central.CentralContext;
-import com.ashwija.mvn.common.AppConstants;
 import com.ashwija.mvn.common.DateAndTime;
 import com.ashwija.mvn.common.LoginStatus;
 import com.ashwija.mvn.common.OperationType;
@@ -16,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class OperationMenu<T extends AppEntity> extends Menu {
-    private OperationType operationType;
+    private final OperationType operationType;
     private AppDao appDao;
 
     public OperationMenu(String title, OperationType operationType, AppDao appDao) {
@@ -33,9 +32,9 @@ public class OperationMenu<T extends AppEntity> extends Menu {
 
     @Override
     public void performAction(List<Object> inputList) {
-        boolean isNextMenuSet = false;
-
+        boolean isNextMenuAlreadySet = false;
         switch (operationType) {
+
             case ADD:
                 if (appDao instanceof PostDao) {
                     String hashtagRegex = "#\\w+";
@@ -101,10 +100,10 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                     int checksumTotal = userProfileDao.login(inputList);
                     System.out.println(LoginStatus.fromCode(checksumTotal).getMessage());
                     if (checksumTotal == LoginStatus.SUCCESS.getCode()) {
-                        CentralContext.pushNextMenu(AppConstants.getSecureMenu());
                         //set logged in userID in central context
                         CentralContext.setLoggedInUserID(inputList.get(0).toString());
-                        isNextMenuSet = true;
+                        CentralContext.resetToRootMenu();
+                        isNextMenuAlreadySet = true;
                     }
                 } catch (SQLException e) {
                     System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
@@ -112,23 +111,21 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 break;
             case POPULAR_HASHTAG:
                 PostDao postDao = (PostDao) appDao;
-                Map<Character, Menu> subMenu = new HashMap<>();
+                Map<Character, Menu> popularHashTagSubMenu = new HashMap<>();
                 try {
-
                     List<PopularHashTagEntity> popularHashTagEntityList = postDao.getPopularHashTags();
                     if (!popularHashTagEntityList.isEmpty()) {
-                        // System.out.println(popularHashTagEntityList.get(0).getHeader());
                         char option = '1';
                         for (PopularHashTagEntity tag : popularHashTagEntityList) {
-                            subMenu.put(option++, new OperationMenu<PostEntity>(
+                            popularHashTagSubMenu.put(option++, new OperationMenu<PostEntity>(
                                     tag.getName(),
                                     OperationType.VIEW_HASHTAG_POST,
                                     postDao
                             ));
                         }
-                        OperationMenu operationMenu = new OperationMenu(null, 1, subMenu, new ArrayList<>(List.of("select a hashtag: ")), OperationType.VIEW_HASHTAG_POST, postDao);
+                        OperationMenu operationMenu = new OperationMenu(null, 1, popularHashTagSubMenu, new ArrayList<>(List.of("select a hashtag: ")), OperationType.VIEW_HASHTAG_POST, postDao);
                         CentralContext.pushNextMenu(operationMenu);
-                        isNextMenuSet = true;
+                        isNextMenuAlreadySet = true;
 
                     } else {
                         System.out.println("No HashTags found!");
@@ -138,14 +135,30 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 }
                 break;
             case VIEW_HASHTAG_POST:
-                System.out.println(inputList);
-                System.out.println(CentralContext.peekCurrentMenuStack().getSubMenuAt(inputList.get(0).toString().charAt(0)).getTitle());
+                Optional<List<PostEntity>> postEntityList = Optional.of(new ArrayList<>());
+                String selectedHashtag = CentralContext.peekCurrentMenuStack().getSubMenuAt(inputList.get(0).toString().charAt(0)).getTitle();
+                PostDao postDaoObj = (PostDao) appDao;
 
+                try {
+                    postEntityList = postDaoObj.getPostsByHashTags(selectedHashtag);
+                    if (postEntityList.isPresent()) {
+                        for (PostEntity postEntity : postEntityList.get()) {
+                            System.out.println(postEntity.detailedToString());
+                        }
+                    } else {
+                        System.out.println("No Posts Yet !!");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                CentralContext.resetToRootMenu();
+                isNextMenuAlreadySet = true;
+                break;
 
         }
 
         // Set prevMenu only if nextMenu wasn’t set
-        if (!isNextMenuSet) {
+        if (!isNextMenuAlreadySet) {
             CentralContext.setPrevMenu();
         }
     }

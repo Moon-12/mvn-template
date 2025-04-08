@@ -103,7 +103,7 @@ public abstract class AppDao<T> {
 
     abstract String getFetchAllSql();
 
-    abstract T getEntityFromResultSet(ResultSet resultSet);
+    abstract T getEntityFromResultSet(ResultSet resultSet) throws SQLException;
 
     public String getDeleteSuccessMessage() {
         return "Delete successfully!";
