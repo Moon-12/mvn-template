@@ -2,12 +2,26 @@ package com.ashwija.mvn.central;
 
 import com.ashwija.mvn.common.AppConstants;
 import com.ashwija.mvn.dao.Menu;
+import com.ashwija.mvn.model.NotificationEntity;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class CentralContext {
     private static final Stack<Menu> menuStack = new Stack<>();
+    public static boolean skipNextInput = false;
     private static String loggedInUserID;
+
+    private static Map<Character, NotificationEntity> notificationEntityMap = new HashMap();
+
+    public static Map<Character, NotificationEntity> getNotificationEntityMap() {
+        return notificationEntityMap;
+    }
+
+    public static void setNotificationEntityMap(Map<Character, NotificationEntity> notificationEntityMap) {
+        CentralContext.notificationEntityMap = notificationEntityMap;
+    }
 
     public static String getLoggedInUserID() {
         return CentralContext.loggedInUserID;

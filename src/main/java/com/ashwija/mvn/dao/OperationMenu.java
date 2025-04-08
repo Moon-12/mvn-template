@@ -210,15 +210,33 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                     if (!notificationEntityList.isEmpty()) {
                         char option = '1';
                         for (NotificationEntity notificationEntity : notificationEntityList) {
-                            String subMenuTitle = notificationEntity.getType() == NotificationType.message ? "New Message from: " : "New Friend Request from: ";
-                            notificationListSubmenu.put(option++, new OperationMenu<NotificationEntity>(
+                            String subMenuTitle = notificationEntity.getType() == NotificationType.message ?
+                                    "New Message from: " :
+                                    "New Friend Request from: ";
+                            OperationMenu notificationEntityOperationMenu = new OperationMenu<NotificationEntity>(
                                     subMenuTitle.concat(notificationEntity.getSenderId()),
                                     OperationType.VIEW_NOTIFICATION,
                                     notificationDao
-                            ));
+                            );
+
+                            notificationEntityOperationMenu.setInputLabelList(new ArrayList<>(List.of(
+                                    notificationEntity.getType() == NotificationType.message ?
+                                            new String[]{
+                                                    "Do you want to reply?(Y/N)",
+                                                    "Enter your reply:"
+                                            } :
+                                            new String[]{
+                                                    "Do you want to accept?(Y/N)"
+                                            }
+                            )));
+                            notificationListSubmenu.put(option++, notificationEntityOperationMenu);
+
+                            //populate the notifications in central context
+                            CentralContext.getNotificationEntityMap().put(option, notificationEntity);
                         }
-                        OperationMenu operationMenu = new OperationMenu(null, 1, notificationListSubmenu, new ArrayList<>(List.of("select a notification to view: ")), OperationType.VIEW_NOTIFICATION, notificationDao);
-                        CentralContext.pushNextMenu(operationMenu);
+                        // OperationMenu operationMenu = new OperationMenu(null, 1, notificationListSubmenu, new ArrayList<>(List.of("select a notification to view: ")), OperationType.VIEW_NOTIFICATION, notificationDao);
+                        NavigationMenu navigationMenu = new NavigationMenu(null, 1, notificationListSubmenu, new ArrayList<>(List.of("select a notification to view: ")));
+                        CentralContext.pushNextMenu(navigationMenu);
                         isNextMenuAlreadySet = true;
 
                     } else {
@@ -227,6 +245,10 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 } catch (SQLException e) {
                     System.out.println(this.appDao.getFetchFailureMessage() + " due to " + e.getMessage());
                 }
+                break;
+            case VIEW_NOTIFICATION:
+
+
         }
 
         // Set prevMenu only if nextMenu wasn’t set
