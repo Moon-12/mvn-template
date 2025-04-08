@@ -13,7 +13,7 @@ secureMenu:
       title: "Check notifications"
       padding: 2
       dao: "NotificationDao"
-      operationType: "VIEW"
+      operationType: "VIEW_ALL_ACTIVE_NOTIFICATION"
     '3':
       title: "Create a new post"
       padding: 2

@@ -47,6 +47,8 @@ public class MenuDao {
                 return new PostDao();
             case "FriendDao":
                 return new FriendDao();
+            case "NotificationDao":
+                return new NotificationDao();
             default:
                 return null;
         }

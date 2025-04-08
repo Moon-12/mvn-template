@@ -1,12 +1,14 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
+import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.model.NotificationEntity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationDao extends AppDao<NotificationEntity> {
@@ -33,7 +35,7 @@ public class NotificationDao extends AppDao<NotificationEntity> {
             }
         }
         return pstmt.executeUpdate();
-        
+
     }
 
     @Override
@@ -63,6 +65,21 @@ public class NotificationDao extends AppDao<NotificationEntity> {
 
     @Override
     NotificationEntity getEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        return null;
+        return new NotificationEntity(resultSet.getString("sender_id"), resultSet.getString("content"), resultSet.getString("type"));
+    }
+
+    public String getAllActiveNotificationSql() {
+        return "select * from notification where status='active' and receiver_id=? ";
+    }
+
+    public List<NotificationEntity> getAllActiveNotifications() throws SQLException {
+        List<NotificationEntity> notificationEntityList = new ArrayList<>();
+        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getAllActiveNotificationSql());
+        pstmt.setString(1, CentralContext.getLoggedInUserID());
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            notificationEntityList.add(this.getEntityFromResultSet(rs));
+        }
+        return notificationEntityList;
     }
 }
