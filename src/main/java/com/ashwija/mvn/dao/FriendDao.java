@@ -2,6 +2,7 @@ package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
+import com.ashwija.mvn.common.NotificationType;
 import com.ashwija.mvn.model.FriendEntity;
 
 import java.sql.PreparedStatement;
@@ -14,6 +15,16 @@ public class FriendDao extends AppDao<FriendEntity> {
     @Override
     String getInsertSql() {
         return "insert into FRIEND(receiver_id,sender_id,created_at) values(?,?,?)";
+    }
+
+    @Override
+    public int save(List<Object> attributes) throws SQLException {
+        int rowsAffected = super.save(attributes);
+        if (rowsAffected > 0) {
+            NotificationDao notificationDao = new NotificationDao();
+            notificationDao.save(List.of(NotificationType.friend_request, CentralContext.getLoggedInUserID(), attributes.get(0)));
+        }
+        return rowsAffected;
     }
 
     @Override
