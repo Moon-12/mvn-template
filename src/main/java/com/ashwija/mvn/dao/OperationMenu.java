@@ -5,6 +5,7 @@ import com.ashwija.mvn.common.DateAndTime;
 import com.ashwija.mvn.common.LoginStatus;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.model.AppEntity;
+import com.ashwija.mvn.model.FriendEntity;
 import com.ashwija.mvn.model.PopularHashTagEntity;
 import com.ashwija.mvn.model.PostEntity;
 
@@ -135,26 +136,50 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 }
                 break;
             case VIEW_HASHTAG_POST:
-                Optional<List<PostEntity>> postEntityList = Optional.of(new ArrayList<>());
+                List<PostEntity> postEntityList = new ArrayList<>();
                 String selectedHashtag = CentralContext.peekCurrentMenuStack().getSubMenuAt(inputList.get(0).toString().charAt(0)).getTitle();
                 PostDao postDaoObj = (PostDao) appDao;
 
                 try {
                     postEntityList = postDaoObj.getPostsByHashTags(selectedHashtag);
-                    if (postEntityList.isPresent()) {
-                        for (PostEntity postEntity : postEntityList.get()) {
+                    if (!postEntityList.isEmpty()) {
+                        for (PostEntity postEntity : postEntityList) {
                             System.out.println(postEntity.detailedToString());
                         }
                     } else {
                         System.out.println("No Posts Yet !!");
                     }
                 } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                    System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
                 }
                 CentralContext.resetToRootMenu();
                 isNextMenuAlreadySet = true;
                 break;
-
+            case VIEW_FRIEND_LIST:
+                UserProfileDao userProfileDaoObj = new UserProfileDao();
+                Map<Character, Menu> friendListSubmenu = new HashMap<>();
+                FriendDao friendDao = (FriendDao) appDao;
+                try {
+                    List<FriendEntity> friendEntityList = friendDao.getListOfFriends();
+                    if (!friendEntityList.isEmpty()) {
+                        char option = '1';
+                        for (FriendEntity friendEntity : friendEntityList) {
+                            friendListSubmenu.put(option++, new OperationMenu<FriendEntity>(
+                                    friendEntity.getReceiverId(),
+                                    OperationType.VIEW_USER_PROFILE,
+                                    userProfileDaoObj
+                            ));
+                        }
+                        OperationMenu operationMenu = new OperationMenu(null, 1, friendListSubmenu, new ArrayList<>(List.of("select a friend: ")), OperationType.VIEW_USER_PROFILE, userProfileDaoObj);
+                        CentralContext.pushNextMenu(operationMenu);
+                        isNextMenuAlreadySet = true;
+                    } else {
+                        System.out.println("No Friends found!");
+                    }
+                } catch (SQLException e) {
+                    System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
+                }
+                break;
         }
 
         // Set prevMenu only if nextMenu wasn’t set
