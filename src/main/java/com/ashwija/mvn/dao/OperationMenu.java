@@ -3,11 +3,9 @@ package com.ashwija.mvn.dao;
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.DateAndTime;
 import com.ashwija.mvn.common.LoginStatus;
+import com.ashwija.mvn.common.NotificationType;
 import com.ashwija.mvn.common.OperationType;
-import com.ashwija.mvn.model.AppEntity;
-import com.ashwija.mvn.model.FriendEntity;
-import com.ashwija.mvn.model.PopularHashTagEntity;
-import com.ashwija.mvn.model.PostEntity;
+import com.ashwija.mvn.model.*;
 
 
 import java.sql.SQLException;
@@ -202,6 +200,33 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 }
                 CentralContext.resetToRootMenu();
                 isNextMenuAlreadySet = true;
+                break;
+            case VIEW_ALL_ACTIVE_NOTIFICATION:
+                NotificationDao notificationDao = new NotificationDao();
+                Map<Character, Menu> notificationListSubmenu = new HashMap<>();
+                List<NotificationEntity> notificationEntityList;
+                try {
+                    notificationEntityList = notificationDao.getAllActiveNotifications();
+                    if (!notificationEntityList.isEmpty()) {
+                        char option = '1';
+                        for (NotificationEntity notificationEntity : notificationEntityList) {
+                            String subMenuTitle = notificationEntity.getType() == NotificationType.message ? "New Message from: " : "New Friend Request from: ";
+                            notificationListSubmenu.put(option++, new OperationMenu<NotificationEntity>(
+                                    subMenuTitle.concat(notificationEntity.getSenderId()),
+                                    OperationType.VIEW_NOTIFICATION,
+                                    notificationDao
+                            ));
+                        }
+                        OperationMenu operationMenu = new OperationMenu(null, 1, notificationListSubmenu, new ArrayList<>(List.of("select a notification to view: ")), OperationType.VIEW_NOTIFICATION, notificationDao);
+                        CentralContext.pushNextMenu(operationMenu);
+                        isNextMenuAlreadySet = true;
+
+                    } else {
+                        System.out.println("No new notifications");
+                    }
+                } catch (SQLException e) {
+                    System.out.println(this.appDao.getFetchFailureMessage() + " due to " + e.getMessage());
+                }
         }
 
         // Set prevMenu only if nextMenu wasn’t set

@@ -16,6 +16,10 @@ public abstract class AppDao<T> {
         return "Failed to insert";
     }
 
+    String getFetchFailureMessage() {
+        return "Failed to fetch";
+    }
+
     public boolean validateInput(List<Object> inputList) {
         return true;
     }
@@ -39,7 +43,7 @@ public abstract class AppDao<T> {
     }
 
     abstract String getDeleteSql();
-    
+
     abstract String getFetchSql();
 
     public Optional<T> fetch(Object entityId) throws SQLException {
