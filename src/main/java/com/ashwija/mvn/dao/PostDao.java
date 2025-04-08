@@ -98,18 +98,18 @@ public class PostDao extends AppDao<PostEntity> {
     }
 
 
-    public Optional<List<PostEntity>> getPostsByHashTags(String hashtag) throws SQLException {
-        Optional<List<PostEntity>> postEntityList = Optional.of(new ArrayList<>());
+    public List<PostEntity> getPostsByHashTags(String hashtag) throws SQLException {
+        List<PostEntity> postEntityList = new ArrayList<>();
         PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getPostByHashtagSql());
         pstmt.setString(1, hashtag);
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {  // Use rs.next() to move cursor and check for results
-            postEntityList.get().add(this.getEntityFromResultSet(rs));
+            postEntityList.add(this.getEntityFromResultSet(rs));
         }
         CommentDao commentDao = new CommentDao();
         Optional<List<CommentEntity>> commentEntityList;
 
-        for (PostEntity postEntity : postEntityList.get()) {
+        for (PostEntity postEntity : postEntityList) {
             try {
                 commentEntityList = commentDao.getCommentListByPostId(postEntity.getId());
                 commentEntityList.ifPresent(postEntity::setCommentEntityList);

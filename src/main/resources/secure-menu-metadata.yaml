@@ -25,7 +25,7 @@ secureMenu:
       title: "Friends"
       padding: 2
       dao: "FriendDao"
-      operationType: "VIEW"
+      operationType: "VIEW_FRIEND_LIST"
     '5':
       title: "Send a message"
       padding: 2
