@@ -31,10 +31,19 @@ public class CentralContext {
         menuStack.push(currentMenu);
     }
 
+    public static void resetToRootMenu() {
+        CentralContext.menuStack.clear();
+        CentralContext.menuStack.push(CentralContext.getCurrentRootMenu());
+    }
+
     public static void logOut() {
         CentralContext.setLoggedInUserID(null);
         CentralContext.menuStack.clear();
-        CentralContext.menuStack.push(AppConstants.getMainMenu());
+        CentralContext.menuStack.push(CentralContext.getCurrentRootMenu());
+    }
+
+    public static Menu getCurrentRootMenu() {
+        return CentralContext.getLoggedInUserID() != null ? AppConstants.getSecureMenu() : AppConstants.getMainMenu();
     }
 
     public static void setPrevMenu() {

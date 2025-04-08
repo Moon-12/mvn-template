@@ -1,6 +1,7 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
+import com.ashwija.mvn.model.CommentEntity;
 import com.ashwija.mvn.model.PopularHashTagEntity;
 import com.ashwija.mvn.model.PostEntity;
 
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class PostDao extends AppDao<PostEntity> {
     @Override
@@ -63,11 +65,6 @@ public class PostDao extends AppDao<PostEntity> {
         return "";
     }
 
-    @Override
-    PostEntity getEntityFromResultSet(ResultSet resultSet) {
-        return null;
-    }
-
 
     PopularHashTagEntity getTagEntityFromResultSet(ResultSet resultSet) throws SQLException {
         return new PopularHashTagEntity(resultSet.getString("hashtag_id"), resultSet.getInt("frequency"));
@@ -89,5 +86,38 @@ public class PostDao extends AppDao<PostEntity> {
             popularHashTagEntityList.add(this.getTagEntityFromResultSet(rs));
         }
         return popularHashTagEntityList;
+    }
+
+    public String getPostByHashtagSql() {
+        return "select * from post where hashtag_id=?";
+    }
+
+    @Override
+    PostEntity getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        return new PostEntity(resultSet.getInt("id"), resultSet.getString("user_id"), resultSet.getString("content"), resultSet.getTimestamp("created_at"));
+    }
+
+
+    public Optional<List<PostEntity>> getPostsByHashTags(String hashtag) throws SQLException {
+        Optional<List<PostEntity>> postEntityList = Optional.of(new ArrayList<>());
+        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getPostByHashtagSql());
+        pstmt.setString(1, hashtag);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {  // Use rs.next() to move cursor and check for results
+            postEntityList.get().add(this.getEntityFromResultSet(rs));
+        }
+        CommentDao commentDao = new CommentDao();
+        Optional<List<CommentEntity>> commentEntityList;
+
+        for (PostEntity postEntity : postEntityList.get()) {
+            try {
+                commentEntityList = commentDao.getCommentListByPostId(postEntity.getId());
+                commentEntityList.ifPresent(postEntity::setCommentEntityList);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return postEntityList;
     }
 }

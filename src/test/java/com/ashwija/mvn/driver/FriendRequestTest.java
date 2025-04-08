@@ -49,6 +49,7 @@ public class FriendRequestTest {
                         created_at DATETIME
                     )""");
         }
+        CentralContext.setLoggedInUserID("ash6?");
     }
 
     @AfterEach
