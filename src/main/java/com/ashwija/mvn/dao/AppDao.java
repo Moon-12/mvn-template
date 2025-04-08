@@ -35,48 +35,36 @@ public abstract class AppDao<T> {
                 pstmt.setString(i + 1, attr.toString());
             }
         }
-        int rowsAffected = pstmt.executeUpdate();
-        return rowsAffected;
+        return pstmt.executeUpdate(); // return rowsAffected
     }
 
     abstract String getDeleteSql();
-
-    public Boolean checkEntityActive(int entityId) {
-        return this.fetch(entityId) != null ? true : false;
-    }
-
+    
     abstract String getFetchSql();
 
-    public Optional<T> fetch(Object entityId) {
-        Optional<T> entity = null;
-        try {
-            PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getFetchSql());
+    public Optional<T> fetch(Object entityId) throws SQLException {
+        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getFetchSql());
 
-            if (entityId instanceof String) {
-                pstmt.setString(1, (String) entityId);
-            } else {
-                pstmt.setInt(1, (Integer) entityId);
-            }
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {  // Use rs.next() to move cursor and check for results
-                    entity = (Optional<T>) getEntityFromResultSet(rs);
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching entity with ID " + entityId + ": " + e.getMessage());
-            e.printStackTrace();
-
+        if (entityId instanceof String) {
+            pstmt.setString(1, (String) entityId);
+        } else {
+            pstmt.setInt(1, (Integer) entityId);
         }
-        return entity;
+
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {  // Use rs.next() to move cursor and check for results
+            T entity = getEntityFromResultSet(rs);  // Assuming this returns T
+            return Optional.ofNullable(entity);     // Wrap the result in Optional
+        }
+        return Optional.empty();  // Return empty Optional if no result
     }
 
     //return no. of affected rows post delete
     public int delete(int entityId) throws SQLException {
         PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getDeleteSql());
         pstmt.setInt(1, entityId);
-        int rowsAffected = pstmt.executeUpdate();
-        return rowsAffected;
+        return pstmt.executeUpdate(); //return rowsAffected
+
     }
 
     String getDeleteFailureMessage() {
@@ -96,7 +84,7 @@ public abstract class AppDao<T> {
 
         } catch (SQLException e) {
             System.err.println("Error fetching from database: " + e.getMessage());
-            e.printStackTrace();
+
         }
         return list;
     }

@@ -1,14 +1,22 @@
 package com.ashwija.mvn.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserProfileEntity extends AppEntity {
     private String id;
     private String password;
-    private String gender;
+    private final String gender;
     private String school;
 
-    public UserProfileEntity(String id, String password, String gender, String school) {
+    final static List<String> headers = new ArrayList<>();
+
+    static {
+        headers.addAll(List.of("User ID", "Gender", "School"));
+    }
+
+    public UserProfileEntity(String id, String gender, String school) {
         this.id = id;
-        this.password = password;
         this.gender = gender;
         this.school = school;
     }
@@ -29,13 +37,6 @@ public class UserProfileEntity extends AppEntity {
         this.password = password;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
 
     public String getSchool() {
         return school;
@@ -47,6 +48,11 @@ public class UserProfileEntity extends AppEntity {
 
     @Override
     public String getHeader() {
-        return "";
+        return formatHeader(headers);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%-12s| %-12s| %-12s", this.id, this.gender, this.school);
     }
 }

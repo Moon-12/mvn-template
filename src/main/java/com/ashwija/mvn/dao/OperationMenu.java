@@ -86,7 +86,12 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                 entityList.forEach(System.out::println);
                 break;
             case VIEW:
-                Optional<T> entity = appDao.fetch(Integer.parseInt((String) inputList.get(0)));
+                Optional<T> entity = null;
+                try {
+                    entity = appDao.fetch(Integer.parseInt((String) inputList.get(0)));
+                } catch (SQLException e) {
+                    System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
+                }
                 if (entity.isPresent()) {
                     T entityObj = entity.get();
                     System.out.println(entityObj.getHeader());
@@ -180,6 +185,23 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                     System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
                 }
                 break;
+            case VIEW_USER_PROFILE:
+                Optional<T> optionalEntity = Optional.empty();
+                String selectedUserID = CentralContext.peekCurrentMenuStack().getSubMenuAt(inputList.get(0).toString().charAt(0)).getTitle();
+                try {
+                    optionalEntity = appDao.fetch(selectedUserID);
+                } catch (SQLException e) {
+                    System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
+                }
+                if (optionalEntity.isPresent()) {
+                    T entityObj = optionalEntity.get();
+                    System.out.println(entityObj.getHeader());
+                    System.out.println(entityObj);
+                } else {
+                    System.out.println("User not found");
+                }
+                CentralContext.resetToRootMenu();
+                isNextMenuAlreadySet = true;
         }
 
         // Set prevMenu only if nextMenu wasn’t set

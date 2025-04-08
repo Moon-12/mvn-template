@@ -23,7 +23,7 @@ public class UserProfileDao extends AppDao<UserProfileEntity> {
 
     @Override
     String getFetchSql() {
-        return "";
+        return "select id,gender,school from user_profile where id=?";
     }
 
     String getLoginSql() {
@@ -50,8 +50,8 @@ public class UserProfileDao extends AppDao<UserProfileEntity> {
     }
 
     @Override
-    UserProfileEntity getEntityFromResultSet(ResultSet resultSet) {
-        return null;
+    UserProfileEntity getEntityFromResultSet(ResultSet resultSet) throws SQLException {
+        return new UserProfileEntity(resultSet.getString("id"), resultSet.getString("gender"), resultSet.getString("school"));
     }
 
     @Override
