@@ -8,9 +8,14 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class AppDao<T> {
-    abstract String getInsertSql();
 
-    public abstract String getSaveSuccessMessage();
+    public String getInsertSql() throws SQLException {
+        throw new SQLException("undefined query");
+    }
+
+    public String getSaveSuccessMessage() {
+        return "Saved Successfully";
+    }
 
     public String getSaveFailureMessage() {
         return "Failed to insert";
@@ -24,7 +29,10 @@ public abstract class AppDao<T> {
         return true;
     }
 
-    public abstract String getValidationFailureMessage();
+    public String getValidationFailureMessage() {
+        return "Input validation failed";
+    }
+
 
     //return no. of affected rows post insert
     public int save(List<Object> attributes) throws SQLException {
@@ -42,9 +50,13 @@ public abstract class AppDao<T> {
         return pstmt.executeUpdate(); // return rowsAffected
     }
 
-    abstract String getDeleteSql();
+    public String getDeleteSql() throws SQLException {
+        throw new SQLException("undefined query");
+    }
 
-    abstract String getFetchSql();
+    public String getFetchSql() throws SQLException {
+        throw new SQLException("undefined query");
+    }
 
     public Optional<T> fetch(Object entityId) throws SQLException {
         PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getFetchSql());
@@ -93,7 +105,9 @@ public abstract class AppDao<T> {
         return list;
     }
 
-    abstract String getFetchAllSql();
+    public String getFetchAllSql() throws SQLException {
+        throw new SQLException("undefined query");
+    }
 
     abstract T getEntityFromResultSet(ResultSet resultSet) throws SQLException;
 

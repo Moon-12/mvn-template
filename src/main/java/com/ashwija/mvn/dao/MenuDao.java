@@ -2,6 +2,7 @@ package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.menu.Menu;
+import com.ashwija.mvn.menu.NavigationMenu;
 import com.ashwija.mvn.menu.OperationMenu;
 
 import java.util.HashMap;
