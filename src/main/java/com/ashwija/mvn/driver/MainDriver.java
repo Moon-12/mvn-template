@@ -2,7 +2,7 @@ package com.ashwija.mvn.driver;
 
 import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
-import com.ashwija.mvn.dao.Menu;
+import com.ashwija.mvn.menu.Menu;
 
 import java.io.InputStream;
 import java.util.*;

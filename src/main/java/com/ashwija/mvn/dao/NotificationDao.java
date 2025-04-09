@@ -39,12 +39,12 @@ public class NotificationDao extends AppDao<NotificationEntity> {
     }
 
     @Override
-    String getSaveSuccessMessage() {
+    public String getSaveSuccessMessage() {
         return "";
     }
 
     @Override
-    String getValidationFailureMessage() {
+    public String getValidationFailureMessage() {
         return "";
     }
 

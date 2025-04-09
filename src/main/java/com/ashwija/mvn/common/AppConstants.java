@@ -1,6 +1,7 @@
 package com.ashwija.mvn.common;
 
 import com.ashwija.mvn.dao.*;
+import com.ashwija.mvn.menu.Menu;
 
 import java.util.*;
 

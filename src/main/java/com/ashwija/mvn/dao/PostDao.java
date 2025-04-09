@@ -36,17 +36,16 @@ public class PostDao extends AppDao<PostEntity> {
                 pstmt.setString(i + 1, attr.toString());
             }
         }
-        int rowsAffected = pstmt.executeUpdate();
-        return rowsAffected;
+        return pstmt.executeUpdate();
     }
 
     @Override
-    String getSaveSuccessMessage() {
+    public String getSaveSuccessMessage() {
         return "Post created successfully!";
     }
 
     @Override
-    String getValidationFailureMessage() {
+    public String getValidationFailureMessage() {
         return "";
     }
 

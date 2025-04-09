@@ -55,12 +55,12 @@ public class UserProfileDao extends AppDao<UserProfileEntity> {
     }
 
     @Override
-    String getSaveSuccessMessage() {
+    public String getSaveSuccessMessage() {
         return "User Registered Successfully";
     }
 
     @Override
-    String getValidationFailureMessage() {
+    public String getValidationFailureMessage() {
         return this.validationFailed;
     }
 
