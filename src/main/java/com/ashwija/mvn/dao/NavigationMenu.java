@@ -1,6 +1,7 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.central.CentralContext;
+import com.ashwija.mvn.menu.Menu;
 
 import java.util.List;
 import java.util.Map;

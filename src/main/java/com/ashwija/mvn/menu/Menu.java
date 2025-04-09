@@ -1,4 +1,4 @@
-package com.ashwija.mvn.dao;
+package com.ashwija.mvn.menu;
 
 import com.ashwija.mvn.graphics.GraphicEngine;
 

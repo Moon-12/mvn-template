@@ -17,12 +17,12 @@ public class CommentDao extends AppDao<CommentEntity> {
     }
 
     @Override
-    String getSaveSuccessMessage() {
+    public String getSaveSuccessMessage() {
         return "";
     }
 
     @Override
-    String getValidationFailureMessage() {
+    public String getValidationFailureMessage() {
         return "";
     }
 
