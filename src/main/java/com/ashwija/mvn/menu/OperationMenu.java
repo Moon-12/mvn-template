@@ -84,7 +84,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
             if (!notificationEntityList.isEmpty()) {
                 char option = '1';
                 for (NotificationEntity notificationEntity : notificationEntityList) {
-                    String subMenuTitle = notificationEntity.getType() == NotificationType.message ?
+                    String subMenuTitle = notificationEntity.getType() == NotificationType.MESSAGE ?
                             "New Message from: " :
                             "New Friend Request from: ";
                     OperationMenu notificationEntityOperationMenu = new OperationMenu<NotificationEntity>(
@@ -94,7 +94,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
                     );
 
                     notificationEntityOperationMenu.setInputLabelList(new ArrayList<>(List.of(
-                            notificationEntity.getType() == NotificationType.message ?
+                            notificationEntity.getType() == NotificationType.MESSAGE ?
                                     new String[]{
                                             "Do you want to reply?(Y/N)",
                                             "Enter your reply:"
