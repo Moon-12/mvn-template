@@ -15,12 +15,12 @@ public class MessageDao extends AppDao<MessageEntity> {
     }
 
     @Override
-    String getSaveSuccessMessage() {
+    public String getSaveSuccessMessage() {
         return "Message sent successfully!";
     }
 
     @Override
-    String getValidationFailureMessage() {
+    public String getValidationFailureMessage() {
         return "";
     }
 

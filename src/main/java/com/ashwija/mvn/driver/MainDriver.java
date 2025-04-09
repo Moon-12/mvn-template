@@ -2,7 +2,7 @@ package com.ashwija.mvn.driver;
 
 import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
-import com.ashwija.mvn.dao.Menu;
+import com.ashwija.mvn.menu.Menu;
 
 import java.io.InputStream;
 import java.util.*;
@@ -36,6 +36,7 @@ public class MainDriver {
                 String currentInputLabel = currentMenu.getInputLabelAt(labelIndex++);
                 System.out.print(currentInputLabel);
                 String input = scanner.nextLine();
+
                 //any point we type exit
                 if (input.equalsIgnoreCase("EXIT")) {
                     comeOut = true;
@@ -46,6 +47,7 @@ public class MainDriver {
                     CentralContext.logOut();
                 }
 
+                //if input requires dual confirmation
                 if (currentInputLabel.startsWith("Do you want to")) {
                     //If confirmed then we will skip next input
                     if (input.equalsIgnoreCase("N")) {

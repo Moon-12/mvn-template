@@ -10,13 +10,13 @@ import java.util.Optional;
 public abstract class AppDao<T> {
     abstract String getInsertSql();
 
-    abstract String getSaveSuccessMessage();
+    public abstract String getSaveSuccessMessage();
 
-    String getSaveFailureMessage() {
+    public String getSaveFailureMessage() {
         return "Failed to insert";
     }
 
-    String getFetchFailureMessage() {
+    public String getFetchFailureMessage() {
         return "Failed to fetch";
     }
 
@@ -24,7 +24,7 @@ public abstract class AppDao<T> {
         return true;
     }
 
-    abstract String getValidationFailureMessage();
+    public abstract String getValidationFailureMessage();
 
     //return no. of affected rows post insert
     public int save(List<Object> attributes) throws SQLException {
@@ -71,7 +71,7 @@ public abstract class AppDao<T> {
 
     }
 
-    String getDeleteFailureMessage() {
+    public String getDeleteFailureMessage() {
         return "Failed to delete";
     }
 

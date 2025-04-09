@@ -28,12 +28,12 @@ public class FriendDao extends AppDao<FriendEntity> {
     }
 
     @Override
-    String getSaveSuccessMessage() {
+    public String getSaveSuccessMessage() {
         return "Friend Request Sent Successfully!";
     }
 
     @Override
-    String getValidationFailureMessage() {
+    public String getValidationFailureMessage() {
         return "";
     }
 

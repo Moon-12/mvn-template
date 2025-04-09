@@ -1,7 +1,7 @@
 package com.ashwija.mvn.central;
 
 import com.ashwija.mvn.common.AppConstants;
-import com.ashwija.mvn.dao.Menu;
+import com.ashwija.mvn.menu.Menu;
 import com.ashwija.mvn.model.NotificationEntity;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class CentralContext {
     public static boolean skipNextInput = false;
     private static String loggedInUserID;
 
-    private static Map<Character, NotificationEntity> notificationEntityMap = new HashMap();
+    private static Map<Character, NotificationEntity> notificationEntityMap = new HashMap<>();
 
     public static Map<Character, NotificationEntity> getNotificationEntityMap() {
         return notificationEntityMap;
