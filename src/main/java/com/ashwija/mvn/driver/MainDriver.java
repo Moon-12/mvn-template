@@ -36,6 +36,7 @@ public class MainDriver {
                 String currentInputLabel = currentMenu.getInputLabelAt(labelIndex++);
                 System.out.print(currentInputLabel);
                 String input = scanner.nextLine();
+
                 //any point we type exit
                 if (input.equalsIgnoreCase("EXIT")) {
                     comeOut = true;
@@ -46,6 +47,7 @@ public class MainDriver {
                     CentralContext.logOut();
                 }
 
+                //if input requires dual confirmation
                 if (currentInputLabel.startsWith("Do you want to")) {
                     //If confirmed then we will skip next input
                     if (input.equalsIgnoreCase("N")) {
