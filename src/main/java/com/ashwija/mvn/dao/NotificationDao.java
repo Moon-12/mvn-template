@@ -12,33 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationDao extends AppDao<NotificationEntity> {
-
-    @Override
-    public String getInsertSql() {
-        return "insert into NOTIFICATION(type,content,sender_id,receiver_id) values(?,?,?,?)";
-    }
-
-    String getInsertWithoutContentSQl() {
-        return "insert into NOTIFICATION(type,sender_id,receiver_id) values(?,?,?)";
-    }
-
-    public int save(List<Object> attributes) throws SQLException {
-        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(attributes.size() == 4 ? this.getInsertSql() : this.getInsertWithoutContentSQl());
-        for (int i = 0; i < attributes.size(); i++) {
-            Object attr = attributes.get(i);
-            if (attr instanceof Timestamp timestamp) {
-                pstmt.setTimestamp(i + 1, timestamp);
-            } else if (attr instanceof Integer integer) {
-                pstmt.setInt(i + 1, integer);
-            } else {
-                pstmt.setString(i + 1, attr.toString());
-            }
-        }
-        return pstmt.executeUpdate();
-
-    }
     
-
     @Override
     NotificationEntity getEntityFromResultSet(ResultSet resultSet) throws SQLException {
         return new NotificationEntity(resultSet.getString("sender_id"), resultSet.getString("type"), resultSet.getInt("object_id"));
