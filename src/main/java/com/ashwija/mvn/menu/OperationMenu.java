@@ -234,6 +234,17 @@ public class OperationMenu<T extends AppEntity> extends Menu {
             if (checksumTotal == LoginStatus.SUCCESS.getCode()) {
                 //set logged in userID in central context
                 CentralContext.setLoggedInUserID(inputList.get(0).toString());
+
+                //fetch 2 posts from friends
+                PostDao postDao = new PostDao();
+                List<PostEntity> postEntityList = postDao.get2PostsFromFriends();
+                if (!postEntityList.isEmpty()) {
+                    for (PostEntity postEntity : postEntityList) {
+                        System.out.println(postEntity.detailedToString());
+                    }
+                } else {
+                    System.out.println("No posts to display");
+                }
                 CentralContext.resetToRootMenu();
                 isNextMenuAlreadySet = true;
             }

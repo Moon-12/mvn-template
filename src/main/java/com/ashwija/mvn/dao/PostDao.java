@@ -1,6 +1,7 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.DatabaseConnection;
+import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.model.CommentEntity;
 import com.ashwija.mvn.model.PopularHashTagEntity;
 import com.ashwija.mvn.model.PostEntity;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 public class PostDao extends AppDao<PostEntity> {
     @Override
-    String getInsertSql() {
+    public String getInsertSql() {
         return "insert into POST(content,user_id,created_at) values(?,?,?)";
     }
 
@@ -42,26 +43,6 @@ public class PostDao extends AppDao<PostEntity> {
     @Override
     public String getSaveSuccessMessage() {
         return "Post created successfully!";
-    }
-
-    @Override
-    public String getValidationFailureMessage() {
-        return "";
-    }
-
-    @Override
-    String getDeleteSql() {
-        return "";
-    }
-
-    @Override
-    String getFetchSql() {
-        return "";
-    }
-
-    @Override
-    String getFetchAllSql() {
-        return "";
     }
 
 
@@ -116,7 +97,40 @@ public class PostDao extends AppDao<PostEntity> {
                 throw new RuntimeException(e);
             }
         }
+        return postEntityList;
+    }
 
+
+    public String get2PostsFromFriendSql() {
+        FriendDao friendDao = new FriendDao();
+        return "select p.id,f.friend_id as user_id ,p.content,p.created_at from " +
+                "(" + friendDao.getFriendListSql() + ") f LEFT JOIN post p " +
+                "ON f.friend_id=p.user_id WHERE p.id = (" +
+                "    SELECT id" +
+                "    FROM post p2" +
+                "    WHERE p2.user_id = f.friend_id" +
+                "    ORDER BY id ASC" +
+                "    LIMIT 1" +
+                ");";
+    }
+
+
+    public List<PostEntity> get2PostsFromFriends() throws SQLException {
+        List<PostEntity> postEntityList = new ArrayList<>();
+        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.get2PostsFromFriendSql());
+        pstmt.setString(1, CentralContext.getLoggedInUserID());
+        pstmt.setString(2, CentralContext.getLoggedInUserID());
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            postEntityList.add(this.getEntityFromResultSet(rs));
+        }
+
+        CommentDao commentDao = new CommentDao();
+        Optional<List<CommentEntity>> commentEntityList;
+        for (PostEntity postEntity : postEntityList) {
+            commentEntityList = commentDao.getCommentListByPostId(postEntity.getId());
+            commentEntityList.ifPresent(postEntity::setCommentEntityList);
+        }
         return postEntityList;
     }
 }

@@ -12,44 +12,23 @@ import java.util.List;
 
 public class FriendDao extends AppDao<FriendEntity> {
     @Override
-    String getInsertSql() {
+    public String getInsertSql() {
         return "insert into FRIEND(receiver_id,sender_id,created_at) values(?,?,?)";
     }
-
-
+    
     @Override
     public String getSaveSuccessMessage() {
         return "Friend Request Sent Successfully!";
     }
 
-    @Override
-    public String getValidationFailureMessage() {
-        return "";
-    }
-
-    @Override
-    String getDeleteSql() {
-        return "";
-    }
-
-    @Override
-    String getFetchSql() {
-        return "";
-    }
-
-    @Override
-    String getFetchAllSql() {
-        return "";
-    }
-
     String getFriendListSql() {
         return "SELECT receiver_id AS friend_id, created_at " +
                 "FROM FRIEND " +
-                "WHERE sender_id = ? AND status = 'accept' " +
+                "WHERE sender_id = ? AND status = 'accepted' " +
                 "UNION " +
                 "SELECT sender_id AS friend_id, created_at " +
                 "FROM FRIEND " +
-                "WHERE receiver_id = ? AND status = 'accept'";
+                "WHERE receiver_id = ? AND status = 'accepted'";
     }
 
     @Override

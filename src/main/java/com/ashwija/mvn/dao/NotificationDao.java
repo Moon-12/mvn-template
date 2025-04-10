@@ -14,7 +14,7 @@ import java.util.List;
 public class NotificationDao extends AppDao<NotificationEntity> {
 
     @Override
-    String getInsertSql() {
+    public String getInsertSql() {
         return "insert into NOTIFICATION(type,content,sender_id,receiver_id) values(?,?,?,?)";
     }
 
@@ -37,31 +37,7 @@ public class NotificationDao extends AppDao<NotificationEntity> {
         return pstmt.executeUpdate();
 
     }
-
-    @Override
-    public String getSaveSuccessMessage() {
-        return "";
-    }
-
-    @Override
-    public String getValidationFailureMessage() {
-        return "";
-    }
-
-    @Override
-    String getDeleteSql() {
-        return "";
-    }
-
-    @Override
-    String getFetchSql() {
-        return "";
-    }
-
-    @Override
-    String getFetchAllSql() {
-        return "";
-    }
+    
 
     @Override
     NotificationEntity getEntityFromResultSet(ResultSet resultSet) throws SQLException {
