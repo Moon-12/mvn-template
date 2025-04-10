@@ -16,6 +16,11 @@ public class UserProfileDao extends AppDao<UserProfileEntity> {
         return "INSERT into USER_PROFILE(id,password,gender,school) values(?,?,?,?)";
     }
 
+    @Override
+    public String getFetchSql() {
+        return "select id,gender,school from user_profile where id=?";
+    }
+
 
     String getLoginSql() {
         return "SELECT SUM(checksum) check_sum_total FROM " +

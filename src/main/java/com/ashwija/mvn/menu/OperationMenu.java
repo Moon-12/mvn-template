@@ -83,7 +83,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
         try {
             optionalEntity = appDao.fetch(selectedUserID);
         } catch (SQLException e) {
-            System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
+            System.out.println(this.appDao.getFetchFailureMessage() + " due to " + e.getMessage());
         } finally {
             if (optionalEntity.isPresent()) {
                 T entityObj = optionalEntity.get();
