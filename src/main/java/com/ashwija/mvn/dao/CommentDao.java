@@ -17,6 +17,11 @@ public class CommentDao extends AppDao<CommentEntity> {
         return new CommentEntity(resultSet.getString("content"), resultSet.getString("user_id"), resultSet.getTimestamp("created_at"));
     }
 
+    @Override
+    public String getInsertSql() {
+        return "insert into comment(content,post_id,user_id,created_at) values(?,?,?,?)";
+    }
+
     public String getCommentByPostIdSql() {
         return "select * from comment where post_id=?";
     }
