@@ -19,22 +19,6 @@ public class MessageEntity extends AppEntity {
         this.content = content;
     }
 
-    public String getReceiverID() {
-        return receiverID;
-    }
-
-    public void setReceiverID(String receiverID) {
-        this.receiverID = receiverID;
-    }
-
-    public String getSenderID() {
-        return senderID;
-    }
-
-    public void setSenderID(String senderID) {
-        this.senderID = senderID;
-    }
-
     @Override
     public String getHeader() {
         return "";

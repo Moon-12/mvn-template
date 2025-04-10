@@ -5,11 +5,11 @@ import java.util.List;
 
 public class PopularHashTagEntity extends AppEntity {
     private String name;
-    private Integer frequency;
+    private final Integer frequency;
     final static List<String> headers = new ArrayList<>();
 
     static {
-        List.of("HashTag", "Frequency").forEach(headers::add);
+        headers.addAll(List.of("HashTag", "Frequency"));
     }
 
     public PopularHashTagEntity(String name, Integer frequency) {
@@ -17,13 +17,6 @@ public class PopularHashTagEntity extends AppEntity {
         this.frequency = frequency;
     }
 
-    public Integer getFrequency() {
-        return frequency;
-    }
-
-    public void setFrequency(Integer frequency) {
-        this.frequency = frequency;
-    }
 
     public String getName() {
         return name;
