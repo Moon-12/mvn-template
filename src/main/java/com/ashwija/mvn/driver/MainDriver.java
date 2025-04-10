@@ -1,19 +1,23 @@
 package com.ashwija.mvn.driver;
 
+import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
-import com.ashwija.mvn.dao.Menu;
+import com.ashwija.mvn.menu.Menu;
 
+import java.io.InputStream;
 import java.util.*;
 
 public class MainDriver {
-    public void execute() {
-        Scanner scanner = new Scanner(System.in);
+    DatabaseConnection databaseConnection;
 
+    public void execute(InputStream inputStream) {
+        Scanner scanner = new Scanner(inputStream);
+        scanner.useDelimiter("\n");
         List<Object> inputList;
 
         while (true) {
             // Will get replaced with metadata fetch logic in future
-            Menu currentMenu = CentralContext.getCurrentMenu();
+            Menu currentMenu = CentralContext.peekCurrentMenuStack();
             System.out.println(currentMenu);
 
             // perform in loop
@@ -22,22 +26,47 @@ public class MainDriver {
 
             inputList = new ArrayList<>();
 
+            boolean comeOut = false;
             while (labelIndex < labelIndexLimit) {
-                System.out.print(currentMenu.getInputLabelAt(labelIndex++));
-                String input = scanner.next();
+                if (CentralContext.skipNextInput) {
+                    CentralContext.skipNextInput = false;
+                    labelIndex++;
+                    continue;
+                }
+                String currentInputLabel = currentMenu.getInputLabelAt(labelIndex++);
+                System.out.print(currentInputLabel);
+                String input = scanner.nextLine();
+
                 //any point we type exit
                 if (input.equalsIgnoreCase("EXIT")) {
-                    System.exit(0);
+                    comeOut = true;
+                    break;
                 }
                 //any point we type main reset to main menu
                 if (input.equalsIgnoreCase("MAIN")) {
-                    CentralContext.resetToMainMenu();
+                    CentralContext.logOut();
                 }
 
-                inputList.add(input);
+                //if input requires dual confirmation
+                if (currentInputLabel.startsWith("Do you want to")) {
+                    //If confirmed then we will skip next input
+                    if (input.equalsIgnoreCase("N")) {
+                        CentralContext.skipNextInput = true;
+                        // don't add  confirmation input to inputList when N
+                        continue;
+                    }
 
+                }
+                inputList.add(input);
             }
 
+            if (comeOut) {
+                break;
+            }
+            //reset to false if it's true
+            if (CentralContext.skipNextInput) {
+                CentralContext.skipNextInput = false;
+            }
             currentMenu.performAction(inputList);
 
             // call underlying operations

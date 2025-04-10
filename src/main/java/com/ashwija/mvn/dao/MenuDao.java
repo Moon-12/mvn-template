@@ -1,6 +1,9 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.common.OperationType;
+import com.ashwija.mvn.menu.Menu;
+import com.ashwija.mvn.menu.NavigationMenu;
+import com.ashwija.mvn.menu.OperationMenu;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +42,16 @@ public class MenuDao {
 
     public static AppDao getDaoObj(String dao) {
         switch (dao) {
-            case "SampleEntityDao":
-                return new SampleEntityDao();
+            case "UserProfileDao":
+                return new UserProfileDao();
+            case "MessageDao":
+                return new MessageDao();
+            case "PostDao":
+                return new PostDao();
+            case "FriendDao":
+                return new FriendDao();
+            case "NotificationDao":
+                return new NotificationDao();
             default:
                 return null;
         }

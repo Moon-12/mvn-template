@@ -1,68 +1,26 @@
 mainMenu:
   'm':
-    title: "Welcome to the <App_Name>!"
+    title: "Welcome to the FriendsBook!"
     padding: 0
     subMenu:
       '1':
-        title: "<SubMenu 1> Operations"
+        title: "Register"
         padding: 1
-        subMenu:
-          'a':
-            dao: "SampleEntityDao"
-            title: "<ADD title>"
-            operationType: "ADD"
-            inputLabels:
-              - "<input label 1--> enter name>: "
-              - "<input label 1--> enter age>: "
-          'b':
-            dao: "SampleEntityDao"
-            title: "<VIEW_ALL title>"
-            operationType: "VIEW_ALL"
-            inputLabels: [ ]
-          'c':
-            dao: "SampleEntityDao"
-            title: "<DELETE title>"
-            operationType: "DELETE"
-            inputLabels:
-              - "<input label 1 --> enter id>:"
-          'd':
-            dao: "SampleEntityDao"
-            title: "<VIEW title>"
-            operationType: "VIEW"
-            inputLabels:
-              - "<input label 1 --> enter id>:"
+        dao: "UserProfileDao"
+        operationType: "ADD"
         inputLabels:
-          - "Please enter your choice (a-d): "
+          - "Enter UserID: "
+          - "Enter Password: "
+          - "Enter Gender(M/F): "
+          - "Enter School: "
       '2':
-        title: "<SubMenu 2> Operations"
-        padding: 0
-        subMenu:
-          'a':
-            dao: "SampleEntityDao"
-            title: "<ADD title>"
-            operationType: "ADD"
-            inputLabels:
-              - "<input label 1--> enter id>: "
-              - "<input label 1--> enter name>: "
-          'b':
-            dao: "SampleEntityDao"
-            title: "<VIEW_ALL title>"
-            operationType: "VIEW_ALL"
-            inputLabels: [ ]
-          'c':
-            dao: "SampleEntityDao"
-            title: "<DELETE title>"
-            operationType: "DELETE"
-            inputLabels:
-              - "<input label 1 --> enter id>:"
-          'd':
-            dao: "SampleEntityDao"
-            title: "<VIEW title>"
-            operationType: "VIEW"
-            inputLabels:
-              - "<input label 1 --> enter id>:"
+        title: "Login"
+        padding: 1
+        dao: "UserProfileDao"
+        operationType: "LOGIN"
         inputLabels:
-          - "Please enter your choice (a-d):"
+          - "Enter UserID: "
+          - "Enter Password: "
     inputLabels:
       - "Please enter your choice (1-2): "
 spec:

@@ -1,0 +1,58 @@
+mainMenu:
+  'm':
+    title: "Welcome to the FriendsBook!"
+    padding: 0
+    subMenu:
+      '1':
+        title: "Register"
+        padding: 1
+        dao: "UserProfileDao"
+        operationType: "ADD"
+        inputLabels:
+          - "Enter UserID: "
+          - "Enter Password: "
+          - "Enter Gender(M/F): "
+          - "Enter School: "
+      '2':
+        title: "Login"
+        padding: 1
+        dao: "UserProfileDao"
+        operationType: "LOGIN"
+        inputLabels:
+          - "Enter UserID: "
+          - "Enter Password: "
+        successSubMenu: # Menu shown only after successful login
+      '3':
+        title: "sample"
+        padding: 0
+        subMenu:
+          'a':
+            dao: "SampleEntityDao"
+            title: "<ADD title>"
+            operationType: "ADD"
+            inputLabels:
+              - "<input label 1--> enter id>: "
+              - "<input label 1--> enter name>: "
+          'b':
+            dao: "SampleEntityDao"
+            title: "<VIEW_ALL title>"
+            operationType: "VIEW_ALL"
+            inputLabels: [ ]
+          'c':
+            dao: "SampleEntityDao"
+            title: "<DELETE title>"
+            operationType: "DELETE"
+            inputLabels:
+              - "<input label 1 --> enter id>:"
+          'd':
+            dao: "SampleEntityDao"
+            title: "<VIEW title>"
+            operationType: "VIEW"
+            inputLabels:
+              - "<input label 1 --> enter id>:"
+        inputLabels:
+          - "Please enter your choice (a-d):"
+    inputLabels:
+      - "Please enter your choice (1-2): "
+spec:
+# resource-specific configuration

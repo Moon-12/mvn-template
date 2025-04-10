@@ -1,0 +1,50 @@
+secureMenu:
+  title: "FriendsBook"
+  padding: 1
+  subMenu:
+    '1':
+      title: "Select a post"
+      padding: 2
+      dao: "PostDao"
+      operationType: "VIEW"
+      inputLabels:
+        - "Enter Post ID"
+    '2':
+      title: "Check notifications"
+      padding: 2
+      dao: "NotificationDao"
+      operationType: "VIEW_ALL_ACTIVE_NOTIFICATION"
+    '3':
+      title: "Create a new post"
+      padding: 2
+      dao: "PostDao"
+      operationType: "ADD"
+      inputLabels:
+        - "Enter post content: "
+    '4':
+      title: "Friends"
+      padding: 2
+      dao: "FriendDao"
+      operationType: "VIEW_FRIEND_LIST"
+    '5':
+      title: "Send a message"
+      padding: 2
+      dao: "MessageDao"
+      operationType: "ADD"
+      inputLabels:
+        - "Enter recipient UserID: "
+        - "Enter message content: "
+    '6':
+      title: "Send a friend request"
+      padding: 2
+      dao: "FriendDao"
+      operationType: "ADD"
+      inputLabels:
+        - "Enter UserID to send request: "
+    '7':
+      title: "Hashtags in trend"
+      padding: 2
+      dao: "PostDao"
+      operationType: "POPULAR_HASHTAG"
+  inputLabels:
+    - "Please enter your choice (1-7): "

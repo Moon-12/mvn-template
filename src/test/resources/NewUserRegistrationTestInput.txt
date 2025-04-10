@@ -1,0 +1,6 @@
+1
+test1?
+pass
+M
+testSchool
+exit
