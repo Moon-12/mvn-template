@@ -47,6 +47,17 @@ public class CreatePostTest {
                         `created_at` DATETIME
                     )""");
         }
+
+        try (Statement stmt = h2Connection.createStatement()) {
+            stmt.execute("""
+                    CREATE TABLE friend (
+                        id INT AUTO_INCREMENT NOT NULL,
+                        sender_id VARCHAR(20),
+                        receiver_id VARCHAR(20),
+                        created_at DATETIME,
+                        status varchar2(20) default 'pending'
+                    )""");
+        }
     }
 
     @AfterEach
@@ -55,6 +66,7 @@ public class CreatePostTest {
         try (Statement stmt = DatabaseConnection.con.createStatement()) {
             stmt.execute("DROP TABLE user_profile");
             stmt.execute("DROP TABLE post");
+            stmt.execute("DROP TABLE friend");
         }
         DatabaseConnection.con.close();
         if (inputStream != null) {

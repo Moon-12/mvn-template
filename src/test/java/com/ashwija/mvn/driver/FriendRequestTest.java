@@ -46,7 +46,18 @@ public class FriendRequestTest {
                         id INT AUTO_INCREMENT NOT NULL,
                         sender_id VARCHAR(20),
                         receiver_id VARCHAR(20),
-                        created_at DATETIME
+                        created_at DATETIME,
+                        status varchar2(20) default 'pending'
+                    )""");
+        }
+        try (Statement stmt = h2Connection.createStatement()) {
+            stmt.execute("""
+                    CREATE TABLE `post` (
+                      `id` int NOT NULL,
+                      `content` varchar(200) DEFAULT NULL,
+                      `hashtag_id` varchar(50) DEFAULT NULL,
+                      `user_id` varchar(20) DEFAULT NULL,
+                      `created_at` datetime DEFAULT NULL
                     )""");
         }
         CentralContext.setLoggedInUserID("ash6?");
@@ -60,6 +71,9 @@ public class FriendRequestTest {
         }
         try (Statement stmt = DatabaseConnection.con.createStatement()) {
             stmt.execute("DROP TABLE friend");
+        }
+        try (Statement stmt = DatabaseConnection.con.createStatement()) {
+            stmt.execute("DROP TABLE post");
         }
         DatabaseConnection.con.close();
         CentralContext.logOut();
