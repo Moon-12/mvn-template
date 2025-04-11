@@ -17,7 +17,8 @@ mainMenu:
         title: "Login"
         padding: 1
         dao: "UserProfileDao"
-        operationType: "LOGIN"
+        operationType: "VIEW"
+        overrideOperationMenu: "LoginOperationMenu"
         inputLabels:
           - "Enter UserID: "
           - "Enter Password: "

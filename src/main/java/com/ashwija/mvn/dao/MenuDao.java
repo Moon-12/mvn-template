@@ -1,10 +1,7 @@
 package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.common.OperationType;
-import com.ashwija.mvn.menu.Menu;
-import com.ashwija.mvn.menu.NavigationMenu;
-import com.ashwija.mvn.menu.NotificationOperationMenu;
-import com.ashwija.mvn.menu.OperationMenu;
+import com.ashwija.mvn.menu.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,14 +15,15 @@ public class MenuDao {
         List<String> inputLabels = (List<String>) menuData.getOrDefault("inputLabels", List.of());
         Map<String, Object> items = (Map<String, Object>) menuData.get("subMenu");
 
-        String overrideOperationMenu = (String) menuData.get("overrideOperationMenu");
+        String overrideOperationMenu = (String) menuData.getOrDefault("overrideOperationMenu", "OperationMenu");
         // If no items, it's a leaf node (OperationMenu)
         if (items == null || items.isEmpty()) {
             String operationTypeStr = (String) menuData.get("operationType");
             OperationType operationType = operationTypeStr != null ? OperationType.valueOf(operationTypeStr) : null;
             String daoStr = (String) menuData.get("dao");
             AppDao dao = daoStr != null ? getDaoObj(daoStr) : null; // Adjust DAO based on context
-            OperationMenu operationMenu = overrideOperationMenu != null ? new NotificationOperationMenu(title, operationType, dao) : new OperationMenu(title, operationType, dao);
+            OperationMenu operationMenu = getOperationMenuObj(overrideOperationMenu, title, operationType, dao);
+
             operationMenu.setInputLabelList(inputLabels);
             return operationMenu;
         }
@@ -40,6 +38,18 @@ public class MenuDao {
 
         NavigationMenu navigationMenu = new NavigationMenu(title, padding, subMenu, inputLabels);
         return navigationMenu;
+    }
+
+    public static OperationMenu getOperationMenuObj(String overrideOperationMenu, String title, OperationType operationType, AppDao dao) {
+        switch (overrideOperationMenu) {
+            case "LoginOperationMenu":
+                return new LoginOperationMenu(title, operationType, dao);
+            case "NotificationOperationMenu":
+                return new NotificationOperationMenu(title, operationType, dao);
+            default:
+                return new OperationMenu(title, operationType, dao);
+
+        }
     }
 
     public static AppDao getDaoObj(String dao) {

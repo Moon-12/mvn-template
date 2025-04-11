@@ -54,9 +54,6 @@ public class OperationMenu<T extends AppEntity> extends Menu {
             case VIEW:
                 viewOperation(inputList);
                 break;
-            case LOGIN:
-                isNextMenuAlreadySet = loginOperation(inputList);
-                break;
             case POPULAR_HASHTAG:
                 isNextMenuAlreadySet = getPopularHashtag();
                 break;
@@ -171,36 +168,6 @@ public class OperationMenu<T extends AppEntity> extends Menu {
 
             } else {
                 System.out.println("No HashTags found!");
-            }
-        } catch (SQLException e) {
-            System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
-        } finally {
-            return isNextMenuAlreadySet;
-        }
-    }
-
-    private boolean loginOperation(List<Object> inputList) {
-        UserProfileDao userProfileDao = (UserProfileDao) appDao;
-        boolean isNextMenuAlreadySet = false;
-        try {
-            int checksumTotal = userProfileDao.login(inputList);
-            System.out.println(LoginStatus.fromCode(checksumTotal).getMessage());
-            if (checksumTotal == LoginStatus.SUCCESS.getCode()) {
-                //set logged in userID in central context
-                CentralContext.setLoggedInUserID(inputList.get(0).toString());
-
-                //fetch 2 posts from friends
-                PostDao postDao = new PostDao();
-                List<PostEntity> postEntityList = postDao.get2LatestPostsFromFriends();
-                if (!postEntityList.isEmpty()) {
-                    for (PostEntity postEntity : postEntityList) {
-                        System.out.println(postEntity.detailedToString());
-                    }
-                } else {
-                    System.out.println("No posts to display");
-                }
-                CentralContext.resetToRootMenu();
-                isNextMenuAlreadySet = true;
             }
         } catch (SQLException e) {
             System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
