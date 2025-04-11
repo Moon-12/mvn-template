@@ -101,7 +101,7 @@ public class PostDao extends AppDao<PostEntity> {
     }
 
 
-    public String get2PostsFromFriendSql() {
+    public String get2LatestPostsFromFriendSql() {
         FriendDao friendDao = new FriendDao();
         return "select p.id,f.friend_id as user_id ,p.content,p.created_at from " +
                 "(" + friendDao.getFriendListSql() + ") f LEFT JOIN post p " +
@@ -109,15 +109,15 @@ public class PostDao extends AppDao<PostEntity> {
                 "    SELECT id" +
                 "    FROM post p2" +
                 "    WHERE p2.user_id = f.friend_id" +
-                "    ORDER BY id ASC" +
+                "    ORDER BY id DESC" +
                 "    LIMIT 1" +
-                ");";
+                ")";
     }
 
 
-    public List<PostEntity> get2PostsFromFriends() throws SQLException {
+    public List<PostEntity> get2LatestPostsFromFriends() throws SQLException {
         List<PostEntity> postEntityList = new ArrayList<>();
-        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.get2PostsFromFriendSql());
+        PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.get2LatestPostsFromFriendSql());
         pstmt.setString(1, CentralContext.getLoggedInUserID());
         pstmt.setString(2, CentralContext.getLoggedInUserID());
         ResultSet rs = pstmt.executeQuery();

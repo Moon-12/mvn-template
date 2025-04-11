@@ -237,7 +237,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
 
                 //fetch 2 posts from friends
                 PostDao postDao = new PostDao();
-                List<PostEntity> postEntityList = postDao.get2PostsFromFriends();
+                List<PostEntity> postEntityList = postDao.get2LatestPostsFromFriends();
                 if (!postEntityList.isEmpty()) {
                     for (PostEntity postEntity : postEntityList) {
                         System.out.println(postEntity.detailedToString());
