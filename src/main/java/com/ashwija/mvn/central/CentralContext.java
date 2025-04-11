@@ -5,6 +5,7 @@ import com.ashwija.mvn.menu.Menu;
 import com.ashwija.mvn.model.NotificationEntity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -12,15 +13,16 @@ public class CentralContext {
     private static final Stack<Menu> menuStack = new Stack<>();
     public static boolean skipNextInput = false;
     private static String loggedInUserID;
+    private static final Stack<List<Object>> previousInputs = new Stack<>();
 
-    private static Map<Character, NotificationEntity> notificationEntityMap = new HashMap<>();
+    private static final Map<Character, NotificationEntity> notificationEntityMap = new HashMap<>();
 
-    public static Map<Character, NotificationEntity> getNotificationEntityMap() {
-        return notificationEntityMap;
+    public static NotificationEntity getNotificationEntityByKey(Character key) {
+        return notificationEntityMap.get(key);
     }
 
-    public static void setNotificationEntityMap(Map<Character, NotificationEntity> notificationEntityMap) {
-        CentralContext.notificationEntityMap = notificationEntityMap;
+    public static void putIntoNotificationEntityMap(Character key, NotificationEntity notificationEntityValue) {
+        CentralContext.notificationEntityMap.put(key, notificationEntityValue);
     }
 
     public static String getLoggedInUserID() {
@@ -77,15 +79,11 @@ public class CentralContext {
         return CentralContext.menuStack.peek();
     }
 
-    public static Menu getPrevMenu() {
-        if (menuStack.size() < 2) {
-            return null; // No previous menu if stack has 0 or 1 item
-        }
-        // Create a temporary stack to peek at the second-to-top element
-        Stack<Menu> tempStack = new Stack<>();
-        tempStack.push(CentralContext.menuStack.pop()); // Remove current
-        Menu prevMenu = CentralContext.menuStack.peek(); // Previous is now at top
-        CentralContext.menuStack.push(tempStack.pop()); // Restore current
-        return prevMenu;
+    public static void pushPreviousInputs(List<Object> inputList) {
+        previousInputs.push(inputList);
+    }
+
+    public static List<Object> popPreviousInputs() {
+        return previousInputs.pop();
     }
 }

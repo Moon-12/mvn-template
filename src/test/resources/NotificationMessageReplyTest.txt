@@ -1,0 +1,8 @@
+2
+ash
+test
+2
+1
+Y
+hey
+exit

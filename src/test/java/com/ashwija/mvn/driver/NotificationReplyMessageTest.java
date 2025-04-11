@@ -2,6 +2,8 @@ package com.ashwija.mvn.driver;
 
 import com.ashwija.mvn.DatabaseConnection;
 import com.ashwija.mvn.central.CentralContext;
+import com.ashwija.mvn.common.DateAndTime;
+import com.ashwija.mvn.dao.MessageDao;
 import com.ashwija.mvn.dao.UserProfileDao;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,10 +15,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FriendRequestTest {
+public class NotificationReplyMessageTest {
     Connection h2Connection;
-    private final UserProfileDao userProfileDao = new UserProfileDao();
+    UserProfileDao userProfileDao = new UserProfileDao();
     MainDriver mainDriver = new MainDriver();
+    MessageDao messageDao = new MessageDao();
     InputStream inputStream;
 
     @BeforeEach
@@ -33,64 +36,66 @@ public class FriendRequestTest {
                       `gender` varchar(10) NOT NULL,
                       `school` varchar(20) NOT NULL
                     )""");
-        }
-        List<Object> inputList = List.of("ash6?", "test", "F", "uhcl");
-        userProfileDao.save(inputList);
-
-        List<Object> inputList1 = List.of("swap6?", "test", "M", "uhcl");
-        userProfileDao.save(inputList1);
-
-        try (Statement stmt = h2Connection.createStatement()) {
             stmt.execute("""
-                    CREATE TABLE friend (
+                    CREATE TABLE `post` (
+                        `id` INT AUTO_INCREMENT NOT NULL,
+                        `content` VARCHAR(200),
+                        `hashtag_id` VARCHAR(50),
+                        `user_id` VARCHAR(20),
+                        `created_at` DATETIME
+                    )""");
+            stmt.execute("CREATE TABLE `friend` (" +
+                    "  `id` int AUTO_INCREMENT NOT NULL," +
+                    "  `sender_id` varchar(20)," +
+                    "  `receiver_id` varchar(20)," +
+                    "  `created_at` datetime," +
+                    "  `status` varchar(25) DEFAULT 'PENDING'" +
+                    ")");
+            stmt.execute("""
+                    CREATE TABLE message (
                         id INT AUTO_INCREMENT NOT NULL,
+                        content VARCHAR(100),
                         sender_id VARCHAR(20),
                         receiver_id VARCHAR(20),
                         created_at DATETIME,
-                        status varchar2(20) default 'PENDING'
+                        status VARCHAR(20) DEFAULT 'UNREAD'
                     )""");
         }
-        try (Statement stmt = h2Connection.createStatement()) {
-            stmt.execute("""
-                    CREATE TABLE `post` (
-                      `id` int NOT NULL,
-                      `content` varchar(200) DEFAULT NULL,
-                      `hashtag_id` varchar(50) DEFAULT NULL,
-                      `user_id` varchar(20) DEFAULT NULL,
-                      `created_at` datetime DEFAULT NULL
-                    )""");
-        }
-        CentralContext.setLoggedInUserID("ash6?");
+        List<Object> inputList = List.of("ash", "test", "F", "uhcl");
+        userProfileDao.save(inputList);
+
+        messageDao.save(List.of("ash", "hello", "swap", DateAndTime.getCurrentTimestamp()));
+
     }
 
     @AfterEach
     void tearDown() throws SQLException {
         // Clean up the database
         try (Statement stmt = DatabaseConnection.con.createStatement()) {
-            stmt.execute("DROP TABLE user_profile");
-        }
-        try (Statement stmt = DatabaseConnection.con.createStatement()) {
             stmt.execute("DROP TABLE friend");
-        }
-        try (Statement stmt = DatabaseConnection.con.createStatement()) {
+            stmt.execute("DROP TABLE message");
             stmt.execute("DROP TABLE post");
+            stmt.execute("DROP TABLE user_profile");
         }
         DatabaseConnection.con.close();
         CentralContext.logOut();
     }
 
+
     @Test
     void execute() throws SQLException {
         inputStream = getClass()
                 .getClassLoader()
-                .getResourceAsStream("NewFriendRequestTestInput.txt");
+                .getResourceAsStream("NotificationMessageReplyTest.txt");
         mainDriver.execute(inputStream);
         try (PreparedStatement stmt = DatabaseConnection.con.prepareStatement(
-                "select * from friend")) {
+                "select * from message")) {
             ResultSet resultSet = stmt.executeQuery();
-            resultSet.next();
-            int totalRows = resultSet.getRow();
-            assertEquals(1, totalRows, "One row was inserted");
+            int totalRows = 0;
+            while (resultSet.next()) {
+                totalRows++;
+            }
+            assertEquals(2, totalRows, "reply message was added");
         }
     }
 }

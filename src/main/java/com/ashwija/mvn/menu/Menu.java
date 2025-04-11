@@ -12,6 +12,11 @@ public abstract class Menu {
     private Map<Character, Menu> subMenu;
     private List<String> inputLabelList;
 
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -54,6 +59,9 @@ public abstract class Menu {
         StringBuffer finalFormatedMenu = new StringBuffer();
         if (this.title != null) {
             finalFormatedMenu.append(GraphicEngine.printHeaderBlock(this.padding, this.title));
+        }
+        if (this.subTitle != null) {
+            finalFormatedMenu.append("\n" + this.subTitle);
         }
         // TODO reset of the append logic here
         if (subMenu != null) {

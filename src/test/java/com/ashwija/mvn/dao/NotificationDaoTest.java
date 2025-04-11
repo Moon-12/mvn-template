@@ -34,7 +34,7 @@ class NotificationDaoTest {
                     "  `sender_id` varchar(20)," +
                     "  `receiver_id` varchar(20)," +
                     "  `created_at` datetime," +
-                    "  `status` varchar(25) DEFAULT 'pending'" +
+                    "  `status` varchar(25) DEFAULT 'PENDING'" +
                     ")");
             stmt.execute("""
                     CREATE TABLE message (
@@ -43,7 +43,7 @@ class NotificationDaoTest {
                         sender_id VARCHAR(20),
                         receiver_id VARCHAR(20),
                         created_at DATETIME,
-                        status VARCHAR(20) DEFAULT 'unread'
+                        status VARCHAR(20) DEFAULT 'UNREAD'
                     )""");
         }
         friendDao.save(List.of("swap", "ash", DateAndTime.getCurrentTimestamp()));
