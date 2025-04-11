@@ -46,7 +46,7 @@ class PostDaoTest {
                     "  `sender_id` varchar(20)," +
                     "  `receiver_id` varchar(20)," +
                     "  `created_at` datetime," +
-                    "  `status` varchar(25) DEFAULT 'accepted'" +
+                    "  `status` varchar(25) DEFAULT 'ACCEPTED'" +
                     ")");
         }
         postDao.save(List.of("good morning", "#newday", "swap", DateAndTime.getCurrentTimestamp()));

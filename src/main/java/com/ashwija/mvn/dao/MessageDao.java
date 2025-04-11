@@ -15,7 +15,12 @@ public class MessageDao extends AppDao<MessageEntity> {
         return "Message sent successfully!";
     }
 
-    
+    @Override
+    public String getSaveFailureMessage() {
+        return "Message could not be sent!";
+    }
+
+
     @Override
     MessageEntity getEntityFromResultSet(ResultSet resultSet) {
         return null;

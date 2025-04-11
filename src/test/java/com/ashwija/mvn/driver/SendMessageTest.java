@@ -48,7 +48,7 @@ public class SendMessageTest {
                         sender_id VARCHAR(20),
                         receiver_id VARCHAR(20),
                         created_at DATETIME,
-                        status VARCHAR(20) DEFAULT 'unread'
+                        status VARCHAR(20) DEFAULT 'UNREAD'
                     )""");
         }
 
@@ -69,7 +69,7 @@ public class SendMessageTest {
                         sender_id VARCHAR(20),
                         receiver_id VARCHAR(20),
                         created_at DATETIME,
-                        status varchar2(20) default 'pending'
+                        status varchar2(20) default 'PENDING'
                     )""");
         }
     }

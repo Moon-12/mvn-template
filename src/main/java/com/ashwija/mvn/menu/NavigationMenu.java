@@ -21,6 +21,14 @@ public class NavigationMenu extends Menu {
 
         Menu currentMenu = CentralContext.peekCurrentMenuStack();
         Menu subMenu = currentMenu.getSubMenuAt(menuChoice);
+
+
+        //if subMenu is NotificationOperationMenu then we need to store previous Input
+        if (subMenu instanceof NotificationOperationMenu) {
+            CentralContext.pushPreviousInputs(inputList);
+        }
+
+
         if (subMenu != null) {
             CentralContext.pushToCurrentMenuStack(subMenu);
         }

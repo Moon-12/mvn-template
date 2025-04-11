@@ -15,7 +15,7 @@ public class FriendDao extends AppDao<FriendEntity> {
     public String getInsertSql() {
         return "insert into FRIEND(receiver_id,sender_id,created_at) values(?,?,?)";
     }
-    
+
     @Override
     public String getSaveSuccessMessage() {
         return "Friend Request Sent Successfully!";
@@ -24,11 +24,11 @@ public class FriendDao extends AppDao<FriendEntity> {
     String getFriendListSql() {
         return "SELECT receiver_id AS friend_id, created_at " +
                 "FROM FRIEND " +
-                "WHERE sender_id = ? AND status = 'accepted' " +
+                "WHERE sender_id = ? AND status = 'ACCEPTED' " +
                 "UNION " +
                 "SELECT sender_id AS friend_id, created_at " +
                 "FROM FRIEND " +
-                "WHERE receiver_id = ? AND status = 'accepted'";
+                "WHERE receiver_id = ? AND status = 'ACCEPTED'";
     }
 
     @Override

@@ -32,7 +32,7 @@ class FriendDaoTest {
                     "  `sender_id` varchar(20)," +
                     "  `receiver_id` varchar(20)," +
                     "  `created_at` datetime," +
-                    "  `status` varchar(25) DEFAULT 'accepted'" +
+                    "  `status` varchar(25) DEFAULT 'ACCEPTED'" +
                     ")");
         }
         friendDao.save(List.of("ash", "swap", DateAndTime.getCurrentTimestamp()));
