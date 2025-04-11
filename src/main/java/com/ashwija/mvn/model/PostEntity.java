@@ -10,6 +10,9 @@ public class PostEntity extends AppEntity {
     private Integer id;
     private List<CommentEntity> commentEntityList;
 
+    public String getContent() {
+        return content;
+    }
 
     public void setCommentEntityList(List<CommentEntity> commentEntityList) {
         this.commentEntityList = commentEntityList;
