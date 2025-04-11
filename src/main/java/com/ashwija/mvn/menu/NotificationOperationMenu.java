@@ -42,6 +42,8 @@ public class NotificationOperationMenu extends OperationMenu<NotificationEntity>
                                     OperationType.VIEW,
                                     notificationDao
                             );
+                            //for displaying message
+                            notificationOperationMenu.setSubTitle(notificationEntity.getContent());
 
                             notificationOperationMenu.setInputLabelList(new ArrayList<>(List.of(
                                     notificationEntity.getType() == NotificationType.MESSAGE ?
@@ -77,10 +79,6 @@ public class NotificationOperationMenu extends OperationMenu<NotificationEntity>
                 String displayFriendRequestResultMsg = "";
                 List<Object> previousInput = CentralContext.popPreviousInputs();
                 NotificationEntity notificationEntity = CentralContext.getNotificationEntityByKey(previousInput.get(0).toString().charAt(0));
-//
-//                if (notificationEntity.getContent() != null) {
-//                    System.out.println(notificationEntity.getContent());
-//                }
 
                 List<Object> attributes = new ArrayList<>();
                 attributes.add(notificationEntity.getType()); // Add notification type
