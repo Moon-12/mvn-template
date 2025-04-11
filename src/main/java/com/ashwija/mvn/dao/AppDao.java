@@ -89,9 +89,6 @@ public abstract class AppDao<T> {
         throw new SQLException("Undefined fetch query");
     }
 
-    public String getUpdateSql() throws SQLException {
-        throw new SQLException("Undefined update query");
-    }
 
     public String getFetchAllSql() throws SQLException {
         throw new SQLException("Undefined fetch all query");

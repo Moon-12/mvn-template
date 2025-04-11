@@ -15,7 +15,7 @@ public class CentralContext {
     private static String loggedInUserID;
     private static final Stack<List<Object>> previousInputs = new Stack<>();
 
-    private static Map<Character, NotificationEntity> notificationEntityMap = new HashMap<>();
+    private static final Map<Character, NotificationEntity> notificationEntityMap = new HashMap<>();
 
     public static NotificationEntity getNotificationEntityByKey(Character key) {
         return notificationEntityMap.get(key);

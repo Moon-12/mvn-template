@@ -11,7 +11,7 @@ public class NotificationEntity extends AppEntity {
         return content;
     }
 
-    private String content;
+    private final String content;
     private final Integer objectID;
     private final NotificationType type;
 

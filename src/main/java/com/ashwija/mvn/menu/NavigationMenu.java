@@ -10,10 +10,7 @@ public class NavigationMenu extends Menu {
         super(title, padding, subMenu, inputLabel);
     }
 
-    public NavigationMenu(String title) {
-        super(title);
-    }
-
+   
     @Override
     public void performAction(List<Object> inputList) {
         //set current menu to selected sub menu
