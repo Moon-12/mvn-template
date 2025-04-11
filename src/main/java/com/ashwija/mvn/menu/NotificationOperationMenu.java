@@ -64,9 +64,9 @@ public class NotificationOperationMenu extends OperationMenu<NotificationEntity>
                         NavigationMenu navigationMenu = new NavigationMenu(null, 1, notificationListSubmenu, new ArrayList<>(List.of("select a notification to view: ")));
                         CentralContext.pushNextMenu(navigationMenu);
 
-
                     } else {
                         System.out.println("No new notifications");
+                        CentralContext.resetToRootMenu();
                     }
                 } catch (SQLException e) {
                     System.out.println(appDao.getFetchFailureMessage() + " due to " + e.getMessage());
@@ -108,18 +108,19 @@ public class NotificationOperationMenu extends OperationMenu<NotificationEntity>
                                     CentralContext.getLoggedInUserID(),
                                     DateAndTime.getCurrentTimestamp()));
                             if (rowsAffected > 0) {
-                                messageDao.getSaveSuccessMessage();
+                                System.out.println(messageDao.getSaveSuccessMessage());
                             } else {
-                                messageDao.getSaveFailureMessage();
+                                System.out.println(messageDao.getSaveFailureMessage());
                             }
                         }
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+                CentralContext.resetToRootMenu();
                 break;
 
         }
-        CentralContext.resetToRootMenu();
+
     }
 }
