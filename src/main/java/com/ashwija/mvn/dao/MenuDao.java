@@ -3,6 +3,7 @@ package com.ashwija.mvn.dao;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.menu.Menu;
 import com.ashwija.mvn.menu.NavigationMenu;
+import com.ashwija.mvn.menu.NotificationOperationMenu;
 import com.ashwija.mvn.menu.OperationMenu;
 
 import java.util.HashMap;
@@ -17,13 +18,14 @@ public class MenuDao {
         List<String> inputLabels = (List<String>) menuData.getOrDefault("inputLabels", List.of());
         Map<String, Object> items = (Map<String, Object>) menuData.get("subMenu");
 
+        String overrideOperationMenu = (String) menuData.get("overrideOperationMenu");
         // If no items, it's a leaf node (OperationMenu)
         if (items == null || items.isEmpty()) {
             String operationTypeStr = (String) menuData.get("operationType");
             OperationType operationType = operationTypeStr != null ? OperationType.valueOf(operationTypeStr) : null;
             String daoStr = (String) menuData.get("dao");
             AppDao dao = daoStr != null ? getDaoObj(daoStr) : null; // Adjust DAO based on context
-            OperationMenu<?> operationMenu = new OperationMenu<>(title, operationType, dao);
+            OperationMenu operationMenu = overrideOperationMenu != null ? new NotificationOperationMenu(title, operationType, dao) : new OperationMenu(title, operationType, dao);
             operationMenu.setInputLabelList(inputLabels);
             return operationMenu;
         }

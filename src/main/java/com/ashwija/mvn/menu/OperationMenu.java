@@ -3,7 +3,6 @@ package com.ashwija.mvn.menu;
 import com.ashwija.mvn.central.CentralContext;
 import com.ashwija.mvn.common.DateAndTime;
 import com.ashwija.mvn.common.LoginStatus;
-import com.ashwija.mvn.common.NotificationType;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.dao.*;
 import com.ashwija.mvn.model.*;
@@ -17,6 +16,14 @@ import java.util.regex.Pattern;
 public class OperationMenu<T extends AppEntity> extends Menu {
     private final OperationType operationType;
     private AppDao appDao = null;
+
+    public AppDao getAppDao() {
+        return appDao;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
 
     public OperationMenu(String title, OperationType operationType, AppDao appDao) {
         super(title);
@@ -62,64 +69,11 @@ public class OperationMenu<T extends AppEntity> extends Menu {
             case VIEW_USER_PROFILE:
                 isNextMenuAlreadySet = getViewUserProfile(inputList);
                 break;
-            case VIEW_ALL_ACTIVE_NOTIFICATION:
-                isNextMenuAlreadySet = getViewAllActiveNotification();
-                break;
-            case VIEW_NOTIFICATION:
         }
 
         // Set prevMenu only if nextMenu wasn’t set
         if (!isNextMenuAlreadySet) {
             CentralContext.setPrevMenu();
-        }
-    }
-
-    private boolean getViewAllActiveNotification() {
-        boolean isNextMenuAlreadySet = false;
-        NotificationDao notificationDao = new NotificationDao();
-        Map<Character, Menu> notificationListSubmenu = new HashMap<>();
-        List<NotificationEntity> notificationEntityList;
-        try {
-            notificationEntityList = notificationDao.getAllActiveNotifications();
-            if (!notificationEntityList.isEmpty()) {
-                char option = '1';
-                for (NotificationEntity notificationEntity : notificationEntityList) {
-                    String subMenuTitle = notificationEntity.getType() == NotificationType.MESSAGE ?
-                            "New Message from: " :
-                            "New Friend Request from: ";
-                    OperationMenu notificationEntityOperationMenu = new OperationMenu<NotificationEntity>(
-                            subMenuTitle.concat(notificationEntity.getSenderId()),
-                            OperationType.VIEW_NOTIFICATION,
-                            notificationDao
-                    );
-
-                    notificationEntityOperationMenu.setInputLabelList(new ArrayList<>(List.of(
-                            notificationEntity.getType() == NotificationType.MESSAGE ?
-                                    new String[]{
-                                            "Do you want to reply?(Y/N)",
-                                            "Enter your reply:"
-                                    } :
-                                    new String[]{
-                                            "Do you want to accept?(Y/N)"
-                                    }
-                    )));
-                    notificationListSubmenu.put(option++, notificationEntityOperationMenu);
-
-                    //populate the notifications in central context
-                    CentralContext.getNotificationEntityMap().put(option, notificationEntity);
-                }
-                // OperationMenu operationMenu = new OperationMenu(null, 1, notificationListSubmenu, new ArrayList<>(List.of("select a notification to view: ")), OperationType.VIEW_NOTIFICATION, notificationDao);
-                NavigationMenu navigationMenu = new NavigationMenu(null, 1, notificationListSubmenu, new ArrayList<>(List.of("select a notification to view: ")));
-                CentralContext.pushNextMenu(navigationMenu);
-                isNextMenuAlreadySet = true;
-
-            } else {
-                System.out.println("No new notifications");
-            }
-        } catch (SQLException e) {
-            System.out.println(this.appDao.getFetchFailureMessage() + " due to " + e.getMessage());
-        } finally {
-            return isNextMenuAlreadySet;
         }
     }
 
@@ -129,7 +83,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
         try {
             optionalEntity = appDao.fetch(selectedUserID);
         } catch (SQLException e) {
-            System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
+            System.out.println(this.appDao.getFetchFailureMessage() + " due to " + e.getMessage());
         } finally {
             if (optionalEntity.isPresent()) {
                 T entityObj = optionalEntity.get();
