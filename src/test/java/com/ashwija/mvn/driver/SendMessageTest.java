@@ -48,7 +48,7 @@ public class SendMessageTest {
                         sender_id VARCHAR(20),
                         receiver_id VARCHAR(20),
                         created_at DATETIME,
-                        status VARCHAR(20) DEFAULT 'pending'
+                        status VARCHAR(20) DEFAULT 'unread'
                     )""");
         }
 
