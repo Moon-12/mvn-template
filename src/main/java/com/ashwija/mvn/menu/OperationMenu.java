@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 
 public class OperationMenu<T extends AppEntity> extends Menu {
     private final OperationType operationType;
-    private AppDao appDao = null;
+    private AppDao<? extends AppEntity> appDao = null;
 
-    public AppDao getAppDao() {
+    public AppDao<? extends AppEntity> getAppDao() {
         return appDao;
     }
 
@@ -78,7 +78,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
         Optional<T> optionalEntity = Optional.empty();
         String selectedUserID = CentralContext.peekCurrentMenuStack().getSubMenuAt(inputList.get(0).toString().charAt(0)).getTitle();
         try {
-            optionalEntity = appDao.fetch(selectedUserID);
+            optionalEntity = (Optional<T>) appDao.fetch(selectedUserID);
         } catch (SQLException e) {
             System.out.println(this.appDao.getFetchFailureMessage() + " due to " + e.getMessage());
         } finally {
@@ -179,7 +179,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
     private void viewOperation(List<Object> inputList) {
         Optional<T> entity = null;
         try {
-            entity = appDao.fetch(Integer.parseInt((String) inputList.get(0)));
+            entity = (Optional<T>) appDao.fetch(Integer.parseInt((String) inputList.get(0)));
         } catch (SQLException e) {
             System.out.println(this.appDao.getSaveFailureMessage() + " due to " + e.getMessage());
         }
@@ -193,7 +193,7 @@ public class OperationMenu<T extends AppEntity> extends Menu {
     }
 
     private void viewAllOperation() {
-        List<T> entityList = appDao.fetchAll();
+        List<T> entityList = (List<T>) appDao.fetchAll();
         //print selected entity header row
         if (!entityList.isEmpty()) {
             System.out.println(entityList.get(0).getHeader());

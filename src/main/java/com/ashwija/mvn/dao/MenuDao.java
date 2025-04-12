@@ -2,6 +2,7 @@ package com.ashwija.mvn.dao;
 
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.menu.*;
+import com.ashwija.mvn.model.AppEntity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,7 @@ public class MenuDao {
             OperationType operationType = operationTypeStr != null ? OperationType.valueOf(operationTypeStr) : null;
             String daoStr = (String) menuData.get("dao");
             AppDao dao = daoStr != null ? getDaoObj(daoStr) : null; // Adjust DAO based on context
-            OperationMenu operationMenu = getOperationMenuObj(overrideOperationMenu, title, operationType, dao);
+            OperationMenu<? extends AppEntity> operationMenu = getOperationMenuObj(overrideOperationMenu, title, operationType, dao);
 
             operationMenu.setInputLabelList(inputLabels);
             return operationMenu;
@@ -36,23 +37,24 @@ public class MenuDao {
             subMenu.put(key, buildMenuFromYaml(subMenuData));
         }
 
-        NavigationMenu navigationMenu = new NavigationMenu(title, padding, subMenu, inputLabels);
-        return navigationMenu;
+        return new NavigationMenu(title, padding, subMenu, inputLabels);
     }
 
-    public static OperationMenu getOperationMenuObj(String overrideOperationMenu, String title, OperationType operationType, AppDao dao) {
+    public static OperationMenu<? extends AppEntity> getOperationMenuObj(String overrideOperationMenu, String title, OperationType operationType, AppDao dao) {
         switch (overrideOperationMenu) {
             case "LoginOperationMenu":
                 return new LoginOperationMenu(title, operationType, dao);
             case "NotificationOperationMenu":
                 return new NotificationOperationMenu(title, operationType, dao);
+            case "CommentOperationMenu":
+                return new CommentOperationMenu(title, operationType, dao);
             default:
                 return new OperationMenu(title, operationType, dao);
 
         }
     }
 
-    public static AppDao getDaoObj(String dao) {
+    public static AppDao<? extends AppEntity> getDaoObj(String dao) {
         switch (dao) {
             case "UserProfileDao":
                 return new UserProfileDao();
@@ -64,6 +66,8 @@ public class MenuDao {
                 return new FriendDao();
             case "NotificationDao":
                 return new NotificationDao();
+            case "CommentDao":
+                return new CommentDao();
             default:
                 return null;
         }

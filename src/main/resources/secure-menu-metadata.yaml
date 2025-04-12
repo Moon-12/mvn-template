@@ -5,10 +5,13 @@ secureMenu:
     '1':
       title: "Select a post"
       padding: 2
-      dao: "PostDao"
-      operationType: "VIEW"
+      dao: "CommentDao"
+      operationType: "ADD"
+      overrideOperationMenu: "CommentOperationMenu"
       inputLabels:
-        - "Enter Post ID"
+        - "select a post (1/2): "
+        - "Do you want to add comments (Y/N): "
+        - "Add your comments: "
     '2':
       title: "Check notifications"
       padding: 2
