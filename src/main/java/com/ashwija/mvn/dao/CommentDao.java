@@ -18,6 +18,12 @@ public class CommentDao extends AppDao<CommentEntity> {
     }
 
     @Override
+    public String getSaveSuccessMessage() {
+        return "Comment added Successfully!";
+    }
+
+
+    @Override
     public String getInsertSql() {
         return "insert into comment(content,post_id,user_id,created_at) values(?,?,?,?)";
     }

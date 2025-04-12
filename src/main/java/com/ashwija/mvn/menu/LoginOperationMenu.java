@@ -6,25 +6,22 @@ import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.dao.AppDao;
 import com.ashwija.mvn.dao.PostDao;
 import com.ashwija.mvn.dao.UserProfileDao;
+import com.ashwija.mvn.model.AppEntity;
 import com.ashwija.mvn.model.PostEntity;
 import com.ashwija.mvn.model.UserProfileEntity;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 public class LoginOperationMenu extends OperationMenu<UserProfileEntity> {
-    public LoginOperationMenu(String title, OperationType operationType, AppDao appDao) {
+    public LoginOperationMenu(String title, OperationType operationType, AppDao<? extends AppEntity> appDao) {
         super(title, operationType, appDao);
     }
 
-    public LoginOperationMenu(String title, int padding, Map<Character, Menu> subMenu, List<String> inputLabel, OperationType operationType, AppDao appDao) {
-        super(title, padding, subMenu, inputLabel, operationType, appDao);
-    }
 
     @Override
     public void performAction(List<Object> inputList) {
-        AppDao appDao = super.getAppDao();
+        AppDao<? extends AppEntity> appDao = super.getAppDao();
         switch (super.getOperationType()) {
             case VIEW:
                 UserProfileDao userProfileDao = (UserProfileDao) appDao;
@@ -39,8 +36,11 @@ public class LoginOperationMenu extends OperationMenu<UserProfileEntity> {
                         PostDao postDao = new PostDao();
                         List<PostEntity> postEntityList = postDao.get2LatestPostsFromFriends();
                         if (!postEntityList.isEmpty()) {
+                            char option = '1';
                             for (PostEntity postEntity : postEntityList) {
-                                System.out.println(postEntity.detailedToString());
+                                System.out.println(option + ". " + postEntity.detailedToString());
+                                CentralContext.putIntoPostEntityMap(option, postEntity);
+                                option++;
                             }
                         } else {
                             System.out.println("No posts to display");

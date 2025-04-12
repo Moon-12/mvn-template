@@ -3,6 +3,7 @@ package com.ashwija.mvn.central;
 import com.ashwija.mvn.common.AppConstants;
 import com.ashwija.mvn.menu.Menu;
 import com.ashwija.mvn.model.NotificationEntity;
+import com.ashwija.mvn.model.PostEntity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +18,26 @@ public class CentralContext {
 
     private static final Map<Character, NotificationEntity> notificationEntityMap = new HashMap<>();
 
+    private static final Map<Character, PostEntity> postEntityMap = new HashMap<>();
+
     public static NotificationEntity getNotificationEntityByKey(Character key) {
         return notificationEntityMap.get(key);
     }
 
     public static void putIntoNotificationEntityMap(Character key, NotificationEntity notificationEntityValue) {
         CentralContext.notificationEntityMap.put(key, notificationEntityValue);
+    }
+
+    public static void putIntoPostEntityMap(Character key, PostEntity postEntityValue) {
+        CentralContext.postEntityMap.put(key, postEntityValue);
+    }
+
+    public static PostEntity getPostEntityByKey(Character key) {
+        return postEntityMap.get(key);
+    }
+
+    public static Map<Character, PostEntity> getPostEntityMap() {
+        return CentralContext.postEntityMap;
     }
 
     public static String getLoggedInUserID() {
