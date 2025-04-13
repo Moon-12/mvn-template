@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendDao extends AppDao<FriendEntity> {
+public class FriendDao extends AppDao<FriendEntity> implements WhoTransformer {
     @Override
     public String getInsertSql() {
         return "insert into FRIEND(receiver_id,sender_id,created_at) values(?,?,?)";
@@ -21,6 +21,11 @@ public class FriendDao extends AppDao<FriendEntity> {
         return "Friend Request Sent Successfully!";
     }
 
+    @Override
+    public String getSaveFailureMessage() {
+        return "Friend request could not be sent. Already friends or you have a pending request from user";
+    }
+
     String getFriendListSql() {
         return "SELECT receiver_id AS friend_id, created_at " +
                 "FROM FRIEND " +
@@ -29,6 +34,27 @@ public class FriendDao extends AppDao<FriendEntity> {
                 "SELECT sender_id AS friend_id, created_at " +
                 "FROM FRIEND " +
                 "WHERE receiver_id = ? AND status = 'ACCEPTED'";
+    }
+
+    String getValidateFriendRequestSql() {
+        return "select 0 from friend where  ((receiver_id=? and sender_id=?) or (receiver_id=? and sender_id=?))  and status in ('ACCEPTED','PENDING')";
+    }
+
+    @Override
+    public boolean validateInput(List<Object> attributes) {
+        try {
+            PreparedStatement pstmt = DatabaseConnection.con.prepareStatement(this.getValidateFriendRequestSql());
+            pstmt.setString(1, attributes.get(0).toString());
+            pstmt.setString(2, attributes.get(1).toString());
+            pstmt.setString(3, attributes.get(1).toString());
+            pstmt.setString(4, attributes.get(0).toString());
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            //check if no request exists
+            return rs.getRow() == 0;
+        } catch (SQLException exception) {
+            return false;
+        }
     }
 
     @Override
@@ -46,5 +72,11 @@ public class FriendDao extends AppDao<FriendEntity> {
             friendEntityList.add(getEntityFromResultSet(rs));
         }
         return friendEntityList;
+    }
+
+    @Override
+    public List<Object> transform(List<Object> inputList) {
+        inputList = this.whoTransform(inputList);
+        return super.transform(inputList);
     }
 }

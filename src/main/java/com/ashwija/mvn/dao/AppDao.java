@@ -122,4 +122,7 @@ public abstract class AppDao<T> {
         return "Failed to delete";
     }
 
+    public List<Object> transform(List<Object> inputList) {
+        return inputList;
+    }
 }
