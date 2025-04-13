@@ -13,8 +13,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class PostDao extends AppDao<PostEntity> {
+public class PostDao extends AppDao<PostEntity> implements WhoTransformer {
     @Override
     public String getInsertSql() {
         return "insert into POST(content,user_id,created_at) values(?,?,?)";
@@ -132,5 +134,17 @@ public class PostDao extends AppDao<PostEntity> {
             commentEntityList.ifPresent(postEntity::setCommentEntityList);
         }
         return postEntityList;
+    }
+
+    @Override
+    public List<Object> transform(List<Object> inputList) {
+        String hashtagRegex = "#\\w+";
+        Pattern pattern = Pattern.compile(hashtagRegex);
+        Matcher matcher = pattern.matcher(inputList.get(0).toString());
+        if (matcher.find()) {
+            inputList.add(matcher.group());
+        }
+        inputList = this.whoTransform(inputList);
+        return inputList;
     }
 }

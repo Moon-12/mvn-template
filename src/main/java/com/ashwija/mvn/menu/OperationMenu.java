@@ -1,8 +1,6 @@
 package com.ashwija.mvn.menu;
 
 import com.ashwija.mvn.central.CentralContext;
-import com.ashwija.mvn.common.DateAndTime;
-import com.ashwija.mvn.common.LoginStatus;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.dao.*;
 import com.ashwija.mvn.model.*;
@@ -10,8 +8,6 @@ import com.ashwija.mvn.model.*;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class OperationMenu<T extends AppEntity> extends Menu {
     private final OperationType operationType;
@@ -216,19 +212,9 @@ public class OperationMenu<T extends AppEntity> extends Menu {
     }
 
     private void addOperation(List<Object> inputList) {
-        if (appDao instanceof PostDao) {
-            String hashtagRegex = "#\\w+";
-            Pattern pattern = Pattern.compile(hashtagRegex);
-            Matcher matcher = pattern.matcher(inputList.get(0).toString());
-            if (matcher.find()) {
-                inputList.add(matcher.group());
-            }
-        }
-        //if sending message or creating new post add sender_id and current timestamp to input list
-        if (appDao instanceof MessageDao || appDao instanceof PostDao || appDao instanceof FriendDao) {
-            inputList.add(CentralContext.getLoggedInUserID());
-            inputList.add(DateAndTime.getCurrentTimestamp());
-        }
+        //perform data massaging
+        inputList = this.appDao.transform(inputList);
+
         if (this.appDao.validateInput(inputList)) {
             try {
                 int rowsAffected = this.appDao.save(inputList);
