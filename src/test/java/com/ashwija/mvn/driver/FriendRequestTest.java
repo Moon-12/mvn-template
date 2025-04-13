@@ -49,6 +49,15 @@ public class FriendRequestTest {
                         created_at DATETIME,
                         status varchar2(20) default 'PENDING'
                     )""");
+            stmt.execute("""
+                    CREATE TABLE message (
+                        id INT AUTO_INCREMENT NOT NULL,
+                        content VARCHAR(100),
+                        sender_id VARCHAR(20),
+                        receiver_id VARCHAR(20),
+                        created_at DATETIME,
+                        status VARCHAR(20) DEFAULT 'UNREAD'
+                    )""");
         }
         try (Statement stmt = h2Connection.createStatement()) {
             stmt.execute("""
@@ -74,6 +83,7 @@ public class FriendRequestTest {
         }
         try (Statement stmt = DatabaseConnection.con.createStatement()) {
             stmt.execute("DROP TABLE post");
+            stmt.execute("DROP TABLE message");
         }
         DatabaseConnection.con.close();
         CentralContext.logOut();

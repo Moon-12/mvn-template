@@ -75,6 +75,9 @@ public class NotificationOperationMenu extends OperationMenu<NotificationEntity>
                 }
                 break;
             case VIEW:
+                //when a notification is viewed reduce the count
+                LoginOperationMenu.setNotificationCount(LoginOperationMenu.getNotificationCount() - 1);
+                LoginOperationMenu.magicallyModifySecureMenuText();
                 // get previous user selection
                 String displayFriendRequestResultMsg = "";
                 List<Object> previousInput = CentralContext.popPreviousInputs();
@@ -115,6 +118,7 @@ public class NotificationOperationMenu extends OperationMenu<NotificationEntity>
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
+
                 CentralContext.resetToRootMenu();
                 break;
 

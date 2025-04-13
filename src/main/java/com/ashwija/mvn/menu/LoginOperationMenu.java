@@ -1,9 +1,11 @@
 package com.ashwija.mvn.menu;
 
 import com.ashwija.mvn.central.CentralContext;
+import com.ashwija.mvn.common.AppConstants;
 import com.ashwija.mvn.common.LoginStatus;
 import com.ashwija.mvn.common.OperationType;
 import com.ashwija.mvn.dao.AppDao;
+import com.ashwija.mvn.dao.NotificationDao;
 import com.ashwija.mvn.dao.PostDao;
 import com.ashwija.mvn.dao.UserProfileDao;
 import com.ashwija.mvn.model.AppEntity;
@@ -14,6 +16,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class LoginOperationMenu extends OperationMenu<UserProfileEntity> {
+    private static int notificationCount;
+
+    public static int getNotificationCount() {
+        return notificationCount;
+    }
+
+    public static void setNotificationCount(int notificationCount) {
+        LoginOperationMenu.notificationCount = notificationCount;
+    }
+
     public LoginOperationMenu(String title, OperationType operationType, AppDao<? extends AppEntity> appDao) {
         super(title, operationType, appDao);
     }
@@ -25,31 +37,53 @@ public class LoginOperationMenu extends OperationMenu<UserProfileEntity> {
         switch (super.getOperationType()) {
             case VIEW:
                 UserProfileDao userProfileDao = (UserProfileDao) appDao;
-                try {
-                    int checksumTotal = userProfileDao.login(inputList);
-                    System.out.println(LoginStatus.fromCode(checksumTotal).getMessage());
-                    if (checksumTotal == LoginStatus.SUCCESS.getCode()) {
-                        //set logged in userID in central context
-                        CentralContext.setLoggedInUserID(inputList.get(0).toString());
+                showTwoPostFromFriends(userProfileDao, inputList);
+                LoginOperationMenu.notificationCount = loadNotificationListForCount();
+                magicallyModifySecureMenuText();
+        }
+    }
 
-                        //fetch 2 posts from friends
-                        PostDao postDao = new PostDao();
-                        List<PostEntity> postEntityList = postDao.get2LatestPostsFromFriends();
-                        if (!postEntityList.isEmpty()) {
-                            char option = '1';
-                            for (PostEntity postEntity : postEntityList) {
-                                System.out.println(option + ". " + postEntity.detailedToString());
-                                CentralContext.putIntoPostEntityMap(option, postEntity);
-                                option++;
-                            }
-                        } else {
-                            System.out.println("No posts to display");
-                        }
-                        CentralContext.resetToRootMenu();
+    public static void magicallyModifySecureMenuText() {
+        if (notificationCount > 0) {
+            AppConstants.getSecureMenu().getSubMenuAt('2').setTitle("Check notifications" + "[" + notificationCount + "]");
+        }
+    }
+
+    private int loadNotificationListForCount() {
+        NotificationDao notificationDao = new NotificationDao();
+        try {
+            return notificationDao.getAllActiveNotifications().size();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void showTwoPostFromFriends(UserProfileDao userProfileDao, List<Object> inputList) {
+
+        try {
+            int checksumTotal = userProfileDao.login(inputList);
+            System.out.println(LoginStatus.fromCode(checksumTotal).getMessage());
+            if (checksumTotal == LoginStatus.SUCCESS.getCode()) {
+                //set logged in userID in central context
+                CentralContext.setLoggedInUserID(inputList.get(0).toString());
+
+                //fetch 2 posts from friends
+                PostDao postDao = new PostDao();
+                List<PostEntity> postEntityList = postDao.get2LatestPostsFromFriends();
+                if (!postEntityList.isEmpty()) {
+                    char option = '1';
+                    for (PostEntity postEntity : postEntityList) {
+                        System.out.println(option + ". " + postEntity.detailedToString());
+                        CentralContext.putIntoPostEntityMap(option, postEntity);
+                        option++;
                     }
-                } catch (SQLException e) {
-                    System.out.println(appDao.getSaveFailureMessage() + " due to " + e.getMessage());
+                } else {
+                    System.out.println("No posts to display");
                 }
+                CentralContext.resetToRootMenu();
+            }
+        } catch (SQLException e) {
+            System.out.println(userProfileDao.getSaveFailureMessage() + " due to " + e.getMessage());
         }
     }
 }
