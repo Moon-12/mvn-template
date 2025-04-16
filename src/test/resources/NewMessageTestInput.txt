@@ -1,0 +1,7 @@
+2
+ash6?
+test
+5
+swap6?
+hello
+exit

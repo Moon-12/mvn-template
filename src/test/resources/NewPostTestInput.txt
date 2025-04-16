@@ -1,0 +1,6 @@
+2
+ash6?
+test
+3
+good morning#newday
+exit

@@ -1,6 +1,7 @@
 ### This is what a simple flow would look like
 
 ## First few screens
+
 ```
 ********************************************************************************
 *                                                                              *
@@ -343,3 +344,56 @@ Press Enter to continue...
 
 Another class AppEntity as a parent class for all entities containing all common columns of each tables
 like id, WHO columns
+
+## DDL commands for FriendsBook project
+
+```
+CREATE TABLE `comment` (
+`id` int AUTO_INCREMENT NOT NULL,
+`content` varchar(100) DEFAULT NULL,
+`post_id` int DEFAULT NULL,
+`user_id` varchar(20) DEFAULT NULL,
+`created_at` datetime DEFAULT NULL
+);
+```
+
+```
+CREATE TABLE `friend` (
+`id` int AUTO_INCREMENT NOT NULL,
+`sender_id` varchar(20) DEFAULT NULL,
+`receiver_id` varchar(20) DEFAULT NULL,
+`created_at` datetime NOT NULL,
+`status` varchar(20) NOT NULL DEFAULT 'PENDING'
+);
+
+```
+
+```
+CREATE TABLE `message` (
+  `id` int AUTO_INCREMENT NOT NULL,
+  `content` varchar(100) DEFAULT NULL,
+  `sender_id` varchar(20) DEFAULT NULL,
+  `receiver_id` varchar(20) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'UNREAD'
+)
+```
+
+```
+CREATE TABLE `post` (
+  `id` int AUTO_INCREMENT NOT NULL,
+  `content` varchar(200) DEFAULT NULL,
+  `hashtag_id` varchar(50) DEFAULT NULL,
+  `user_id` varchar(20) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL
+);
+```
+
+```
+CREATE TABLE `user_profile` (
+  `id` varchar(10) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `gender` varchar(10) NOT NULL,
+  `school` varchar(20) NOT NULL
+);
+```
