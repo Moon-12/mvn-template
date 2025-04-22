@@ -41,6 +41,7 @@ export MYSQL_PASSWORD=<your_password>
 
 ```
 mvn clean install
+mvn clean package
 ```
 
 To execute navigate inside project folder and run following cmd
