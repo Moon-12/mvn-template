@@ -15,8 +15,31 @@ The application relies on the following environment variables for database conne
 - Also set MYSQL_PASSWORD for the database password (ensure it is kept secure).
   Ensure these variables are set correctly to avoid connection issues.
 
-#### Follow the format below:
-
+#### To set it run following CMD:
+- For Windows
 ```
-MYSQL_DRIVER=com.mysql.cj.jdbc.Driver;MYSQL_URL=jdbc:mysql://cobmysql.uhcl.edu/<database_name>?useSSL=false;MYSQL_USERNAME=<your_username>;MYSQL_PASSWORD=<your_password>
+set MYSQL_DRIVER=com.mysql.cj.jdbc.Driver
+set MYSQL_URL=jdbc:mysql://cobmysql.uhcl.edu/<database_name>?useSSL=false
+set MYSQL_USERNAME=<your_username>
+set MYSQL_PASSWORD=<your_password>
+```
+
+- For Mac
+```
+export MYSQL_DRIVER=com.mysql.cj.jdbc.Driver
+export MYSQL_URL=jdbc:mysql://cobmysql.uhcl.edu/<database_name>?useSSL=false
+export MYSQL_USERNAME=<your_username>
+export MYSQL_PASSWORD=<your_password>
+```
+
+- To generate JAR please download maven from <a href="https://maven.apache.org/download.cgi">here</a>
+
+- Now run clean package cmd like this
+```
+mvn clean install
+```
+
+To execute navigate inside project folder and run following cmd
+```
+java -jar target/java-template-1.0-SNAPSHOT.jar
 ```
