@@ -1,8 +1,31 @@
 ## Setup Instructions
 
-Configure the MySQL database connection by setting the following environment variables
+### 1. Execute the DDL Commands to setup the database tables
 
-### Configuration Details
+Refer to the ```DDL_friendsbook.sql``` file for DDL commands, located at ```mvn-template/DDLs/``` in the project
+directory.
+
+### 2. Maven Installation
+
+- To generate JAR please download maven from <a href="https://maven.apache.org/download.cgi">here</a>
+
+- Now run clean package cmd like this
+
+```
+mvn clean install
+mvn clean package
+```
+
+> **Note:** If you prefer not to install Maven, you can skip this step and proceed directly to step 3.
+
+### 3. [Optional] Unzip target.zip
+
+Unzip the target.zip file located at -
+```mvn-template/target.zip```
+
+> **Note:** Only if step 3 is skipped
+
+### 4. Setup Environment
 
 The application relies on the following environment variables for database connectivity:
 
@@ -35,22 +58,10 @@ export MYSQL_USERNAME=<your_username>
 export MYSQL_PASSWORD=<your_password>
 ```
 
-- To generate JAR please download maven from <a href="https://maven.apache.org/download.cgi">here</a>
+### 5. To execute
 
-- Now run clean package cmd like this
-
-```
-mvn clean install
-mvn clean package
-```
-
-To execute navigate inside project folder and run following cmd
+Navigate inside project folder and run following cmd
 
 ```
-java -jar target/java-template-1.0-SNAPSHOT.jar
+java -jar target/Friendsbook-1.0-SNAPSHOT.jar
 ```
-
-### DDL Commands
-
-Refer to the ```DDL_friendsbook.sql``` file for DDL commands, located at ```mvn-template/DDLs/``` in the project
-directory.
